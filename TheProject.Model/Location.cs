@@ -10,6 +10,8 @@
 
         public string Province { get; set; }
 
+        public string LocalMunicipality { get; set; }
+
         public GPSCoordinate GPSCoordinates { get; set; }
 
     }

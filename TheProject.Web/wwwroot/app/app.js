@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    var app = angular.module('TheApp', ['ngRoute', 'toastr', 'ngStorage']);
+    var app = angular.module('TheApp', ['ngRoute', 'ngStorage']);
 
     app.run(function ($rootScope, $location, $sessionStorage, $timeout) {
         $rootScope.$on('$routeChangeSuccess', function () {
