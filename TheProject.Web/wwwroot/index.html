@@ -71,10 +71,18 @@
                 <ul class="list">
                     <li class="header">MAIN NAVIGATION</li>
                     <li class="active">
-                        <a href="" ng-click="navigateTo('/dashboard')">
-                            <i class="material-icons">home</i>
+                        <a class="menu-toggle">
+                            <i class="material-icons">text_fields</i>
                             <span>Portfolio</span>
                         </a>
+                        <ul class="ml-menu">
+                            <li>
+                                <a href="" ng-click="navigateTo('/addPortfolio')">Add Portfolio</a>
+                            </li>
+                            <li>
+                                <a href="" ng-click="navigateTo('/viewPortfolios')">View Portfolio</a>
+                            </li>
+                        </ul>
                     </li>
                     <li>
                         <a class="menu-toggle">
@@ -133,6 +141,9 @@
     <script src="indexController.js"></script>
     <script src="app/components/facility/viewFacilities.controller.js"></script>
     <script src="app/components/facility/addFacility.Controller.js"></script>
+    <script src="app/components/portfolio/viewPortfolio.controller.js"></script>
+    <script src="app/components/portfolio/addFacility.Controller.js"></script>
+
     <!-- Jquery Core Js -->
     <script src="assets/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap Core Js -->

@@ -1,0 +1,54 @@
+﻿<!-- Input -->
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    Add Porfolio
+                    <small>Porfolio Information</small>
+                </h2>
+                <div class="body">
+                    <div class="row clearfix">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label>Portfolio Name</label>
+                                    <input type="text" class="form-control" ng-model="portfolio.name" placeholder="Porfolio Name" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label>Client Code</label>
+                                    <input type="text" class="form-control" ng-model="portfolio.clientCode" placeholder="Client Code" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row clearfix">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label>Street Address</label>
+                                    <input type="text" class="form-control" ng-model="portfolio.location.StreetAdress" placeholder="Street Address" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label>Suburb</label>
+                                    <input type="text" class="form-control" ng-model="portfolio.location.Suburb" placeholder="Suburb" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-default waves-effect" type="submit">Cancel</button>
+                    <button class="btn btn-primary waves-effect" type="submit" ng-click="savePortfolio(portfolio)">SUBMIT</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #END# Input -->
