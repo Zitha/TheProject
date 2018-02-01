@@ -10,6 +10,9 @@ namespace TheProject.Model
     {
         public int Id { get; set; }
 
+        public string Name { get; set; }
+
+        //Remove location
         public Location Location { get; set; }
 
         public Client Client { get; set; }
