@@ -9,16 +9,19 @@
         }).when('/viewFacilities', {
             controller: 'ViewFacilitiesController',
             templateUrl: viewBase + '/facility/view.facilities.html',
-        })
-            .when('/viewPortfolios', {
+        }).when('/viewPortfolios', {
                 controller: 'ViewPortfoliosController',
                 templateUrl: viewBase + '/portfolio/view.portfolio.html',
-            })
-            .when('/addPortfolio', {
+         }).when('/addPortfolio', {
                 controller: 'AddPortfolioController',
                 templateUrl: viewBase + '/portfolio/add.portfolio.html',
-            })
-            .otherwise({ redirectTo: '/' });
+            }).when('/viewBuildings', {
+                controller: 'ViewBuildingsController',
+                templateUrl: viewBase + '/building/view.buildings.html',
+            }).when('/addBuilding', {
+                controller: 'AddBuildingController',
+                templateUrl: viewBase + '/building/add.building.html',
+            }).otherwise({ redirectTo: '/' });
     }
     angular.module('TheApp').config(['$routeProvider', '$locationProvider', routeProvider]);
     routeProvider.$inject = ['$routeProvider', '$locationProvider'];

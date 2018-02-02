@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    function ViewPortfolioController($location, $scope) {
+    function ViewPortfoliosController($location, $scope) {
 
         $scope.name = 'APP Name';
         $scope.navigateTo = function (url) {
@@ -9,6 +9,6 @@
         }
     }
 
-    angular.module('TheApp').controller('ViewPortfolioController', ViewPortfolioController);
-    ViewPortfolioController.$inject = ['$location', '$scope'];
+    angular.module('TheApp').controller('ViewPortfoliosController', ViewPortfoliosController);
+    ViewPortfoliosController.$inject = ['$location', '$scope'];
 })();
