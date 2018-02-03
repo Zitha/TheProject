@@ -1,14 +1,23 @@
 ﻿(function () {
     'use strict';
 
-    function ViewPortfoliosController($location, $scope) {
+    function ViewPortfoliosController($location, $scope, TheProjectService) {
 
-        $scope.name = 'APP Name';
+        init();
+
+        function init() {
+            TheProjectService.getPortfolios(function (data) {
+                if (data) {
+                    $scope.Portfolios = data;
+                }
+            });
+        }
+
         $scope.navigateTo = function (url) {
             $location.path(url);
         }
     }
 
     angular.module('TheApp').controller('ViewPortfoliosController', ViewPortfoliosController);
-    ViewPortfoliosController.$inject = ['$location', '$scope'];
+    ViewPortfoliosController.$inject = ['$location', '$scope','TheProjectService'];
 })();

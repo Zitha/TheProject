@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,31 @@ namespace TheProject.Data
                     _facilities = new FacilityRepository(_context);
                 }
                 return _facilities;
+            }
+        }
+
+        private IRepository<Portfolio> _portfolios;
+
+        public IRepository<Portfolio> Portfolios
+        {
+            get
+            {
+                if (_portfolios == null)
+                {
+                    _portfolios = new PortfolioRepository(_context);
+                }
+                return _portfolios;
+            }
+        }
+
+        public void SaveChanges()
+        {
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbEntityValidationException e)
+            {
             }
         }
         public void Dispose()

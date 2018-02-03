@@ -12,9 +12,6 @@ namespace TheProject.Model
 
         public string Name { get; set; }
 
-        //Remove location
-        public Location Location { get; set; }
-
         public Client Client { get; set; }
 
         public List<Facility> Facilities { get; set; }
