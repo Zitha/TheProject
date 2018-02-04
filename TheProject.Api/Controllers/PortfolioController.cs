@@ -40,7 +40,6 @@ namespace TheProject.Api.Controllers
             {
                 throw ex;
             }
-
         }
 
         [HttpGet]
@@ -55,7 +54,6 @@ namespace TheProject.Api.Controllers
 
                     return portfolios;
                 }
-
             }
             catch (Exception ex)
             {

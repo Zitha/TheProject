@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    function AddFacilityController($location, $scope) {
+    function AddFacilityController($location, $scope, TheProjectService) {
         $scope.facility = {};
         $scope.selectedMunicipality = {};
 
@@ -26,11 +26,15 @@
 
         $scope.saveFacility = function (facility) {
             if (facility) {
+                TheProjectService.addFacility(facility, function (data) {
+                    if (data) {
 
+                    }
+                });
             }
         }
     }
 
     angular.module('TheApp').controller('AddFacilityController', AddFacilityController);
-    AddFacilityController.$inject = ['$location', '$scope'];
+    AddFacilityController.$inject = ['$location', '$scope','TheProjectService'];
 })();

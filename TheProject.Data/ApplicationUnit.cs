@@ -13,7 +13,6 @@ namespace TheProject.Data
     {
         private readonly DataContext _context = new DataContext();
         private IRepository<Facility> _facilities;
-
         public IRepository<Facility> Facilities
         {
             get
@@ -23,6 +22,21 @@ namespace TheProject.Data
                     _facilities = new FacilityRepository(_context);
                 }
                 return _facilities;
+            }
+        }
+
+
+        private IRepository<Building> _buildings;
+
+        public IRepository<Building> Buildings
+        {
+            get
+            {
+                if (_buildings == null)
+                {
+                    _buildings = new BuildingRepository(_context);
+                }
+                return _buildings;
             }
         }
 
@@ -37,6 +51,20 @@ namespace TheProject.Data
                     _portfolios = new PortfolioRepository(_context);
                 }
                 return _portfolios;
+            }
+        }
+
+        private IRepository<User> _users;
+
+        public IRepository<User> Users
+        {
+            get
+            {
+                if (_users == null)
+                {
+                    _users = new UserRepository(_context);
+                }
+                return _users;
             }
         }
 

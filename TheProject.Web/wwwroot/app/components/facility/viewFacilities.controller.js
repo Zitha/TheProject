@@ -1,14 +1,22 @@
 ﻿(function () {
     'use strict';
 
-    function ViewFacilitiesController($location, $scope) {
+    function ViewFacilitiesController($location, $scope, TheProjectService) {
 
-        $scope.name = 'APP Name';
-        $scope.navigateTo = function (url) {
-            $location.path(url);
+        init();
+        function init() {
+            TheProjectService.getFacilities(function (data) {
+                if (data) {
+                    $scope.Facilities = data;
+                }
+            });
         }
+
+        //$scope.navigateTo = function (url) {
+        //    $location.path(url);
+        //}
     }
 
     angular.module('TheApp').controller('ViewFacilitiesController', ViewFacilitiesController);
-    ViewFacilitiesController.$inject = ['$location', '$scope'];
+    ViewFacilitiesController.$inject = ['$location', '$scope','TheProjectService'];
 })();
