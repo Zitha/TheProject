@@ -63,11 +63,42 @@
             return defered.promise;
         }
 
+        //------------------User-----------------
+        var addUser = function (user) {
+            var defered = $q.defer();
+            var addUserComplete = function (response) {
+                defered.resolve(response.data);
+            }
+
+            $http.post(projectApi + '/User/AddUser', user)
+                .then(addUserComplete, function (err, status) {
+                    defered.reject(err);
+                });
+
+            return defered.promise;
+        }
+
+        var getUsers = function () {
+            var defered = $q.defer();
+            var getUsersComplete = function (response) {
+                defered.resolve(response.data);
+            }
+
+            $http.get(projectApi + '/User/GetUsers')
+                .then(getUsersComplete, function (err, status) {
+                    defered.reject(err);
+                });
+
+            return defered.promise;
+        }
+
         return {
             getPortfolios: getPortfolios,
             addPortfolio: addPortfolio,
             addFacility: addFacility,
-            getFacilities: getFacilities
+            getFacilities: getFacilities,
+            addUser: addUser,
+            getUsers: getUsers
         };
 
     }

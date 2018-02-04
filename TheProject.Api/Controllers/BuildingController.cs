@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -64,6 +65,29 @@ namespace TheProject.Api.Controllers
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+
+        [HttpGet]
+        public IEnumerable<Building> GetBuildingByFacilityId(int facilityId)
+        {
+            try
+            {
+                using (ApplicationUnit unit = new ApplicationUnit())
+                {
+                    List<Building> buildings = unit.Facilities.GetAll()
+                        .Where(fa => fa.Id == facilityId)
+                        .Select(fc => fc.Buildings).FirstOrDefault();
+
+                    return buildings;
+                }
+            }
+            catch (Exception ex)
+            {
+                var outputLines = new List<string>();
+                outputLines.Add(ex.Message);
+                File.AppendAllLines(@"c:\errors.txt", outputLines);
+                throw;
             }
         }
     }

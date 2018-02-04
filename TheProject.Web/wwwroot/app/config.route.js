@@ -21,6 +21,12 @@
             }).when('/addBuilding', {
                 controller: 'AddBuildingController',
                 templateUrl: viewBase + '/building/add.building.html',
+            }).when('/addUser', {
+                controller: 'AddUserController',
+                templateUrl: viewBase + '/user/add.user.html',
+            }).when('/viewUsers', {
+                controller: 'ViewUsersController',
+                templateUrl: viewBase + '/user/view.users.html',
             }).otherwise({ redirectTo: '/' });
     }
     angular.module('TheApp').config(['$routeProvider', '$locationProvider', routeProvider]);

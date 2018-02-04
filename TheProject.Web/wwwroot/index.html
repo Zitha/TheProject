@@ -113,10 +113,18 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="pages/helper-classes.html">
+                        <a class="menu-toggle">
                             <i class="material-icons">widgets</i>
                             <span>Users</span>
                         </a>
+                        <ul class="ml-menu">
+                            <li>
+                                <a href="" ng-click="navigateTo('/addUser')">Add User</a>
+                            </li>
+                            <li>
+                                <a href="" ng-click="navigateTo('/viewUsers')">View Users</a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </div>
@@ -159,6 +167,8 @@
     <script src="app/components/portfolio/addPortfolio.Controller.js"></script>
     <script src="app/components/building/viewbuildings.controller.js"></script>
     <script src="app/components/building/addBuilding.Controller.js"></script>
+    <script src="app/components/user/addUser.Controller.js"></script>
+    <script src="app/components/user/viewUsers.controller.js"></script>
     <script src="app/components/TheProject.Service.js"></script>
     <script src="app/components/TheProject.Factory.js"></script>
 

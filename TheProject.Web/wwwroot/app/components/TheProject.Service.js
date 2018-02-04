@@ -42,6 +42,27 @@
                 //modal.show(templateUrl, 'alertDialogController');
             });
         }
+
+        self.addUser = function (user, callback) {
+            TheProjectFactory.addUser(user).then(function (response) {
+                callback(response);
+            }, function (error) {
+                //alertDialogService.setHeaderAndMessage('Error Has Occurred ', 'Unable to get contracts. Please retry again, if the issue persists contact administrator.');
+                //var templateUrl = '/app/common/alert/infoDialog.template.html';
+                //modal.show(templateUrl, 'alertDialogController');
+            });
+        }
+
+
+        self.getUsers = function (callback) {
+            TheProjectFactory.getUsers().then(function (response) {
+                callback(response);
+            }, function (error) {
+                //alertDialogService.setHeaderAndMessage('Error Has Occurred ', 'Unable to get contracts. Please retry again, if the issue persists contact administrator.');
+                //var templateUrl = '/app/common/alert/infoDialog.template.html';
+                //modal.show(templateUrl, 'alertDialogController');
+            });
+        }
     }
 
     angular.module('TheApp').service('TheProjectService', TheProjectService);

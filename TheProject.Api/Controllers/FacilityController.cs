@@ -110,7 +110,6 @@ namespace TheProject.Api.Controllers
             {
                 using (ApplicationUnit unit = new ApplicationUnit())
                 {
-
                     List<Facility> facilities = unit.Users.GetAll()
                         .Where(usr => usr.Id == userId)
                         .Select(fc => fc.Facilities).FirstOrDefault();

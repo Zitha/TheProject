@@ -29,5 +29,33 @@ namespace TheProject.Api.Controllers
             }
         }
 
+        [HttpPost]
+        public User AddUser(User user)
+        {
+            using (ApplicationUnit unit = new ApplicationUnit())
+            {
+                User loginUser = unit.Users.GetAll()
+                    .FirstOrDefault(usr => usr.Username.ToLower() == user.Username.ToLower());
+
+                if (loginUser == null)
+                {
+                    unit.Users.Add(user);
+                    unit.SaveChanges();
+                    return user;
+                }
+                return null;
+            }
+        }
+
+        [HttpGet]
+        public List<User> GetUsers()
+        {
+            using (ApplicationUnit unit = new ApplicationUnit())
+            {
+                List<User> users = unit.Users.GetAll().ToList();
+                return users;
+            }
+        }
+
     }
 }
