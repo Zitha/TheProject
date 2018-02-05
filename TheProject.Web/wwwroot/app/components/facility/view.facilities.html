@@ -17,18 +17,19 @@
                                     <th>Client Code</th>
                                     <th>Settlement Type</th>
                                     <th>Province</th>
-                                    <th>Municipality</th>
-                                    <th>Zoning</th>
+                                    <th>Responsible</th>
+                                    <th>Province</th>
+                                    <td></td>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="facility in Facilities">
+                                <tr ng-repeat="facility in Facilities" ng-click="viewFacility(facility)">
                                     <td>{{facility.Name}}</td>
                                     <td>{{facility.ClientCode}}</td>
                                     <td>{{facility.SettlementType}}</td>
+                                    <td>{{facility.Location.Suburb}}</td>
                                     <td>{{facility.ResposiblePerson.FullName}}</td>
-                                    <td>2011/04/25</td>
-                                    <td>$320,800</td>
+                                    <td>{{facility.Location.Province}}</td>
                                 </tr>
                             </tbody>
                         </table>

@@ -13,7 +13,7 @@
             if (user) {
                 TheProjectService.addUser(user, function (data) {
                     if (data) {
-
+                        $location.path('\viewUsers');
                     }
                 });
             }

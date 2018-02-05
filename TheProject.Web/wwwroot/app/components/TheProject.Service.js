@@ -3,6 +3,16 @@
 
     function TheProjectService($http, $q, $sessionStorage, TheProjectFactory) {
         var self = this;
+        self.selectedFacility = {};
+
+        self.setSelectedFacility = function (facility) {
+            self.selectedFacility=facility;
+        }
+
+        self.getSelectedFacility = function () {
+            return self.selectedFacility;
+        }
+
         self.getPortfolios = function (callback) {
             TheProjectFactory.getPortfolios().then(function (response) {
                 callback(response);

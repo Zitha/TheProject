@@ -11,10 +11,11 @@
                 }
             });
         }
-
-        //$scope.navigateTo = function (url) {
-        //    $location.path(url);
-        //}
+        
+        $scope.viewFacility = function (facility) {
+            TheProjectService.setSelectedFacility(facility);
+            $location.path('\addFacility');
+        }
     }
 
     angular.module('TheApp').controller('ViewFacilitiesController', ViewFacilitiesController);

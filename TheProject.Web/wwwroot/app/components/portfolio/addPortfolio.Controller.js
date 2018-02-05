@@ -29,7 +29,7 @@
 
                 TheProjectService.addPortfolio(portfolio, function (data) {
                     if (data) {
-
+                        $location.path('\viewPortfolios');
                     }
                 });
             }

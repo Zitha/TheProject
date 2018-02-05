@@ -7,25 +7,53 @@ using System.Data.Entity;
 using System.Web.Http;
 using TheProject.Data;
 using TheProject.Model;
+using TheProject.Api.Models;
+using System.Threading.Tasks;
 
 namespace TheProject.Api.Controllers
 {
     public class UserController : ApiController
     {
-        [HttpPut]
-        public User Login(User user)
+        [HttpGet]
+        public User Login(string username, string password)
         {
             using (ApplicationUnit unit = new ApplicationUnit())
             {
                 User loginUser = unit.Users.GetAll()
-                    .FirstOrDefault(usr => usr.Username.ToLower() == user.Username.ToLower() &&
-                     user.Password == usr.Password);
+                    .FirstOrDefault(usr => usr.Username.ToLower() == username.ToLower());
 
                 if (loginUser != null)
                 {
-                    return loginUser;
+                    string decriptedPassword = EncryptString.Decrypt(loginUser.Password, "THEPROJECT");
+                    if (decriptedPassword == password)
+                    {
+                        return loginUser;
+                    }
                 }
                 return null;
+            }
+        }
+
+        [HttpPut]
+        public bool ResertPassword(string username)
+        {
+            using (ApplicationUnit unit = new ApplicationUnit())
+            {
+                User foundUser = unit.Users.GetAll().FirstOrDefault(user => user.Username.ToLower() == username.ToLower());
+
+                if (foundUser != null)
+                {
+                    string decriptedPassword = EncryptString.Decrypt(foundUser.Password, "THEPROJECT");
+                    EmailService emailService = new EmailService();
+
+                    //Send Email with Invoice
+                    Task sendEmailTask = new Task(() => emailService.SendResertPasswordEmail(foundUser.Email, decriptedPassword));
+                    // Start the task.
+                    sendEmailTask.Start();
+
+                    return true;
+                }
+                return false;
             }
         }
 
@@ -39,6 +67,8 @@ namespace TheProject.Api.Controllers
 
                 if (loginUser == null)
                 {
+                    string password = EncryptString.Encrypt(user.Password, "THEPROJECT");
+                    user.Password = password;
                     unit.Users.Add(user);
                     unit.SaveChanges();
                     return user;
