@@ -9,7 +9,19 @@
                 </h2>
                 <div class="body">
                     <div class="row clearfix">
-                        <div class="col-sm-6">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label>Facility</label>
+                                    <select ng-model="building.facility" class="form-control show-tick">
+                                        <option ng-value="facility" ng-repeat="facility in facilities">
+                                            {{facility.Name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
                             <div class="form-group">
                                 <div class="form-line">
                                     <label>Building Number</label>
@@ -154,7 +166,7 @@
                     </div>
                    
                     <button class="btn btn-default waves-effect" type="submit">Cancel</button>
-                    <button class="btn btn-primary waves-effect" type="submit" ng-click="saveBuilding(Building)">SUBMIT</button>
+                    <button class="btn btn-primary waves-effect" type="submit" ng-click="saveBuilding(building)">SUBMIT</button>
                 </div>
             </div>
         </div>

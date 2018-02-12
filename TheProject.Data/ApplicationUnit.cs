@@ -68,6 +68,20 @@ namespace TheProject.Data
             }
         }
 
+        private IRepository<Client> _clients;
+
+        public IRepository<Client> Clients
+        {
+            get
+            {
+                if (_clients == null)
+                {
+                    _clients = new ClientRepository(_context);
+                }
+                return _clients;
+            }
+        }
+
         public void SaveChanges()
         {
             try

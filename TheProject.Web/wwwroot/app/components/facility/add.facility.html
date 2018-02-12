@@ -9,7 +9,7 @@
                 </h2>
                 <div class="body">
                     <div class="row clearfix">
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="form-group">
                                 <div class="form-line">
                                     <label>Facility Name</label>
@@ -17,11 +17,23 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label>Portfolio</label>
+                                    <select ng-model="portfolio" ng-options='portfolio.Name for portfolio in portfolios'  class="form-control show-tick" ng-change="portfolioChanged(portfolio)">
+                                        <!--<option ng-value="portfolio" ng-repeat="portfolio in portfolios">
+                                            {{portfolio.Name}}
+                                        </option>-->
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
                             <div class="form-group">
                                 <div class="form-line">
                                     <label>Client Code</label>
-                                    <input type="text" class="form-control" ng-model="facility.clientCode" placeholder="Client Code" />
+                                    <input type="text" class="form-control" ng-model="facility.client.ClientCode" placeholder="Client Code" readonly/>
                                 </div>
                             </div>
                         </div>
@@ -61,7 +73,7 @@
                             <div class="form-group">
                                 <div class="form-line">
                                     <label>Provice</label>
-                                    <select ng-model="facility.location.provice" class="form-control show-tick">
+                                    <select ng-model="facility.location.province" class="form-control show-tick">
                                         <option ng-value="provice" ng-repeat="provice in provices">
                                             {{provice}}
                                         </option>
@@ -73,7 +85,7 @@
                             <div class="form-group">
                                 <div class="form-line">
                                     <label>Local municipality</label>
-                                    <select ng-model="facility.location.municipal" class="form-control show-tick">
+                                    <select ng-model="facility.location.localMunicipality" class="form-control show-tick">
                                         <option ng-value="municipal" ng-repeat="municipal in municipalities">
                                             {{municipal.code}} - {{municipal.name}}
                                         </option>
@@ -130,7 +142,7 @@
                             <div class="form-group">
                                 <div class="form-line">
                                     <label>Responsible Person (Name)</label>
-                                    <input type="text" ng-model="facility.resposiblePerson.fullname"  class="form-control" placeholder="Responsible Person" />
+                                    <input type="text" ng-model="facility.resposiblePerson.fullname" class="form-control" placeholder="Responsible Person" />
                                 </div>
                             </div>
                         </div>
@@ -138,7 +150,7 @@
                             <div class="form-group">
                                 <div class="form-line">
                                     <label>Designation</label>
-                                    <input type="text" class="form-control" ng-model="facility.resposiblePerson.designation"  placeholder="Designation" />
+                                    <input type="text" class="form-control" ng-model="facility.resposiblePerson.designation" placeholder="Designation" />
                                 </div>
                             </div>
                         </div>

@@ -34,7 +34,7 @@ namespace TheProject.Api.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpGet]
         public bool ResertPassword(string username)
         {
             using (ApplicationUnit unit = new ApplicationUnit())

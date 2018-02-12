@@ -13,14 +13,21 @@ namespace TheProject.Api.Controllers
     public class BuildingController : ApiController
     {
         [HttpPost]
-        public Building AddBulding(Building building)
+        public Building AddBuilding(Building building)
         {
             try
             {
                 using (ApplicationUnit unit = new ApplicationUnit())
                 {
-                    unit.Buildings.Add(building);
-                    unit.SaveChanges();
+                    Facility facilityToaddBuild = unit.Facilities.GetAll()
+                        .FirstOrDefault(fc => fc.Id == building.Facility.Id);
+                    if (facilityToaddBuild!=null)
+                    {
+                        facilityToaddBuild.Buildings.Add(building);
+                        unit.Facilities.Update(facilityToaddBuild);
+                        unit.SaveChanges();
+                    }
+                  
                     return building;
                 }
             }

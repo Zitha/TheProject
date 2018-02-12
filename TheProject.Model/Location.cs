@@ -12,7 +12,6 @@
 
         public string LocalMunicipality { get; set; }
 
-        public GPSCoordinate GPSCoordinates { get; set; }
-
+        public string Region { get; set; }
     }
 }

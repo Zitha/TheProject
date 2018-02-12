@@ -14,7 +14,7 @@
         
         $scope.viewFacility = function (facility) {
             TheProjectService.setSelectedFacility(facility);
-            $location.path('\addFacility');
+            $location.path('/addFacility');
         }
     }
 

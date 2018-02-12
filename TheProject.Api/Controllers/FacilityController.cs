@@ -26,7 +26,6 @@ namespace TheProject.Api.Controllers
                     {
                         updateFacility.SettlementType = facility.SettlementType;
                         updateFacility.Zoning = facility.Zoning;
-                        updateFacility.MunicipalRoll = facility.MunicipalRoll;
                         updateFacility.Name = facility.Name;
                         updateFacility.IDPicture = facility.IDPicture;
                         updateFacility.GPSCoordinates = facility.GPSCoordinates;
@@ -57,12 +56,13 @@ namespace TheProject.Api.Controllers
             {
                 using (ApplicationUnit unit = new ApplicationUnit())
                 {
-                    Facility hasFacility = unit.Facilities.GetAll()
-                        .FirstOrDefault(u => u.Name.ToLower() == facility.Name.ToLower());
+                    Portfolio portfolioToAddFacility = unit.Portfolios.GetAll().Include(f=>f.Facilities)
+                        .FirstOrDefault(p => p.Id == facility.Portfolio.Id);
 
-                    if (hasFacility == null)
+                    if (portfolioToAddFacility != null)
                     {
-                        unit.Facilities.Add(facility);
+                        portfolioToAddFacility.Facilities.Add(facility);
+                        unit.Portfolios.Update(portfolioToAddFacility);
                         unit.SaveChanges();
                         return facility;
                     }
@@ -96,8 +96,10 @@ namespace TheProject.Api.Controllers
             }
             catch (Exception ex)
             {
-                var outputLines = new List<string>();
-                outputLines.Add(ex.Message);
+                var outputLines = new List<string>
+                {
+                    ex.Message
+                };
                 File.AppendAllLines(@"c:\errors.txt", outputLines);
                 throw;
             }
@@ -119,8 +121,10 @@ namespace TheProject.Api.Controllers
             }
             catch (Exception ex)
             {
-                var outputLines = new List<string>();
-                outputLines.Add(ex.Message);
+                var outputLines = new List<string>
+                {
+                    ex.Message
+                };
                 File.AppendAllLines(@"c:\errors.txt", outputLines);
                 throw;
             }

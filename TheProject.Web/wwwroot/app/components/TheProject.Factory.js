@@ -92,13 +92,60 @@
             return defered.promise;
         }
 
+        //-----------------Building------------------------------
+        var addBuilding = function (building) {
+            var defered = $q.defer();
+            var addBuildingComplete = function (response) {
+                defered.resolve(response.data);
+            }
+
+            $http.post(projectApi + '/Building/AddBuilding', building)
+                .then(addBuildingComplete, function (err, status) {
+                    defered.reject(err);
+                });
+
+            return defered.promise;
+        }
+
+        //-----------------Client------------------------------
+        var getClients = function () {
+            var defered = $q.defer();
+            var getClientsComplete = function (response) {
+                defered.resolve(response.data);
+            }
+
+            $http.get(projectApi + '/Client/GetClients')
+                .then(getClientsComplete, function (err, status) {
+                    defered.reject(err);
+                });
+
+            return defered.promise;
+        }
+
+        var getPotfoliosbyClientId = function () {
+            var defered = $q.defer();
+            var getClientsComplete = function (response) {
+                defered.resolve(response.data);
+            }
+
+            $http.get(projectApi + '/Client/GetPotfoliosbyClientId')
+                .then(getClientsComplete, function (err, status) {
+                    defered.reject(err);
+                });
+
+            return defered.promise;
+        }
+
         return {
             getPortfolios: getPortfolios,
             addPortfolio: addPortfolio,
             addFacility: addFacility,
             getFacilities: getFacilities,
             addUser: addUser,
-            getUsers: getUsers
+            getUsers: getUsers,
+            addBuilding: addBuilding,
+            getClients: getClients,
+            getPotfoliosbyClientId: getPotfoliosbyClientId
         };
 
     }

@@ -8,20 +8,29 @@
                     <small>Porfolio Information</small>
                 </h2>
                 <div class="body">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Client Name</label>
+                                <input type="text" class="form-control" ng-model="portfolio.client.ClientName" placeholder="Client Name" />
+                            </div>
+                        </div>
+                    </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label>Client Code</label>
+                                    <input type="text" class="form-control" ng-model="portfolio.client.ClientId" placeholder="Client Code" />
+                                </div>
+                            </div>
+                        </div>
+
                     <div class="row clearfix">
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <div class="form-line">
                                     <label>Portfolio Name</label>
                                     <input type="text" class="form-control" ng-model="portfolio.name" placeholder="Porfolio Name" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Client Code</label>
-                                    <input type="text" class="form-control" ng-model="portfolio.client.ClientId" placeholder="Client Code" />
                                 </div>
                             </div>
                         </div>

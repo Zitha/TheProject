@@ -18,10 +18,11 @@ namespace TheProject.Model
 
         public string Zoning { get; set; }
 
-        public string MunicipalRoll { get; set; }
-
         public string IDPicture { get; set; }
 
+        public DateTime CreatedDate { get; set; }
+
+        public DateTime ModifiedDate { get; set; }
         public GPSCoordinate GPSCoordinates { get; set; }
 
         public BoundryPolygon Polygon { get; set; }
@@ -31,6 +32,8 @@ namespace TheProject.Model
         public Person ResposiblePerson { get; set; }
 
         public Location Location { get; set; }
+
+        public virtual Portfolio Portfolio { get; set; }
 
         public List<Building> Buildings { get; set; }
     }

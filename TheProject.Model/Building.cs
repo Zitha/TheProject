@@ -39,6 +39,8 @@ namespace TheProject.Model
 
         public string Photo { get; set; }
 
+        public virtual Facility Facility { get; set; }
+
     }
 }
 
