@@ -2,7 +2,7 @@
     'use strict';
     var routeProvider = function ($routeProvider, $locationProvider) {
 
-        var viewBase = '../app/components/';
+        var viewBase = '../app/components';
         $routeProvider.when('/addFacility', {
             controller: 'AddFacilityController',
             templateUrl: viewBase + '/facility/add.facility.html',
@@ -27,6 +27,12 @@
             }).when('/viewUsers', {
                 controller: 'ViewUsersController',
                 templateUrl: viewBase + '/user/view.users.html',
+            }).when('/addClient', {
+                controller: 'AddClientController',
+                templateUrl: viewBase + '/client/add.client.html',
+            }).when('/viewClients', {
+                controller: 'ViewClientsController',
+                templateUrl: viewBase + '/client/view.clients.html',
             }).otherwise({ redirectTo: '/' });
     }
     angular.module('TheApp').config(['$routeProvider', '$locationProvider', routeProvider]);

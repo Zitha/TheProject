@@ -69,6 +69,8 @@ namespace TheProject.Api.Controllers
                 {
                     string password = EncryptString.Encrypt(user.Password, "THEPROJECT");
                     user.Password = password;
+                    user.CreatedDate = DateTime.Now;
+                    user.ModifiedDate = DateTime.Now;
                     unit.Users.Add(user);
                     unit.SaveChanges();
                     return user;

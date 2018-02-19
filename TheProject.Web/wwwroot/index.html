@@ -70,7 +70,35 @@
             <div class="menu">
                 <ul class="list">
                     <li class="header">MAIN NAVIGATION</li>
-                    <li class="active">
+                    <li  class="active">
+                        <a class="menu-toggle">
+                            <i class="material-icons">widgets</i>
+                            <span>Clients</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li>
+                                <a href="" ng-click="navigateTo('/addClient')">Add Client</a>
+                            </li>
+                            <li>
+                                <a href="" ng-click="navigateTo('/viewClients')">View Views</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="menu-toggle">
+                            <i class="material-icons">widgets</i>
+                            <span>Users</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li>
+                                <a href="" ng-click="navigateTo('/addUser')">Add User</a>
+                            </li>
+                            <li>
+                                <a href="" ng-click="navigateTo('/viewUsers')">View Users</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
                         <a class="menu-toggle">
                             <i class="material-icons">text_fields</i>
                             <span>Portfolio</span>
@@ -109,20 +137,6 @@
                             </li>
                             <li>
                                 <a href="" ng-click="navigateTo('/viewBuildings')">View Buildings</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a class="menu-toggle">
-                            <i class="material-icons">widgets</i>
-                            <span>Users</span>
-                        </a>
-                        <ul class="ml-menu">
-                            <li>
-                                <a href="" ng-click="navigateTo('/addUser')">Add User</a>
-                            </li>
-                            <li>
-                                <a href="" ng-click="navigateTo('/viewUsers')">View Users</a>
                             </li>
                         </ul>
                     </li>
@@ -171,6 +185,8 @@
     <script src="app/components/user/viewUsers.controller.js"></script>
     <script src="app/components/TheProject.Service.js"></script>
     <script src="app/components/TheProject.Factory.js"></script>
+    <script src="app/components/client/addClient.controller.js"></script>
+    <script src="app/components/client/viewclients.controller.js"></script>
 
     <!-- Jquery Core Js -->
     <script src="assets/plugins/jquery/jquery.min.js"></script>

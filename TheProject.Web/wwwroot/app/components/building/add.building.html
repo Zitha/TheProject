@@ -11,13 +11,22 @@
                     <div class="row clearfix">
                         <div class="col-sm-3">
                             <div class="form-group">
-                                <div class="form-line">
+                                <!--<div class="form-line">
                                     <label>Facility</label>
                                     <select ng-model="building.facility" class="form-control show-tick">
                                         <option ng-value="facility" ng-repeat="facility in facilities">
                                             {{facility.Name}}
                                         </option>
                                     </select>
+                                </div>-->
+                                <div class="form-line">
+                                    <input-container>
+                                        <label>Facility</label>
+                                        <select ng-model="building.facility" ng-options="facility as facility.Name for facility in facilities"
+                                                class="form-control show-tick">
+                                            <option value="" disabled>------Select Facility------</option>
+                                        </select>
+                                    </input-container>
                                 </div>
                             </div>
                         </div>

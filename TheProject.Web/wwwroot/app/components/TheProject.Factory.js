@@ -107,6 +107,34 @@
             return defered.promise;
         }
 
+        var getBuildingByFacilityId = function (facilityId) {
+            var defered = $q.defer();
+            var getBuildingByFacilityIdComplete = function (response) {
+                defered.resolve(response.data);
+            }
+
+            $http.get(projectApi + '/Building/GetBuildingByFacilityId?facilityId='+facilityId)
+                .then(getBuildingByFacilityIdComplete, function (err, status) {
+                    defered.reject(err);
+                });
+
+            return defered.promise;
+        }
+
+        var getBuildings = function () {
+            var defered = $q.defer();
+            var getBuildingsComplete = function (response) {
+                defered.resolve(response.data);
+            }
+
+            $http.get(projectApi + '/Building/GetBuildings')
+                .then(getBuildingsComplete, function (err, status) {
+                    defered.reject(err);
+                });
+
+            return defered.promise;
+        }
+
         //-----------------Client------------------------------
         var getClients = function () {
             var defered = $q.defer();
@@ -121,6 +149,21 @@
 
             return defered.promise;
         }
+
+        var addClient = function (client) {
+            var defered = $q.defer();
+            var addClientComplete = function (response) {
+                defered.resolve(response.data);
+            }
+
+            $http.post(projectApi + '/Client/AddClient', client)
+                .then(addClientComplete, function (err, status) {
+                    defered.reject(err);
+                });
+
+            return defered.promise;
+        }
+
 
         var getPotfoliosbyClientId = function () {
             var defered = $q.defer();
@@ -142,10 +185,12 @@
             addFacility: addFacility,
             getFacilities: getFacilities,
             addUser: addUser,
+            addClient: addClient,
             getUsers: getUsers,
             addBuilding: addBuilding,
             getClients: getClients,
-            getPotfoliosbyClientId: getPotfoliosbyClientId
+            getPotfoliosbyClientId: getPotfoliosbyClientId,
+            getBuildings: getBuildings
         };
 
     }

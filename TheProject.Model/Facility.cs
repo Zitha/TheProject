@@ -20,21 +20,25 @@ namespace TheProject.Model
 
         public string IDPicture { get; set; }
 
+        public string Status { get; set; }           
+
+        public virtual  DeedsInfo DeedsInfo { get; set; }
+
+        public virtual  Person ResposiblePerson { get; set; }
+
+        public virtual Location Location { get; set; }
+
         public DateTime CreatedDate { get; set; }
 
         public DateTime ModifiedDate { get; set; }
-        public GPSCoordinate GPSCoordinates { get; set; }
 
-        public BoundryPolygon Polygon { get; set; }
+        public int CreatedUserId { get; set; }
 
-        public DeedsInfo DeedsInfo { get; set; }
-
-        public Person ResposiblePerson { get; set; }
-
-        public Location Location { get; set; }
+        public int? ModifiedUserId { get; set; }
 
         public virtual Portfolio Portfolio { get; set; }
 
-        public List<Building> Buildings { get; set; }
+        public virtual  List<Building> Buildings { get; set; }
+
     }
 }

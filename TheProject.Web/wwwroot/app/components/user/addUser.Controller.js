@@ -3,6 +3,15 @@
 
     function AddUserController($location, $scope, TheProjectService) {
         $scope.user = {};
+        init();
+
+        function init() {
+            TheProjectService.getFacilities(function (data) {
+                if (data) {
+                    $scope.facilities = data;
+                }
+            });
+        }
 
         $scope.roles = ['User', 'Admin'];
         $scope.navigateTo = function (url) {

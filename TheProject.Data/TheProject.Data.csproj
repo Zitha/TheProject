@@ -61,6 +61,11 @@
     <Compile Include="DataContext.cs" />
     <Compile Include="GenericRepository.cs" />
     <Compile Include="IRepository.cs" />
+    <Compile Include="Migrations\201802191639371_Add Virtual Properties.cs" />
+    <Compile Include="Migrations\201802191639371_Add Virtual Properties.Designer.cs">
+      <DependentUpon>201802191639371_Add Virtual Properties.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\BoundryPolygonRepository.cs" />
     <Compile Include="Repositories\BuildingRepository.cs" />
@@ -69,6 +74,7 @@
     <Compile Include="Repositories\FacilityRepository.cs" />
     <Compile Include="Repositories\GPSCoordinateRepository.cs" />
     <Compile Include="Repositories\LocationRepository.cs" />
+    <Compile Include="Repositories\PersonRepository.cs" />
     <Compile Include="Repositories\PortfolioRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="Configuration\UserConfiguration.cs" />
@@ -79,7 +85,11 @@
       <Name>TheProject.Model</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201802191639371_Add Virtual Properties.resx">
+      <DependentUpon>201802191639371_Add Virtual Properties.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />

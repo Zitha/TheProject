@@ -4,8 +4,8 @@
         <div class="card">
             <div class="header">
                 <h2>
-                    Add Porfolio
-                    <small>Porfolio Information</small>
+                    Add User
+                    <small>User Information</small>
                 </h2>
                 <div class="body">
                     <div class="row clearfix">
@@ -53,6 +53,17 @@
                                         </option>
                                     </select>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <input-container>
+                                    <label>Facility</label>
+                                    <select ng-model="building.facility" ng-options="facility as facility.Name for facility in facilities"
+                                            class="form-control show-tick">
+                                        <option value="" disabled>------Select Facility------</option>
+                                    </select>
+                                </input-container>
                             </div>
                         </div>
                     </div>

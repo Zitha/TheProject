@@ -1,0 +1,36 @@
+﻿<!-- Input -->
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    Add Client
+                    <small>Client Information</small>
+                </h2>
+                <div class="body">
+                    <div class="row clearfix">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label>Client Name</label>
+                                    <input type="text" class="form-control" ng-model="client.clientName" placeholder="Client Name" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label>Client Id</label>
+                                    <input type="text" class="form-control" ng-model="client.clientId" placeholder="Client ID" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-default waves-effect" type="submit">Cancel</button>
+                    <button class="btn btn-primary waves-effect" type="submit" ng-click="saveClient(client)">SUBMIT</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #END# Input -->

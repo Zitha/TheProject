@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.IO;
@@ -16,37 +17,66 @@ namespace TheProject.Api.Controllers
         [HttpPut]
         public bool UpdateFacility(Facility facility)
         {
-            using (ApplicationUnit unit = new ApplicationUnit())
+            ApplicationUnit unit = new ApplicationUnit();
+
+            Facility updateFacility = unit.Facilities.GetAll().FirstOrDefault(fc => fc.Id == facility.Id);
+
+            try
             {
-                Facility updateFacility = unit.Facilities.GetAll().FirstOrDefault(fc => fc.Id == facility.Id);
-
-                try
+                if (updateFacility != null)
                 {
-                    if (updateFacility != null)
-                    {
-                        updateFacility.SettlementType = facility.SettlementType;
-                        updateFacility.Zoning = facility.Zoning;
-                        updateFacility.Name = facility.Name;
-                        updateFacility.IDPicture = facility.IDPicture;
-                        updateFacility.GPSCoordinates = facility.GPSCoordinates;
-                        updateFacility.Polygon = facility.Polygon;
-                        updateFacility.DeedsInfo = facility.DeedsInfo;
-                        updateFacility.ResposiblePerson = facility.ResposiblePerson;
-                        updateFacility.Location = facility.Location;
-                        updateFacility.Buildings = facility.Buildings;
+                    updateFacility.SettlementType = facility.SettlementType;
+                    updateFacility.Zoning = facility.Zoning;
+                    updateFacility.Name = facility.Name;
+                    updateFacility.IDPicture = facility.IDPicture;
+                    updateFacility.DeedsInfo = GetDeedsInfo(facility.DeedsInfo, ref unit);
+                    updateFacility.ResposiblePerson = GetReposiblePerson(facility.ResposiblePerson, ref unit);
+                    updateFacility.Location = GetLocation(facility.Location, ref unit);
+                    updateFacility.Buildings = facility.Buildings;
+                    updateFacility.Status = facility.Status;
 
-                        unit.Facilities.Update(updateFacility);
-                        unit.SaveChanges();
-                        return true;
-                    }
-                    return false;
+                    unit.Facilities.Update(updateFacility);
+                    unit.SaveChanges();
+                    unit.Dispose();
+                    return true;
                 }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
-
+                return false;
             }
+            catch (Exception ex)
+            {
+                unit.Dispose();
+                throw ex;
+            }
+        }
+
+        private Location GetLocation(Location location, ref ApplicationUnit unit)
+        {
+            Location loc = unit.Locations.GetAll().First(p => p.Id == location.Id);
+            if (loc != null)
+            {
+                return loc;
+            }
+            return loc;
+        }
+
+        private Person GetReposiblePerson(Person resposiblePerson, ref ApplicationUnit unit)
+        {
+            Person person = unit.People.GetAll().First(p => p.EmailAddress == resposiblePerson.EmailAddress);
+            if (person != null)
+            {
+                return person;
+            }
+            return resposiblePerson;
+        }
+
+        private DeedsInfo GetDeedsInfo(DeedsInfo deedsInfo, ref ApplicationUnit unit)
+        {
+            DeedsInfo deeds = unit.DeedsInfos.GetAll().First(p => p.Id == deedsInfo.Id);
+            if (deeds != null)
+            {
+                return deeds;
+            }
+            return deedsInfo;
         }
 
         [HttpPost]
@@ -56,13 +86,20 @@ namespace TheProject.Api.Controllers
             {
                 using (ApplicationUnit unit = new ApplicationUnit())
                 {
-                    Portfolio portfolioToAddFacility = unit.Portfolios.GetAll().Include(f=>f.Facilities)
+                    Portfolio portfolio = unit.Portfolios.GetAll()
                         .FirstOrDefault(p => p.Id == facility.Portfolio.Id);
 
-                    if (portfolioToAddFacility != null)
+                    Facility hasFacility = unit.Facilities.GetAll()
+                     .FirstOrDefault(u => u.Name.ToLower() == facility.Name.ToLower());
+
+
+                    if (hasFacility == null)
                     {
-                        portfolioToAddFacility.Facilities.Add(facility);
-                        unit.Portfolios.Update(portfolioToAddFacility);
+                        facility.CreatedDate = DateTime.Now;
+                        facility.ModifiedDate = DateTime.Now;
+                        facility.Portfolio = portfolio;
+                        facility.Status = "New";
+                        unit.Facilities.Add(facility);
                         unit.SaveChanges();
                         return facility;
                     }
@@ -76,22 +113,36 @@ namespace TheProject.Api.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Facility> GetFacilities()
+        public List<Facility> GetFacilities()
         {
+            GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings = new JsonSerializerSettings();
             try
             {
+                List<Facility> returnFacilities = new List<Facility>();
                 using (ApplicationUnit unit = new ApplicationUnit())
                 {
-                    List<Facility> facilities = unit.Facilities.GetAll()
-                        .Include(gps => gps.GPSCoordinates)
-                        .Include(pol => pol.Polygon)
-                        .Include(deds => deds.DeedsInfo)
-                        .Include(rp => rp.ResposiblePerson)
-                        .Include(lc => lc.Location)
-                        .Include(bd => bd.Buildings)
-                        .ToList();
 
-                    return facilities;
+                    var facilitiesQuery = unit.Facilities.GetAll().ToList();
+                    foreach (var facility in facilitiesQuery)
+                    {
+                        returnFacilities.Add(new Facility
+                        {
+                            Id = facility.Id,
+                            Name = facility.Name,
+                            ClientCode = facility.ClientCode,
+                            SettlementType = facility.SettlementType,
+                            Zoning = facility.Zoning,
+                            IDPicture = facility.IDPicture,
+                            Status = facility.Status,
+                            DeedsInfo = facility.DeedsInfo,
+                            ResposiblePerson = facility.ResposiblePerson,
+                            Location = facility.Location,
+                            CreatedDate = facility.CreatedDate,
+                            ModifiedDate = facility.ModifiedDate,
+                            Buildings = GetBuildings(facility.Buildings)
+                        });
+                    }
+                    return returnFacilities;
                 }
             }
             catch (Exception ex)
@@ -105,18 +156,70 @@ namespace TheProject.Api.Controllers
             }
         }
 
+        private List<Building> GetBuildings(List<Building> buildings)
+        {
+            List<Building> returnBuildings = new List<Building>();
+            foreach (var building in buildings)
+            {
+                returnBuildings.Add(new Building
+                {
+
+                    BuildingName = building.BuildingName,
+                    BuildingNumber = building.BuildingNumber,
+                    BuildingStandard = building.BuildingStandard,
+                    Status = building.Status,
+                    BuildingType = building.BuildingType,
+                    NumberOfFloors = building.NumberOfFloors,
+                    FootPrintArea = building.FootPrintArea,
+                    ImprovedArea = building.ImprovedArea,
+                    Heritage = building.Heritage,
+                    OccupationYear = building.OccupationYear,
+                    DisabledAccess = building.DisabledAccess,
+                    DisabledComment = building.DisabledComment,
+                    ConstructionDescription = building.ConstructionDescription,
+                    GPSCoordinates = building.GPSCoordinates,
+                    Photo = building.Photo,
+                    CreatedDate = building.CreatedDate,
+                    ModifiedDate = building.ModifiedDate
+
+                });
+            }
+
+            return returnBuildings;
+        }
+
         [HttpGet]
         public IEnumerable<Facility> GetFacilitiesByUserId(int userId)
         {
             try
             {
+                List<Facility> returnFacilities = new List<Facility>();
                 using (ApplicationUnit unit = new ApplicationUnit())
                 {
                     List<Facility> facilities = unit.Users.GetAll()
                         .Where(usr => usr.Id == userId)
                         .Select(fc => fc.Facilities).FirstOrDefault();
 
-                    return facilities;
+                    foreach (var facility in facilities)
+                    {
+                        returnFacilities.Add(new Facility
+                        {
+                            Id = facility.Id,
+                            Name = facility.Name,
+                            ClientCode = facility.ClientCode,
+                            SettlementType = facility.SettlementType,
+                            Zoning = facility.Zoning,
+                            IDPicture = facility.IDPicture,
+                            Status = facility.Status,
+                            DeedsInfo = facility.DeedsInfo,
+                            ResposiblePerson = facility.ResposiblePerson,
+                            Location = facility.Location,
+                            CreatedDate = facility.CreatedDate,
+                            ModifiedDate = facility.ModifiedDate,
+                            Buildings = facility.Buildings
+                        });
+                    }
+                    return returnFacilities;
                 }
             }
             catch (Exception ex)

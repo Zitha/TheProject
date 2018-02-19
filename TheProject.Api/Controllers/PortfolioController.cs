@@ -24,11 +24,15 @@ namespace TheProject.Api.Controllers
             {
                 using (ApplicationUnit unit = new ApplicationUnit())
                 {
+                    Client client = unit.Clients.GetAll()
+                        .FirstOrDefault(u => u.Id == portfolio.Client.Id);
+
                     Portfolio hasPortfolio = unit.Portfolios.GetAll()
                         .FirstOrDefault(u => u.Name.ToLower() == portfolio.Name.ToLower());
 
                     if (hasPortfolio == null)
                     {
+                        portfolio.Client = client;
                         unit.Portfolios.Add(portfolio);
                         unit.SaveChanges();
                         return portfolio;
@@ -47,12 +51,22 @@ namespace TheProject.Api.Controllers
         {
             try
             {
+                List<Portfolio> returnPortfolio = new List<Portfolio>();
                 using (ApplicationUnit unit = new ApplicationUnit())
                 {
                     IEnumerable<Portfolio> portfolios = unit.Portfolios.GetAll()
-                        .Include(c=>c.Client).Include(f => f.Facilities).ToList();
+                        .Include(c => c.Client).Include(f => f.Facilities).ToList();
+                    foreach (var portfolio in portfolios)
+                    {
+                        returnPortfolio.Add(new Portfolio
+                        {
+                            Client = portfolio.Client,
+                            Id = portfolio.Id,
+                            Name = portfolio.Name
+                        });
+                    }
 
-                    return portfolios;
+                    return returnPortfolio;
                 }
             }
             catch (Exception ex)

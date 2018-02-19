@@ -82,6 +82,48 @@ namespace TheProject.Data
             }
         }
 
+        private IRepository<Person> _people;
+
+        public IRepository<Person> People
+        {
+            get
+            {
+                if (_people == null)
+                {
+                    _people = new PersonRepository(_context);
+                }
+                return _people;
+            }
+        }
+
+        private IRepository<DeedsInfo> _deedsInfos;
+
+        public IRepository<DeedsInfo> DeedsInfos
+        {
+            get
+            {
+                if (_deedsInfos == null)
+                {
+                    _deedsInfos = new DeedsInfoRepository(_context);
+                }
+                return _deedsInfos;
+            }
+        }
+
+        private IRepository<Location> _locations;
+
+        public IRepository<Location> Locations
+        {
+            get
+            {
+                if (_locations == null)
+                {
+                    _locations = new LocationRepository(_context);
+                }
+                return _locations;
+            }
+        }
+
         public void SaveChanges()
         {
             try

@@ -25,5 +25,13 @@ namespace TheProject.Model
         public bool PasswordIsChanged { get; set; }
 
         public List<Facility> Facilities { get; set; }
+
+        public DateTime CreatedDate { get; set; }
+
+        public DateTime ModifiedDate { get; set; }
+
+        public int CreatedUserId { get; set; }
+
+        public int? ModifiedUserId { get; set; }
     }
 }

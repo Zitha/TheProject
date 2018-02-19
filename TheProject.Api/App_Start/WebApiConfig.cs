@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -20,7 +21,15 @@ namespace TheProject.Api
                 routeTemplate: "api/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+            GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.NullValueHandling = NullValueHandling.Include;
 
+            config.Formatters.JsonFormatter.SerializerSettings = new Newtonsoft.Json.JsonSerializerSettings
+            {
+
+                DefaultValueHandling = Newtonsoft.Json.DefaultValueHandling.Include,
+                NullValueHandling = Newtonsoft.Json.NullValueHandling.Include,
+
+            };
 
             var cors = new EnableCorsAttribute("*", "*", "*");
             config.EnableCors(cors);

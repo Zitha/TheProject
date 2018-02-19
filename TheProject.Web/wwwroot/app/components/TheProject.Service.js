@@ -53,6 +53,15 @@
             });
         }
 
+        self.getBuildings = function (callback) {
+            TheProjectFactory.getBuildings().then(function (response) {
+                callback(response);
+            }, function (error) {
+                //alertDialogService.setHeaderAndMessage('Error Has Occurred ', 'Unable to get contracts. Please retry again, if the issue persists contact administrator.');
+                //var templateUrl = '/app/common/alert/infoDialog.template.html';
+                //modal.show(templateUrl, 'alertDialogController');
+            });
+        }
 
         self.getFacilities = function (callback) {
             TheProjectFactory.getFacilities().then(function (response) {
@@ -66,6 +75,16 @@
 
         self.addUser = function (user, callback) {
             TheProjectFactory.addUser(user).then(function (response) {
+                callback(response);
+            }, function (error) {
+                //alertDialogService.setHeaderAndMessage('Error Has Occurred ', 'Unable to get contracts. Please retry again, if the issue persists contact administrator.');
+                //var templateUrl = '/app/common/alert/infoDialog.template.html';
+                //modal.show(templateUrl, 'alertDialogController');
+            });
+        }
+
+        self.addClient = function (client, callback) {
+            TheProjectFactory.addClient(client).then(function (response) {
                 callback(response);
             }, function (error) {
                 //alertDialogService.setHeaderAndMessage('Error Has Occurred ', 'Unable to get contracts. Please retry again, if the issue persists contact administrator.');

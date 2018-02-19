@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -19,16 +20,25 @@ namespace TheProject.Api.Controllers
             {
                 using (ApplicationUnit unit = new ApplicationUnit())
                 {
-                    Facility facilityToaddBuild = unit.Facilities.GetAll()
+                    Facility facility = unit.Facilities.GetAll().Include(b => b.Buildings)
                         .FirstOrDefault(fc => fc.Id == building.Facility.Id);
-                    if (facilityToaddBuild!=null)
+
+                    if (facility != null)
                     {
-                        facilityToaddBuild.Buildings.Add(building);
-                        unit.Facilities.Update(facilityToaddBuild);
-                        unit.SaveChanges();
+                        bool hasBuilding = facility.Buildings.Exists(b => b.BuildingName == building.BuildingName);
+                        if (!hasBuilding)
+                        {
+                            building.Facility = facility;
+                            building.CreatedDate = DateTime.Now;
+                            building.ModifiedDate = DateTime.Now;
+                            unit.Buildings.Add(building);
+
+                            unit.SaveChanges();
+                            building.Facility = null;
+                            return building;
+                        }
                     }
-                  
-                    return building;
+                    return null;
                 }
             }
             catch (Exception ex)
@@ -66,6 +76,8 @@ namespace TheProject.Api.Controllers
 
                     unit.Buildings.Add(building);
                     unit.SaveChanges();
+
+                    building.Facility = null;
                     return building;
                 }
             }
@@ -80,13 +92,87 @@ namespace TheProject.Api.Controllers
         {
             try
             {
+                List<Building> returnBuildings = new List<Building>();
                 using (ApplicationUnit unit = new ApplicationUnit())
                 {
                     List<Building> buildings = unit.Facilities.GetAll()
                         .Where(fa => fa.Id == facilityId)
                         .Select(fc => fc.Buildings).FirstOrDefault();
+                    foreach (var building in buildings)
+                    {
+                        returnBuildings.Add(new Building
+                        {
 
-                    return buildings;
+                            BuildingName = building.BuildingName,
+                            BuildingNumber = building.BuildingNumber,
+                            BuildingStandard = building.BuildingStandard,
+                            Status = building.Status,
+                            BuildingType = building.BuildingType,
+                            NumberOfFloors = building.NumberOfFloors,
+                            FootPrintArea = building.FootPrintArea,
+                            ImprovedArea = building.ImprovedArea,
+                            Heritage = building.Heritage,
+                            OccupationYear = building.OccupationYear,
+                            DisabledAccess = building.DisabledAccess,
+                            DisabledComment = building.DisabledComment,
+                            ConstructionDescription = building.ConstructionDescription,
+                            GPSCoordinates = building.GPSCoordinates,
+                            Photo = building.Photo,
+                            CreatedDate = building.CreatedDate,
+                            ModifiedDate = building.ModifiedDate
+
+                        });
+                    }
+
+                    return returnBuildings;
+                }
+            }
+            catch (Exception ex)
+            {
+                var outputLines = new List<string>();
+                outputLines.Add(ex.Message);
+                File.AppendAllLines(@"c:\errors.txt", outputLines);
+                throw;
+            }
+        }
+
+
+        [HttpGet]
+        public IEnumerable<Building> GetBuildings()
+        {
+            try
+            {
+                List<Building> returnBuildings = new List<Building>();
+                using (ApplicationUnit unit = new ApplicationUnit())
+                {
+                    List<Building> buildings = unit.Buildings.GetAll().ToList();
+                    foreach (var building in buildings)
+                    {
+                        returnBuildings.Add(new Building
+                        {
+
+                            BuildingName = building.BuildingName,
+                            BuildingNumber = building.BuildingNumber,
+                            BuildingStandard = building.BuildingStandard,
+                            Status = building.Status,
+                            BuildingType = building.BuildingType,
+                            NumberOfFloors = building.NumberOfFloors,
+                            FootPrintArea = building.FootPrintArea,
+                            ImprovedArea = building.ImprovedArea,
+                            Heritage = building.Heritage,
+                            OccupationYear = building.OccupationYear,
+                            DisabledAccess = building.DisabledAccess,
+                            DisabledComment = building.DisabledComment,
+                            ConstructionDescription = building.ConstructionDescription,
+                            GPSCoordinates = building.GPSCoordinates,
+                            Photo = building.Photo,
+                            CreatedDate = building.CreatedDate,
+                            ModifiedDate = building.ModifiedDate
+
+                        });
+                    }
+
+                    return returnBuildings;
                 }
             }
             catch (Exception ex)

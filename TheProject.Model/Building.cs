@@ -25,7 +25,7 @@ namespace TheProject.Model
 
         public double ImprovedArea { get; set; }
 
-        public string Heritage { get; set; }
+        public bool Heritage { get; set; }
 
         public string OccupationYear { get; set; }
 
@@ -35,11 +35,19 @@ namespace TheProject.Model
 
         public string ConstructionDescription { get; set; }
 
-        public GPSCoordinate GPSCoordinates { get; set; }
+        public virtual  GPSCoordinate GPSCoordinates { get; set; }
 
         public string Photo { get; set; }
 
         public virtual Facility Facility { get; set; }
+
+        public DateTime CreatedDate { get; set; }
+
+        public DateTime ModifiedDate { get; set; }
+
+        public int CreatedUserId { get; set; }
+
+        public int? ModifiedUserId { get; set; }
 
     }
 }
