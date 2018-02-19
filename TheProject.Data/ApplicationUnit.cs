@@ -124,6 +124,19 @@ namespace TheProject.Data
             }
         }
 
+        private IRepository<GPSCoordinate> _gpsCoordinates;
+        public IRepository<GPSCoordinate> GPSCoordinates
+        {
+            get
+            {
+                if (_gpsCoordinates == null)
+                {
+                    _gpsCoordinates = new GPSCoordinateRepository(_context);
+                }
+                return _gpsCoordinates;
+            }
+        }
+
         public void SaveChanges()
         {
             try

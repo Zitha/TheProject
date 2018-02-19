@@ -1,9 +1,9 @@
 ﻿(function () {
     'use strict';
 
-    function indexController($location, $scope, $rootScope) {
+    function indexController($location, $scope, $rootScope,$sessionStorage) {
 
-        $scope.name = 'APP Name';
+        $scope.isLoggedin = $sessionStorage.isUserAuthenticated;
         $scope.navigateTo = function (url) {
             $location.path(url);
         }
@@ -18,5 +18,5 @@
     }
 
     angular.module('TheApp').controller('indexController', indexController);
-    indexController.$inject = ['$location', '$scope','$rootScope'];
+    indexController.$inject = ['$location', '$scope', '$rootScope','$sessionStorage'];
 })();

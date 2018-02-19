@@ -52,8 +52,7 @@ namespace TheProject.Api.Controllers
         {
             try
             {
-                using (ApplicationUnit unit = new ApplicationUnit())
-                {
+                ApplicationUnit unit = new ApplicationUnit();
                     Building updateBudilng = unit.Buildings.GetAll().FirstOrDefault(fc => fc.Id == building.Id);
                     if (updateBudilng != null)
                     {
@@ -62,7 +61,7 @@ namespace TheProject.Api.Controllers
                         updateBudilng.BuildingType = building.BuildingType;
                         updateBudilng.BuildingStandard = building.BuildingStandard;
                         updateBudilng.Status = building.Status;
-                        updateBudilng.GPSCoordinates = building.GPSCoordinates;
+                        updateBudilng.GPSCoordinates = GPSCoordinates(building.GPSCoordinates,ref unit);
                         updateBudilng.NumberOfFloors = building.NumberOfFloors;
                         updateBudilng.FootPrintArea = building.FootPrintArea;
                         updateBudilng.ImprovedArea = building.ImprovedArea;
@@ -79,12 +78,20 @@ namespace TheProject.Api.Controllers
 
                     building.Facility = null;
                     return building;
-                }
             }
             catch (Exception ex)
             {
                 throw ex;
             }
+        }
+        private GPSCoordinate GPSCoordinates(GPSCoordinate gpsCoordinate, ref ApplicationUnit unit)
+        {
+            GPSCoordinate gps = unit.GPSCoordinates.GetAll().First(p => p.Id == gpsCoordinate.Id);
+            if (gps != null)
+            {
+                return gps;
+            }
+            return gpsCoordinate;
         }
 
         [HttpGet]
@@ -123,7 +130,6 @@ namespace TheProject.Api.Controllers
 
                         });
                     }
-
                     return returnBuildings;
                 }
             }

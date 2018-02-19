@@ -13,7 +13,7 @@
                             <div class="form-group">
                                 <div class="form-line">
                                     <label>Facility Name</label>
-                                    <input type="text" class="form-control" ng-model="facility.name" placeholder="Facility Name" />
+                                    <input type="text" class="form-control" ng-model="facility.Name" placeholder="Facility Name" />
                                 </div>
                             </div>
                         </div>
@@ -22,9 +22,6 @@
                                 <div class="form-line">
                                     <label>Portfolio</label>
                                     <select ng-model="portfolio" ng-options='portfolio.Name for portfolio in portfolios'  class="form-control show-tick" ng-change="portfolioChanged(portfolio)">
-                                        <!--<option ng-value="portfolio" ng-repeat="portfolio in portfolios">
-                                            {{portfolio.Name}}
-                                        </option>-->
                                     </select>
                                 </div>
                             </div>
@@ -33,7 +30,7 @@
                             <div class="form-group">
                                 <div class="form-line">
                                     <label>Client Code</label>
-                                    <input type="text" class="form-control" ng-model="facility.client.ClientCode" placeholder="Client Code" readonly/>
+                                    <input type="text" class="form-control" ng-model="facility.Client.ClientCode" placeholder="Client Code" readonly/>
                                 </div>
                             </div>
                         </div>
@@ -43,7 +40,7 @@
                             <div class="form-group">
                                 <div class="form-line">
                                     <label>Street Address</label>
-                                    <input type="text" class="form-control" ng-model="facility.location.StreetAdress" placeholder="Street Address" />
+                                    <input type="text" class="form-control" ng-model="facility.Location.StreetAdress" placeholder="Street Address" />
                                 </div>
                             </div>
                         </div>
@@ -51,7 +48,7 @@
                             <div class="form-group">
                                 <div class="form-line">
                                     <label>Suburb</label>
-                                    <input type="text" class="form-control" ng-model="facility.location.Suburb" placeholder="Suburb" />
+                                    <input type="text" class="form-control" ng-model="facility.Location.Suburb" placeholder="Suburb" />
                                 </div>
                             </div>
                         </div>
@@ -61,7 +58,7 @@
                             <div class="form-group">
                                 <div class="form-line">
                                     <label>Settlement Type</label>
-                                    <select ng-model="facility.settlementType" class="form-control show-tick">
+                                    <select ng-model="facility.SettlementType" class="form-control show-tick">
                                         <option ng-value="settlementType" ng-repeat="settlementType in settlementTypes">
                                             {{settlementType}}
                                         </option>
@@ -73,7 +70,7 @@
                             <div class="form-group">
                                 <div class="form-line">
                                     <label>Provice</label>
-                                    <select ng-model="facility.location.province" class="form-control show-tick">
+                                    <select ng-model="facility.Location.Province" class="form-control show-tick">
                                         <option ng-value="provice" ng-repeat="provice in provices">
                                             {{provice}}
                                         </option>
@@ -142,7 +139,7 @@
                             <div class="form-group">
                                 <div class="form-line">
                                     <label>Responsible Person (Name)</label>
-                                    <input type="text" ng-model="facility.resposiblePerson.fullname" class="form-control" placeholder="Responsible Person" />
+                                    <input type="text" ng-model="facility.ResposiblePerson.FullName" class="form-control" placeholder="Responsible Person" />
                                 </div>
                             </div>
                         </div>
@@ -150,7 +147,7 @@
                             <div class="form-group">
                                 <div class="form-line">
                                     <label>Designation</label>
-                                    <input type="text" class="form-control" ng-model="facility.resposiblePerson.designation" placeholder="Designation" />
+                                    <input type="text" class="form-control" ng-model="facility.ResposiblePerson.Designation" placeholder="Designation" />
                                 </div>
                             </div>
                         </div>
@@ -160,7 +157,7 @@
                             <div class="form-group">
                                 <div class="form-line">
                                     <label>Phone Number</label>
-                                    <input type="text" ng-model="facility.resposiblePerson.phoneNumber" class="form-control" placeholder="Phone Number" />
+                                    <input type="text" ng-model="facility.ResposiblePerson.PhoneNumber" class="form-control" placeholder="Phone Number" />
                                 </div>
                             </div>
                         </div>
@@ -168,7 +165,7 @@
                             <div class="form-group">
                                 <div class="form-line">
                                     <label>Email Address</label>
-                                    <input type="text" class="form-control" ng-model="facility.resposiblePerson.emailAddress" placeholder="E-Mail Address" />
+                                    <input type="text" class="form-control" ng-model="facility.ResposiblePerson.EmailAddress" placeholder="E-Mail Address" />
                                 </div>
                             </div>
                         </div>

@@ -56,7 +56,7 @@ namespace TheProject.Api.Controllers
             {
                 return loc;
             }
-            return loc;
+            return location;
         }
 
         private Person GetReposiblePerson(Person resposiblePerson, ref ApplicationUnit unit)
@@ -202,22 +202,24 @@ namespace TheProject.Api.Controllers
 
                     foreach (var facility in facilities)
                     {
-                        returnFacilities.Add(new Facility
+                        if (facility.Status == "New")
                         {
-                            Id = facility.Id,
-                            Name = facility.Name,
-                            ClientCode = facility.ClientCode,
-                            SettlementType = facility.SettlementType,
-                            Zoning = facility.Zoning,
-                            IDPicture = facility.IDPicture,
-                            Status = facility.Status,
-                            DeedsInfo = facility.DeedsInfo,
-                            ResposiblePerson = facility.ResposiblePerson,
-                            Location = facility.Location,
-                            CreatedDate = facility.CreatedDate,
-                            ModifiedDate = facility.ModifiedDate,
-                            Buildings = facility.Buildings
-                        });
+                            returnFacilities.Add(new Facility
+                            {
+                                Id = facility.Id,
+                                Name = facility.Name,
+                                ClientCode = facility.ClientCode,
+                                SettlementType = facility.SettlementType,
+                                Zoning = facility.Zoning,
+                                IDPicture = facility.IDPicture,
+                                Status = facility.Status,
+                                DeedsInfo = facility.DeedsInfo,
+                                ResposiblePerson = facility.ResposiblePerson,
+                                Location = facility.Location,
+                                CreatedDate = facility.CreatedDate,
+                                ModifiedDate = facility.ModifiedDate
+                            });
+                        }
                     }
                     return returnFacilities;
                 }
