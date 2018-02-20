@@ -28,6 +28,11 @@ namespace TheProject.Api.Controllers
                         bool hasBuilding = facility.Buildings.Exists(b => b.BuildingName == building.BuildingName);
                         if (!hasBuilding)
                         {
+                            building.BuildingName = building.BuildingName.Trim();
+                            building.BuildingNumber = building.BuildingNumber.Trim();
+                            building.BuildingType = building.BuildingType.Trim();
+                            building.BuildingStandard = building.BuildingStandard.Trim();
+                            building.Status = building.Status.Trim();
                             building.Facility = facility;
                             building.CreatedDate = DateTime.Now;
                             building.ModifiedDate = DateTime.Now;
@@ -47,37 +52,39 @@ namespace TheProject.Api.Controllers
             }
         }
 
-        [HttpPut]
-        public Building UpdateFacility(Building building)
+        [HttpPost]
+        public Building UpdateBuilding(Building building)
         {
             try
             {
                 ApplicationUnit unit = new ApplicationUnit();
-                    Building updateBudilng = unit.Buildings.GetAll().FirstOrDefault(fc => fc.Id == building.Id);
-                    if (updateBudilng != null)
-                    {
-                        updateBudilng.BuildingName = building.BuildingName;
-                        updateBudilng.BuildingNumber = building.BuildingNumber;
-                        updateBudilng.BuildingType = building.BuildingType;
-                        updateBudilng.BuildingStandard = building.BuildingStandard;
-                        updateBudilng.Status = building.Status;
-                        updateBudilng.GPSCoordinates = GPSCoordinates(building.GPSCoordinates,ref unit);
-                        updateBudilng.NumberOfFloors = building.NumberOfFloors;
-                        updateBudilng.FootPrintArea = building.FootPrintArea;
-                        updateBudilng.ImprovedArea = building.ImprovedArea;
-                        updateBudilng.Heritage = building.Heritage;
-                        updateBudilng.OccupationYear = building.OccupationYear;
-                        updateBudilng.DisabledAccess = building.DisabledAccess;
-                        updateBudilng.DisabledComment = building.DisabledComment;
-                        updateBudilng.ConstructionDescription = building.ConstructionDescription;
-                        updateBudilng.Photo = building.Photo;
-                    }
+                Building updateBudilng = unit.Buildings.GetAll().FirstOrDefault(fc => fc.Id == building.Id);
+                if (updateBudilng != null)
+                {
+                    updateBudilng.BuildingName = building.BuildingName.Trim();
+                    updateBudilng.BuildingNumber = building.BuildingNumber.Trim();
+                    updateBudilng.BuildingType = building.BuildingType.Trim();
+                    updateBudilng.BuildingStandard = building.BuildingStandard.Trim();
+                    updateBudilng.Status = building.Status.Trim();
+                    updateBudilng.GPSCoordinates = GPSCoordinates(building.GPSCoordinates, ref unit);
+                    updateBudilng.NumberOfFloors = building.NumberOfFloors;
+                    updateBudilng.FootPrintArea = building.FootPrintArea;
+                    updateBudilng.ImprovedArea = building.ImprovedArea;
+                    updateBudilng.Heritage = building.Heritage;
+                    updateBudilng.OccupationYear = building.OccupationYear;
+                    updateBudilng.DisabledAccess = building.DisabledAccess;
+                    updateBudilng.DisabledComment = building.DisabledComment;
+                    updateBudilng.ConstructionDescription = building.ConstructionDescription;
+                    updateBudilng.Photo = building.Photo;
+                    updateBudilng.ModifiedDate = DateTime.Now;
 
-                    unit.Buildings.Add(building);
+                    unit.Buildings.Update(updateBudilng);
                     unit.SaveChanges();
 
                     building.Facility = null;
                     return building;
+                }
+                return null;
             }
             catch (Exception ex)
             {
@@ -86,10 +93,14 @@ namespace TheProject.Api.Controllers
         }
         private GPSCoordinate GPSCoordinates(GPSCoordinate gpsCoordinate, ref ApplicationUnit unit)
         {
-            GPSCoordinate gps = unit.GPSCoordinates.GetAll().First(p => p.Id == gpsCoordinate.Id);
-            if (gps != null)
+            if (gpsCoordinate != null)
             {
-                return gps;
+                GPSCoordinate gps = unit.GPSCoordinates.GetAll()
+                    .FirstOrDefault(p => p.Id == gpsCoordinate.Id);
+                if (gps != null)
+                {
+                    return gps;
+                }
             }
             return gpsCoordinate;
         }
@@ -109,7 +120,7 @@ namespace TheProject.Api.Controllers
                     {
                         returnBuildings.Add(new Building
                         {
-
+                            Id = building.Id,
                             BuildingName = building.BuildingName,
                             BuildingNumber = building.BuildingNumber,
                             BuildingStandard = building.BuildingStandard,
@@ -127,7 +138,6 @@ namespace TheProject.Api.Controllers
                             Photo = building.Photo,
                             CreatedDate = building.CreatedDate,
                             ModifiedDate = building.ModifiedDate
-
                         });
                     }
                     return returnBuildings;
@@ -156,7 +166,7 @@ namespace TheProject.Api.Controllers
                     {
                         returnBuildings.Add(new Building
                         {
-
+                            Id = building.Id,
                             BuildingName = building.BuildingName,
                             BuildingNumber = building.BuildingNumber,
                             BuildingStandard = building.BuildingStandard,
@@ -174,7 +184,6 @@ namespace TheProject.Api.Controllers
                             Photo = building.Photo,
                             CreatedDate = building.CreatedDate,
                             ModifiedDate = building.ModifiedDate
-
                         });
                     }
 

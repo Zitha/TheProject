@@ -107,6 +107,20 @@
             return defered.promise;
         }
 
+        var updateBuilding = function (building) {
+            var defered = $q.defer();
+            var updateBuildingComplete = function (response) {
+                defered.resolve(response.data);
+            }
+
+            $http.post(projectApi + '/Building/UpdateBuilding', building)
+                .then(updateBuildingComplete, function (err, status) {
+                    defered.reject(err);
+                });
+
+            return defered.promise;
+        }
+
         var getBuildingByFacilityId = function (facilityId) {
             var defered = $q.defer();
             var getBuildingByFacilityIdComplete = function (response) {
@@ -190,7 +204,8 @@
             addBuilding: addBuilding,
             getClients: getClients,
             getPotfoliosbyClientId: getPotfoliosbyClientId,
-            getBuildings: getBuildings
+            getBuildings: getBuildings,
+            updateBuilding: updateBuilding
         };
 
     }

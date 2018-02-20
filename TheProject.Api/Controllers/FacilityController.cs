@@ -51,30 +51,41 @@ namespace TheProject.Api.Controllers
 
         private Location GetLocation(Location location, ref ApplicationUnit unit)
         {
-            Location loc = unit.Locations.GetAll().First(p => p.Id == location.Id);
-            if (loc != null)
+            if (location != null)
             {
-                return loc;
+                Location loc = unit.Locations.GetAll().First(p => p.Id == location.Id);
+                if (loc != null)
+                {
+                    return loc;
+                }
             }
+
             return location;
         }
 
         private Person GetReposiblePerson(Person resposiblePerson, ref ApplicationUnit unit)
         {
-            Person person = unit.People.GetAll().First(p => p.EmailAddress == resposiblePerson.EmailAddress);
-            if (person != null)
+            if (resposiblePerson != null)
             {
-                return person;
+                Person person = unit.People.GetAll().FirstOrDefault(p => p.EmailAddress == resposiblePerson.EmailAddress);
+                if (person != null)
+                {
+                    return person;
+                }
             }
+
             return resposiblePerson;
         }
 
         private DeedsInfo GetDeedsInfo(DeedsInfo deedsInfo, ref ApplicationUnit unit)
         {
-            DeedsInfo deeds = unit.DeedsInfos.GetAll().First(p => p.Id == deedsInfo.Id);
-            if (deeds != null)
+            if (deedsInfo != null)
             {
-                return deeds;
+                DeedsInfo deeds = unit.DeedsInfos.GetAll().FirstOrDefault(p => p.Id == deedsInfo.Id);
+                if (deeds != null)
+                {
+                    return deeds;
+                }
             }
             return deedsInfo;
         }
