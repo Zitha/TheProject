@@ -53,9 +53,11 @@ namespace TheProject.Api.Controllers
         {
             if (location != null)
             {
-                Location loc = unit.Locations.GetAll().First(p => p.Id == location.Id);
+                Location loc = unit.Locations.GetAll().Include(gps => gps.GPSCoordinates)
+                    .FirstOrDefault(p => p.Id == location.Id);
                 if (loc != null)
                 {
+                    loc.BoundryPolygon = loc.BoundryPolygon;
                     return loc;
                 }
             }
@@ -205,35 +207,34 @@ namespace TheProject.Api.Controllers
             try
             {
                 List<Facility> returnFacilities = new List<Facility>();
-                using (ApplicationUnit unit = new ApplicationUnit())
-                {
-                    List<Facility> facilities = unit.Users.GetAll()
-                        .Where(usr => usr.Id == userId)
-                        .Select(fc => fc.Facilities).FirstOrDefault();
+                ApplicationUnit unit = new ApplicationUnit();
 
-                    foreach (var facility in facilities)
+                List<Facility> facilities = unit.Users.GetAll()
+                    .Where(usr => usr.Id == userId)
+                    .Select(fc => fc.Facilities).FirstOrDefault();
+
+                foreach (var facility in facilities)
+                {
+                    if (facility.Status == "New")
                     {
-                        if (facility.Status == "New")
+                        returnFacilities.Add(new Facility
                         {
-                            returnFacilities.Add(new Facility
-                            {
-                                Id = facility.Id,
-                                Name = facility.Name,
-                                ClientCode = facility.ClientCode,
-                                SettlementType = facility.SettlementType,
-                                Zoning = facility.Zoning,
-                                IDPicture = facility.IDPicture,
-                                Status = facility.Status,
-                                DeedsInfo = facility.DeedsInfo,
-                                ResposiblePerson = facility.ResposiblePerson,
-                                Location = facility.Location,
-                                CreatedDate = facility.CreatedDate,
-                                ModifiedDate = facility.ModifiedDate
-                            });
-                        }
+                            Id = facility.Id,
+                            Name = facility.Name,
+                            ClientCode = facility.ClientCode,
+                            SettlementType = facility.SettlementType,
+                            Zoning = facility.Zoning,
+                            IDPicture = facility.IDPicture,
+                            Status = facility.Status,
+                            DeedsInfo = facility.DeedsInfo,
+                            ResposiblePerson = facility.ResposiblePerson,
+                            Location = GetLocation(facility.Location, ref unit),
+                            CreatedDate = facility.CreatedDate,
+                            ModifiedDate = facility.ModifiedDate
+                        });
                     }
-                    return returnFacilities;
                 }
+                return returnFacilities;
             }
             catch (Exception ex)
             {
