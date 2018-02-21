@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 using TheProject.Data;
 using TheProject.Model;
@@ -13,6 +14,8 @@ namespace TheProject.Api.Controllers
 {
     public class BuildingController : ApiController
     {
+
+        string _picturePath = HttpContext.Current.Server.MapPath("~/UploadPictures");
         [HttpPost]
         public Building AddBuilding(Building building)
         {
@@ -196,6 +199,22 @@ namespace TheProject.Api.Controllers
                 outputLines.Add(ex.Message);
                 File.AppendAllLines(@"c:\errors.txt", outputLines);
                 throw;
+            }
+        }
+        [HttpPost]
+        public void SaveImage([FromBody]List<Picture> pictures)
+        {
+            if (!Directory.Exists(_picturePath))
+            {
+                Directory.CreateDirectory(_picturePath);
+            }
+            foreach (var picture in pictures)
+            {
+                using (FileStream fileStream = new FileStream(Path.Combine(_picturePath, picture.Name + ".png"), FileMode.Create))
+                {
+                    fileStream.Write(picture.File, 0, picture.File.Length);
+                    fileStream.Close();
+                }
             }
         }
     }
