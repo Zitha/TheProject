@@ -1,4 +1,6 @@
-﻿namespace TheProject.Model
+﻿using System.Collections.Generic;
+
+namespace TheProject.Model
 {
     public class Location
     {
@@ -13,7 +15,7 @@
         public string LocalMunicipality { get; set; }
 
         public string Region { get; set; }
-        public BoundryPolygon BoundryPolygon { get; set; }
+        public List<BoundryPolygon> BoundryPolygon { get; set; }
         public GPSCoordinate GPSCoordinates { get; set; }
     }
 }

@@ -124,6 +124,32 @@ namespace TheProject.Data
             }
         }
 
+        private IRepository<GPSCoordinate> _gpsCoordinates;
+        public IRepository<GPSCoordinate> GPSCoordinates
+        {
+            get
+            {
+                if (_gpsCoordinates == null)
+                {
+                    _gpsCoordinates = new GPSCoordinateRepository(_context);
+                }
+                return _gpsCoordinates;
+            }
+        }
+
+        private IRepository<Audit> _audits;
+        public IRepository<Audit> Audits
+        {
+            get
+            {
+                if (_audits == null)
+                {
+                    _audits = new AuditRepository(_context);
+                }
+                return _audits;
+            }
+        }
+
         public void SaveChanges()
         {
             try

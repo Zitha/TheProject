@@ -192,6 +192,7 @@
     <Compile Include="Controllers\BuildingController.cs" />
     <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\FacilityController.cs" />
+    <Compile Include="Controllers\Picture.cs" />
     <Compile Include="Controllers\PortfolioController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">

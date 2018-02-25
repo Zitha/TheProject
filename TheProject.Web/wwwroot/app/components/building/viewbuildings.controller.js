@@ -13,8 +13,9 @@
             });
         }
 
-        $scope.navigateTo = function (url) {
-            $location.path(url);
+        $scope.viewBuiding = function (building) {
+            TheProjectService.setSelectedBuilding(building);
+            $location.path('/addBuilding');
         }
     }
 

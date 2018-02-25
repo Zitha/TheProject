@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using TheProject.Data;
 using TheProject.Model;
@@ -15,7 +16,7 @@ namespace TheProject.Api.Controllers
     public class FacilityController : ApiController
     {
         [HttpPut]
-        public bool UpdateFacility(Facility facility)
+        public HttpResponseMessage UpdateFacility(Facility facility)
         {
             ApplicationUnit unit = new ApplicationUnit();
 
@@ -38,43 +39,84 @@ namespace TheProject.Api.Controllers
                     unit.Facilities.Update(updateFacility);
                     unit.SaveChanges();
                     unit.Dispose();
-                    return true;
+
+                    Task updateTask = new Task(() => LogAuditTrail("Facility", "Update", updateFacility.CreatedUserId, updateFacility.Id));
+                    updateTask.Start();
+
+                    return Request.CreateResponse(HttpStatusCode.OK, new
+                    {
+                        content = true
+                    });
                 }
-                return false;
+                return Request.CreateResponse(HttpStatusCode.OK, new
+                {
+                    content = true
+                });
             }
             catch (Exception ex)
             {
                 unit.Dispose();
-                throw ex;
+                return Request.CreateResponse(ex);
             }
         }
 
         private Location GetLocation(Location location, ref ApplicationUnit unit)
         {
-            Location loc = unit.Locations.GetAll().First(p => p.Id == location.Id);
-            if (loc != null)
+            if (location != null)
             {
-                return loc;
+                Location loc = unit.Locations.GetAll()
+                    .Include(gps => gps.GPSCoordinates)
+                    .Include(bp => bp.BoundryPolygon)
+                    .FirstOrDefault(p => p.Id == location.Id);
+
+                if (loc != null)
+                {
+                    if (location.BoundryPolygon != null)
+                    {
+                        foreach (var newPolygon in location.BoundryPolygon)
+                        {
+                            BoundryPolygon polygon = loc.BoundryPolygon.FirstOrDefault(d => d.Id == newPolygon.Id);
+                            if (polygon != null)
+                            {
+                                polygon.Latitude = newPolygon.Latitude;
+                                polygon.Longitude = newPolygon.Longitude;
+                            }
+                        }
+                    }
+                    foreach (var polygon in loc.BoundryPolygon)
+                    {
+                        polygon.Location = null;
+                    }
+                    return loc;
+                }
             }
-            return loc;
+
+            return location;
         }
 
         private Person GetReposiblePerson(Person resposiblePerson, ref ApplicationUnit unit)
         {
-            Person person = unit.People.GetAll().First(p => p.EmailAddress == resposiblePerson.EmailAddress);
-            if (person != null)
+            if (resposiblePerson != null)
             {
-                return person;
+                Person person = unit.People.GetAll().FirstOrDefault(p => p.EmailAddress == resposiblePerson.EmailAddress);
+                if (person != null)
+                {
+                    return person;
+                }
             }
+
             return resposiblePerson;
         }
 
         private DeedsInfo GetDeedsInfo(DeedsInfo deedsInfo, ref ApplicationUnit unit)
         {
-            DeedsInfo deeds = unit.DeedsInfos.GetAll().First(p => p.Id == deedsInfo.Id);
-            if (deeds != null)
+            if (deedsInfo != null)
             {
-                return deeds;
+                DeedsInfo deeds = unit.DeedsInfos.GetAll().FirstOrDefault(p => p.Id == deedsInfo.Id);
+                if (deeds != null)
+                {
+                    return deeds;
+                }
             }
             return deedsInfo;
         }
@@ -194,13 +236,15 @@ namespace TheProject.Api.Controllers
             try
             {
                 List<Facility> returnFacilities = new List<Facility>();
-                using (ApplicationUnit unit = new ApplicationUnit())
-                {
-                    List<Facility> facilities = unit.Users.GetAll()
-                        .Where(usr => usr.Id == userId)
-                        .Select(fc => fc.Facilities).FirstOrDefault();
+                ApplicationUnit unit = new ApplicationUnit();
 
-                    foreach (var facility in facilities)
+                List<Facility> facilities = unit.Users.GetAll()
+                    .Where(usr => usr.Id == userId)
+                    .Select(fc => fc.Facilities).FirstOrDefault();
+
+                foreach (var facility in facilities)
+                {
+                    if (facility.Status == "New")
                     {
                         returnFacilities.Add(new Facility
                         {
@@ -213,14 +257,13 @@ namespace TheProject.Api.Controllers
                             Status = facility.Status,
                             DeedsInfo = facility.DeedsInfo,
                             ResposiblePerson = facility.ResposiblePerson,
-                            Location = facility.Location,
+                            Location = GetLocation(facility.Location, ref unit),
                             CreatedDate = facility.CreatedDate,
-                            ModifiedDate = facility.ModifiedDate,
-                            Buildings = facility.Buildings
+                            ModifiedDate = facility.ModifiedDate
                         });
                     }
-                    return returnFacilities;
                 }
+                return returnFacilities;
             }
             catch (Exception ex)
             {
@@ -229,6 +272,31 @@ namespace TheProject.Api.Controllers
                     ex.Message
                 };
                 File.AppendAllLines(@"c:\errors.txt", outputLines);
+                throw;
+            }
+        }
+
+
+        private void LogAuditTrail(string section, string type, int userId, int itemId)
+        {
+            try
+            {
+                using (ApplicationUnit unit = new ApplicationUnit())
+                {
+                    Audit audit = new Audit
+                    {
+                        ChangeDate = DateTime.Now,
+                        ItemId = itemId,
+                        Section = section,
+                        Type = type
+                    };
+                    unit.Audits.Add(audit);
+                    unit.SaveChanges();
+                }
+            }
+            catch (Exception)
+            {
+
                 throw;
             }
         }

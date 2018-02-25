@@ -2,10 +2,18 @@
     'use strict';
 
     function AddBuildingController($location, $scope, TheProjectService) {
-        $scope.building = {
-            buildingNumber: Math.random()
-        };
-        
+
+        var isEdit = false;
+        $scope.building = TheProjectService.getSelectedBuilding();
+
+        if ($scope.building != undefined && $scope.building.BuildingNumber) {
+            isEdit = true;
+        } else {
+            $scope.building = {
+                buildingNumber: Math.random()
+            };
+        }
+
         $scope.selectedMunicipality = {};
 
         $scope.provices = ['Eastern Cape', 'Free State', 'Gauteng', 'KwaZulu-Natal', 'Limpopo', 'Mpumalanga', 'North West', 'Northern Cape', 'Western Cape'];
@@ -41,16 +49,25 @@
         }
 
         $scope.saveBuilding = function (building) {
-            if (building) {
+            if (building && !isEdit) {
                 TheProjectService.addBuilding(building, function (data) {
                     if (data) {
-                        $location.path('/viewFacilities');
+                        $location.path('/viewBuildings');
                     }
                 });
+            } else {
+                if (isEdit) {
+                    building.Id = $scope.building.Id;
+                    TheProjectService.updateBuilding(building, function (data) {
+                        if (data) {
+                            $location.path('/viewBuildings');
+                        }
+                    });
+                }
             }
         }
     }
 
     angular.module('TheApp').controller('AddBuildingController', AddBuildingController);
-    AddBuildingController.$inject = ['$location', '$scope','TheProjectService'];
+    AddBuildingController.$inject = ['$location', '$scope', 'TheProjectService'];
 })();

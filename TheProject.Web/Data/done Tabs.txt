@@ -1,0 +1,3 @@
+D,C,H -- Has Assesor
+A,B,G -- No Assesor
+,I

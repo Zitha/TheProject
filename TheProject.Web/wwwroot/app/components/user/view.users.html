@@ -1,30 +1,68 @@
 ﻿<div class="container-fluid">
-    <!-- Basic Examples -->
     <div class="row clearfix">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
-                <div class="header">
+                <div class="header bg-blue-grey">
                     <h2>
-                      Porfolios
+                        Users
                     </h2>
                 </div>
                 <div class="body">
+                    <div class="row clearfix">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" class="form-control" ng-model="query" placeholder="Search" ng-change="search()" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
                             <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Surname</th>
-                                    <th>Username</th>
+                                    <th>
+                                        Name
+                                    </th>
+                                    <th>
+                                        Surname
+                                    </th>
+                                    <th>
+                                        Username
+                                    </th>
                                     <th>Role</th>
                                 </tr>
                             </thead>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="6">
+                                        <div class="pagination pull-right">
+                                            <div class="btn-group" role="group" aria-label="First group">
+                                                <button type="button" class="btn waves-effect" ng-class="{disabled: currentPage == 0}"
+                                                        ng-click="prevPage()">
+                                                    << Prev
+                                                </button>
+                                                <button type="button" class="btn waves-effect"
+                                                        ng-repeat="n in range(pagedItems.length, currentPage, currentPage + gap) "
+                                                        ng-class="{active: n == currentPage}"
+                                                        ng-click="setPage()">
+                                                    <span ng-bind="n + 1">1</span>
+                                                </button>
+                                                <button type="button" class="btn waves-effect" ng-class="{disabled: (currentPage) == pagedItems.length - 1}"
+                                                        ng-click="nextPage()">
+                                                    Next >>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tfoot>
                             <tbody>
-                                <tr  ng-repeat="user in Users">
-                                    <td>{{user.Name}}</td>
-                                    <td>{{user.Surname}}</td>
-                                    <td>{{user.Username}}</td>
-                                    <td>{{user.Role}}</td>
+                                <tr ng-repeat="item in pagedItems[currentPage] | orderBy:sort.sortingOrder:sort.reverse">
+                                    <td>{{item.Name}}</td>
+                                    <td>{{item.Surname}}</td>
+                                    <td>{{item.Username}}</td>
+                                    <td>{{item.Role}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -33,17 +71,4 @@
             </div>
         </div>
     </div>
-    <!-- #END# Basic Examples -->
 </div>
-
- <!-- Jquery DataTable Plugin Js -->
-<!--<script src="../../../assets/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
-<script src="../../../assets/plugins/jquery-datatable/jquery.dataTables.js"></script>
-<script src="../../../assets/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
-<script src="../../../assets/plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js"></script>
-<script src="../../../assets/plugins/jquery-datatable/extensions/export/buttons.flash.min.js"></script>
-<script src="../../../assets/plugins/jquery-datatable/extensions/export/jszip.min.js"></script>
-<script src="../../../assets/plugins/jquery-datatable/extensions/export/pdfmake.min.js"></script>
-<script src="../../../assets/plugins/jquery-datatable/extensions/export/vfs_fonts.js"></script>
-<script src="../../../assets/plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
-<script src="../../../assets/plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>-->

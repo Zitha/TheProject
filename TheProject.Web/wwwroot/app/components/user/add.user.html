@@ -2,74 +2,73 @@
 <div class="row clearfix">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
-            <div class="header">
+            <div class="header bg-blue-grey">
                 <h2>
-                    Add User
-                    <small>User Information</small>
+                    Add User  <i class="material-icons">face</i>
                 </h2>
-                <div class="body">
-                    <div class="row clearfix">
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Name</label>
-                                    <input type="text" class="form-control" ng-model="user.name" placeholder="Name" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Surname</label>
-                                    <input type="text" class="form-control" ng-model="user.Surname" placeholder="Surname" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Username</label>
-                                    <input type="text" class="form-control" ng-model="user.Username" placeholder="Username" />
-                                </div>
+            </div>
+            <div class="body">
+                <div class="row clearfix">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Name</label>
+                                <input type="text" class="form-control" ng-model="user.name" placeholder="Name" />
                             </div>
                         </div>
                     </div>
-                    <div class="row clearfix">
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Password</label>
-                                    <input type="text" class="form-control" ng-model="user.Password" placeholder="Password" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>Role</label>
-                                    <select ng-model="user.role" class="form-control show-tick">
-                                        <option ng-value="role" ng-repeat="role in roles">
-                                            {{role}}
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <input-container>
-                                    <label>Facility</label>
-                                    <select ng-model="building.facility" ng-options="facility as facility.Name for facility in facilities"
-                                            class="form-control show-tick">
-                                        <option value="" disabled>------Select Facility------</option>
-                                    </select>
-                                </input-container>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Surname</label>
+                                <input type="text" class="form-control" ng-model="user.Surname" placeholder="Surname" />
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-default waves-effect" type="submit">Cancel</button>
-                    <button class="btn btn-primary waves-effect" type="submit" ng-click="saveUser(user)">SUBMIT</button>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Username</label>
+                                <input type="text" class="form-control" ng-model="user.Username" placeholder="Username" />
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <div class="row clearfix">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Password</label>
+                                <input type="text" class="form-control" ng-model="user.Password" placeholder="Password" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Role</label>
+                                <select ng-model="user.role" class="form-control show-tick">
+                                    <option ng-value="role" ng-repeat="role in roles">
+                                        {{role}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <input-container>
+                                <label>Facility</label>
+                                <select ng-model="building.facility" ng-options="facility as facility.Name for facility in facilities"
+                                        class="form-control show-tick">
+                                    <option value="" disabled>------Select Facility------</option>
+                                </select>
+                            </input-container>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-default waves-effect" type="submit">Cancel</button>
+                <button class="btn btn-primary waves-effect" type="submit" ng-click="saveUser(user)">SUBMIT</button>
             </div>
         </div>
     </div>

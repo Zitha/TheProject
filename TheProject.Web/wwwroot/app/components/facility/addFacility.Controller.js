@@ -2,7 +2,7 @@
     'use strict';
 
     function AddFacilityController($location, $scope, TheProjectService) {
-        $scope.facility = {};
+        $scope.facility = TheProjectService.getSelectedFacility();
         $scope.selectedMunicipality = {};
         $scope.portfolios = [];
         $scope.portfolio = {}

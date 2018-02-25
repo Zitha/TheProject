@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Audit.cs" />
     <Compile Include="BoundryPolygon.cs" />
     <Compile Include="Building.cs" />
     <Compile Include="Client.cs" />

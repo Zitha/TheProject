@@ -4,6 +4,7 @@
     function TheProjectService($http, $q, $sessionStorage, TheProjectFactory) {
         var self = this;
         self.selectedFacility = {};
+        self.selectedBuilding = {};
 
         self.setSelectedFacility = function (facility) {
             self.selectedFacility=facility;
@@ -11,6 +12,14 @@
 
         self.getSelectedFacility = function () {
             return self.selectedFacility;
+        }
+
+        self.setSelectedBuilding = function (building) {
+            self.selectedBuilding = building;
+        }
+
+        self.getSelectedBuilding = function () {
+            return self.selectedBuilding;
         }
 
         self.getPortfolios = function (callback) {
@@ -45,6 +54,16 @@
 
         self.addBuilding = function (building, callback) {
             TheProjectFactory.addBuilding(building).then(function (response) {
+                callback(response);
+            }, function (error) {
+                //alertDialogService.setHeaderAndMessage('Error Has Occurred ', 'Unable to get contracts. Please retry again, if the issue persists contact administrator.');
+                //var templateUrl = '/app/common/alert/infoDialog.template.html';
+                //modal.show(templateUrl, 'alertDialogController');
+            });
+        }
+
+        self.updateBuilding = function (building, callback) {
+            TheProjectFactory.updateBuilding(building).then(function (response) {
                 callback(response);
             }, function (error) {
                 //alertDialogService.setHeaderAndMessage('Error Has Occurred ', 'Unable to get contracts. Please retry again, if the issue persists contact administrator.');

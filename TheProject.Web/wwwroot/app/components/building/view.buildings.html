@@ -3,9 +3,9 @@
     <div class="row clearfix">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
-                <div class="header">
+                <div class="header bg-blue-grey">
                     <h2>
-                    Buildings
+                        Buildings
                     </h2>
                 </div>
                 <div class="body">
@@ -18,7 +18,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="building in buildings">
+                                <tr ng-repeat="building in buildings"  ng-click="viewBuiding(building)">
                                     <td>{{building.BuildingName}}</td>
                                     <td>{{building.BuildingNumber}}</td>
                                 </tr>

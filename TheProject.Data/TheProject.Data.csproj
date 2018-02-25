@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationUnit.cs" />
+    <Compile Include="Configuration\AuditConfiguration.cs" />
     <Compile Include="Configuration\BoundryPolygonConfiguration.cs" />
     <Compile Include="Configuration\BuildingConfiguration.cs" />
     <Compile Include="Configuration\ClientConfiguration.cs" />
@@ -61,12 +62,13 @@
     <Compile Include="DataContext.cs" />
     <Compile Include="GenericRepository.cs" />
     <Compile Include="IRepository.cs" />
-    <Compile Include="Migrations\201802191639371_Add Virtual Properties.cs" />
-    <Compile Include="Migrations\201802191639371_Add Virtual Properties.Designer.cs">
-      <DependentUpon>201802191639371_Add Virtual Properties.cs</DependentUpon>
+    <Compile Include="Migrations\201802212019221_AddBountyPolygon.cs" />
+    <Compile Include="Migrations\201802212019221_AddBountyPolygon.Designer.cs">
+      <DependentUpon>201802212019221_AddBountyPolygon.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\AuditRepository.cs" />
     <Compile Include="Repositories\BoundryPolygonRepository.cs" />
     <Compile Include="Repositories\BuildingRepository.cs" />
     <Compile Include="Repositories\ClientRepository.cs" />
@@ -86,13 +88,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201802191639371_Add Virtual Properties.resx">
-      <DependentUpon>201802191639371_Add Virtual Properties.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201802212019221_AddBountyPolygon.resx">
+      <DependentUpon>201802212019221_AddBountyPolygon.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 using TheProject.Data;
 using TheProject.Model;
@@ -13,8 +15,10 @@ namespace TheProject.Api.Controllers
 {
     public class BuildingController : ApiController
     {
+
+        string _picturePath = HttpContext.Current.Server.MapPath("~/UploadPictures");
         [HttpPost]
-        public Building AddBuilding(Building building)
+        public HttpResponseMessage AddBuilding(Building building)
         {
             try
             {
@@ -28,6 +32,13 @@ namespace TheProject.Api.Controllers
                         bool hasBuilding = facility.Buildings.Exists(b => b.BuildingName == building.BuildingName);
                         if (!hasBuilding)
                         {
+                            building.BuildingName = building.BuildingName.Trim();
+                            building.BuildingNumber = building.BuildingNumber.Trim();
+                            building.BuildingType = building.BuildingType.Trim();
+                            building.DisabledAccess = building.DisabledAccess.Trim();
+                            building.DisabledComment = building.DisabledComment.Trim();
+                            building.BuildingStandard = building.BuildingStandard.Trim();
+                            building.Status = building.Status.Trim();
                             building.Facility = facility;
                             building.CreatedDate = DateTime.Now;
                             building.ModifiedDate = DateTime.Now;
@@ -35,56 +46,108 @@ namespace TheProject.Api.Controllers
 
                             unit.SaveChanges();
                             building.Facility = null;
-                            return building;
+
+                            Task addTask = new Task(() => LogAuditTrail("Building", "Add", building.CreatedUserId, building.Id));
+                            addTask.Start();
+
+                            return Request.CreateResponse(HttpStatusCode.OK, new
+                            {
+                                content = building
+                            });
                         }
                     }
-                    return null;
+                    return Request.CreateResponse(HttpStatusCode.OK);
                 }
             }
             catch (Exception ex)
             {
-                throw ex;
+                return Request.CreateResponse(ex);
             }
         }
 
-        [HttpPut]
-        public Building UpdateFacility(Building building)
+        private void LogAuditTrail(string section, string type, int userId, int itemId)
         {
             try
             {
                 using (ApplicationUnit unit = new ApplicationUnit())
                 {
-                    Building updateBudilng = unit.Buildings.GetAll().FirstOrDefault(fc => fc.Id == building.Id);
-                    if (updateBudilng != null)
+                    Audit audit = new Audit
                     {
-                        updateBudilng.BuildingName = building.BuildingName;
-                        updateBudilng.BuildingNumber = building.BuildingNumber;
-                        updateBudilng.BuildingType = building.BuildingType;
-                        updateBudilng.BuildingStandard = building.BuildingStandard;
-                        updateBudilng.Status = building.Status;
-                        updateBudilng.GPSCoordinates = building.GPSCoordinates;
-                        updateBudilng.NumberOfFloors = building.NumberOfFloors;
-                        updateBudilng.FootPrintArea = building.FootPrintArea;
-                        updateBudilng.ImprovedArea = building.ImprovedArea;
-                        updateBudilng.Heritage = building.Heritage;
-                        updateBudilng.OccupationYear = building.OccupationYear;
-                        updateBudilng.DisabledAccess = building.DisabledAccess;
-                        updateBudilng.DisabledComment = building.DisabledComment;
-                        updateBudilng.ConstructionDescription = building.ConstructionDescription;
-                        updateBudilng.Photo = building.Photo;
-                    }
+                        ChangeDate = DateTime.Now,
+                        ItemId = itemId,
+                        Section = section,
+                        Type = type
+                    };
+                    unit.Audits.Add(audit);
+                    unit.SaveChanges();
+                }
+            }
+            catch (Exception)
+            {
 
-                    unit.Buildings.Add(building);
+                throw;
+            }
+        }
+
+        [HttpPost]
+        public HttpResponseMessage UpdateBuilding(Building building)
+        {
+            ApplicationUnit unit = new ApplicationUnit();
+            try
+            {
+                Building updateBudilng = unit.Buildings.GetAll().FirstOrDefault(fc => fc.Id == building.Id);
+                if (updateBudilng != null)
+                {
+                    updateBudilng.BuildingName = building.BuildingName.Trim();
+                    updateBudilng.BuildingNumber = building.BuildingNumber.Trim();
+                    updateBudilng.BuildingType = building.BuildingType.Trim();
+                    updateBudilng.BuildingStandard = building.BuildingStandard.Trim();
+                    updateBudilng.Status = building.Status.Trim();
+                    updateBudilng.GPSCoordinates = GPSCoordinates(building.GPSCoordinates, ref unit);
+                    updateBudilng.NumberOfFloors = building.NumberOfFloors;
+                    updateBudilng.FootPrintArea = building.FootPrintArea;
+                    updateBudilng.ImprovedArea = building.ImprovedArea;
+                    updateBudilng.Heritage = building.Heritage;
+                    updateBudilng.OccupationYear = building.OccupationYear;
+                    updateBudilng.DisabledAccess = building.DisabledAccess.Trim();
+                    updateBudilng.DisabledComment = building.DisabledComment.Trim();
+                    updateBudilng.ConstructionDescription = building.ConstructionDescription;
+                    updateBudilng.Photo = building.Photo;
+                    updateBudilng.ModifiedDate = DateTime.Now;
+
+                    unit.Buildings.Update(updateBudilng);
                     unit.SaveChanges();
 
+                    Task updateTask = new Task(() => LogAuditTrail("Building", "Update", updateBudilng.CreatedUserId, building.CreatedUserId));
+                    updateTask.Start();
+
                     building.Facility = null;
-                    return building;
+                    return Request.CreateResponse(HttpStatusCode.OK, new
+                    {
+                        content = building
+                    });
                 }
+                return Request.CreateResponse(HttpStatusCode.OK);
             }
             catch (Exception ex)
             {
-                throw ex;
+                unit.Dispose();
+                return Request.CreateResponse(ex);
             }
+        }
+
+        private GPSCoordinate GPSCoordinates(GPSCoordinate gpsCoordinate, ref ApplicationUnit unit)
+        {
+            if (gpsCoordinate != null)
+            {
+                GPSCoordinate gps = unit.GPSCoordinates.GetAll()
+                    .FirstOrDefault(p => p.Id == gpsCoordinate.Id);
+                if (gps != null)
+                {
+                    return gps;
+                }
+            }
+            return gpsCoordinate;
         }
 
         [HttpGet]
@@ -102,7 +165,7 @@ namespace TheProject.Api.Controllers
                     {
                         returnBuildings.Add(new Building
                         {
-
+                            Id = building.Id,
                             BuildingName = building.BuildingName,
                             BuildingNumber = building.BuildingNumber,
                             BuildingStandard = building.BuildingStandard,
@@ -120,7 +183,51 @@ namespace TheProject.Api.Controllers
                             Photo = building.Photo,
                             CreatedDate = building.CreatedDate,
                             ModifiedDate = building.ModifiedDate
+                        });
+                    }
+                    return returnBuildings;
+                }
+            }
+            catch (Exception ex)
+            {
+                var outputLines = new List<string>();
+                outputLines.Add(ex.Message);
+                File.AppendAllLines(@"c:\errors.txt", outputLines);
+                throw;
+            }
+        }
 
+        [HttpGet]
+        public IEnumerable<Building> GetBuildings()
+        {
+            try
+            {
+                List<Building> returnBuildings = new List<Building>();
+                using (ApplicationUnit unit = new ApplicationUnit())
+                {
+                    List<Building> buildings = unit.Buildings.GetAll().ToList();
+                    foreach (var building in buildings)
+                    {
+                        returnBuildings.Add(new Building
+                        {
+                            Id = building.Id,
+                            BuildingName = building.BuildingName,
+                            BuildingNumber = building.BuildingNumber,
+                            BuildingStandard = building.BuildingStandard,
+                            Status = building.Status,
+                            BuildingType = building.BuildingType,
+                            NumberOfFloors = building.NumberOfFloors,
+                            FootPrintArea = building.FootPrintArea,
+                            ImprovedArea = building.ImprovedArea,
+                            Heritage = building.Heritage,
+                            OccupationYear = building.OccupationYear,
+                            DisabledAccess = building.DisabledAccess,
+                            DisabledComment = building.DisabledComment,
+                            ConstructionDescription = building.ConstructionDescription,
+                            GPSCoordinates = building.GPSCoordinates,
+                            Photo = building.Photo,
+                            CreatedDate = building.CreatedDate,
+                            ModifiedDate = building.ModifiedDate
                         });
                     }
 
@@ -136,52 +243,39 @@ namespace TheProject.Api.Controllers
             }
         }
 
+        [HttpPost]
+        public void SaveImage([FromBody]List<Picture> pictures)
+        {
+            if (!Directory.Exists(_picturePath))
+            {
+                Directory.CreateDirectory(_picturePath);
+            }
+            foreach (var picture in pictures)
+            {
+                File.WriteAllBytes(Path.Combine(_picturePath, picture.Name + ".png"), Convert.FromBase64String(picture.File));
+            }
+        }
+
 
         [HttpGet]
-        public IEnumerable<Building> GetBuildings()
+        public byte[] GetImage(string pictureGuid)
         {
             try
             {
-                List<Building> returnBuildings = new List<Building>();
-                using (ApplicationUnit unit = new ApplicationUnit())
+                string imagePath = Path.Combine(_picturePath, pictureGuid + ".png");
+                if (File.Exists(imagePath))
                 {
-                    List<Building> buildings = unit.Buildings.GetAll().ToList();
-                    foreach (var building in buildings)
-                    {
-                        returnBuildings.Add(new Building
-                        {
+                    byte[] picture = File.ReadAllBytes(imagePath);
 
-                            BuildingName = building.BuildingName,
-                            BuildingNumber = building.BuildingNumber,
-                            BuildingStandard = building.BuildingStandard,
-                            Status = building.Status,
-                            BuildingType = building.BuildingType,
-                            NumberOfFloors = building.NumberOfFloors,
-                            FootPrintArea = building.FootPrintArea,
-                            ImprovedArea = building.ImprovedArea,
-                            Heritage = building.Heritage,
-                            OccupationYear = building.OccupationYear,
-                            DisabledAccess = building.DisabledAccess,
-                            DisabledComment = building.DisabledComment,
-                            ConstructionDescription = building.ConstructionDescription,
-                            GPSCoordinates = building.GPSCoordinates,
-                            Photo = building.Photo,
-                            CreatedDate = building.CreatedDate,
-                            ModifiedDate = building.ModifiedDate
-
-                        });
-                    }
-
-                    return returnBuildings;
+                    return picture;
                 }
+                return null;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                var outputLines = new List<string>();
-                outputLines.Add(ex.Message);
-                File.AppendAllLines(@"c:\errors.txt", outputLines);
                 throw;
             }
+
         }
     }
 }

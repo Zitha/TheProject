@@ -29,7 +29,7 @@ namespace TheProject.Model
 
         public string OccupationYear { get; set; }
 
-        public bool DisabledAccess { get; set; }
+        public string DisabledAccess { get; set; }
 
         public string DisabledComment { get; set; }
 
