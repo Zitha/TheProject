@@ -86,6 +86,18 @@ namespace TheProject.Data
             set;
         }
 
+        public DbSet<Audit> Audits
+        {
+            get;
+            set;
+        }
+
+        public DbSet<ErrorLog> ErrorLogs
+        {
+            get;
+            set;
+        }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Configurations.Add(new BoundryPolygonConfiguration());
@@ -97,6 +109,7 @@ namespace TheProject.Data
             modelBuilder.Configurations.Add(new LocationConfiguration());
             modelBuilder.Configurations.Add(new PortfolioConfiguration());
             modelBuilder.Configurations.Add(new UserConfiguration());
+            modelBuilder.Configurations.Add(new AuditConfiguration());
         }
 
     }

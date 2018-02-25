@@ -150,6 +150,20 @@ namespace TheProject.Data
             }
         }
 
+
+        private IRepository<ErrorLog> _errorLogs;
+        public IRepository<ErrorLog> ErrorLogs
+        {
+            get
+            {
+                if (_errorLogs == null)
+                {
+                    _errorLogs = new ErrorLogRepository(_context);
+                }
+                return _errorLogs;
+            }
+        }
+
         public void SaveChanges()
         {
             try

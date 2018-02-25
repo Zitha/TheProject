@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using TheProject.Api.Models;
 using TheProject.Data;
 using TheProject.Model;
 
@@ -61,6 +62,7 @@ namespace TheProject.Api.Controllers
             }
             catch (Exception ex)
             {
+                ErrorHandling.LogError(ex.StackTrace, "AddBuilding");
                 return Request.CreateResponse(ex);
             }
         }
@@ -76,6 +78,7 @@ namespace TheProject.Api.Controllers
                         ChangeDate = DateTime.Now,
                         ItemId = itemId,
                         Section = section,
+                        UserId = userId,
                         Type = type
                     };
                     unit.Audits.Add(audit);
@@ -132,6 +135,7 @@ namespace TheProject.Api.Controllers
             catch (Exception ex)
             {
                 unit.Dispose();
+                ErrorHandling.LogError(ex.StackTrace, "UpdateBuilding");
                 return Request.CreateResponse(ex);
             }
         }
@@ -149,7 +153,7 @@ namespace TheProject.Api.Controllers
             }
             return gpsCoordinate;
         }
-      
+
 
         [HttpGet]
         public IEnumerable<Building> GetBuildingByFacilityId(int facilityId)
@@ -237,24 +241,31 @@ namespace TheProject.Api.Controllers
             }
             catch (Exception ex)
             {
-                var outputLines = new List<string>();
-                outputLines.Add(ex.Message);
-                File.AppendAllLines(@"c:\errors.txt", outputLines);
-                throw;
+                ErrorHandling.LogError(ex.StackTrace, "GetBuildings");
+                throw ex;
             }
         }
 
         [HttpPost]
         public void SaveImage([FromBody]List<Picture> pictures)
         {
-            if (!Directory.Exists(_picturePath))
+            try
             {
-                Directory.CreateDirectory(_picturePath);
+                if (!Directory.Exists(_picturePath))
+                {
+                    Directory.CreateDirectory(_picturePath);
+                }
+                foreach (var picture in pictures)
+                {
+                    File.WriteAllBytes(Path.Combine(_picturePath, picture.Name + ".png"), Convert.FromBase64String(picture.File));
+                }
             }
-            foreach (var picture in pictures)
+            catch (Exception ex)
             {
-                File.WriteAllBytes(Path.Combine(_picturePath, picture.Name + ".png"), Convert.FromBase64String(picture.File));
+                ErrorHandling.LogError(ex.StackTrace, "SaveImage");
+                throw ex;
             }
+
         }
 
 
@@ -272,9 +283,10 @@ namespace TheProject.Api.Controllers
                 }
                 return null;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                ErrorHandling.LogError(ex.StackTrace, "GetImage");
+                throw ex;
             }
 
         }

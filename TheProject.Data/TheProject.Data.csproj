@@ -54,6 +54,7 @@
     <Compile Include="Configuration\BuildingConfiguration.cs" />
     <Compile Include="Configuration\ClientConfiguration.cs" />
     <Compile Include="Configuration\DeedsInfoConfiguration.cs" />
+    <Compile Include="Configuration\ErrorLogConfiguration.cs" />
     <Compile Include="Configuration\FacilityConfiguration.cs" />
     <Compile Include="Configuration\GPSCoordinateConfiguration.cs" />
     <Compile Include="Configuration\LocationConfiguration.cs" />
@@ -62,9 +63,9 @@
     <Compile Include="DataContext.cs" />
     <Compile Include="GenericRepository.cs" />
     <Compile Include="IRepository.cs" />
-    <Compile Include="Migrations\201802212019221_AddBountyPolygon.cs" />
-    <Compile Include="Migrations\201802212019221_AddBountyPolygon.Designer.cs">
-      <DependentUpon>201802212019221_AddBountyPolygon.cs</DependentUpon>
+    <Compile Include="Migrations\201802251440124_First-Migration.cs" />
+    <Compile Include="Migrations\201802251440124_First-Migration.Designer.cs">
+      <DependentUpon>201802251440124_First-Migration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="Repositories\BuildingRepository.cs" />
     <Compile Include="Repositories\ClientRepository.cs" />
     <Compile Include="Repositories\DeedsInfoRepository.cs" />
+    <Compile Include="Repositories\ErrorLogRepository.cs" />
     <Compile Include="Repositories\FacilityRepository.cs" />
     <Compile Include="Repositories\GPSCoordinateRepository.cs" />
     <Compile Include="Repositories\LocationRepository.cs" />
@@ -92,8 +94,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201802212019221_AddBountyPolygon.resx">
-      <DependentUpon>201802212019221_AddBountyPolygon.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201802251440124_First-Migration.resx">
+      <DependentUpon>201802251440124_First-Migration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

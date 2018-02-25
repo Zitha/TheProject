@@ -7,13 +7,13 @@ namespace TheProject.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class AddBountyPolygon : IMigrationMetadata
+    public sealed partial class FirstMigration : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddBountyPolygon));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(FirstMigration));
         
         string IMigrationMetadata.Id
         {
-            get { return "201802212019221_AddBountyPolygon"; }
+            get { return "201802251440124_First-Migration"; }
         }
         
         string IMigrationMetadata.Source

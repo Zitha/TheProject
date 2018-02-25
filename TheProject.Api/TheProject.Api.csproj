@@ -192,7 +192,7 @@
     <Compile Include="Controllers\BuildingController.cs" />
     <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\FacilityController.cs" />
-    <Compile Include="Controllers\Picture.cs" />
+    <Compile Include="Models\Picture.cs" />
     <Compile Include="Controllers\PortfolioController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
@@ -200,6 +200,7 @@
     </Compile>
     <Compile Include="Models\EmailService.cs" />
     <Compile Include="Models\EncryptString.cs" />
+    <Compile Include="Models\ErrorHandling.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

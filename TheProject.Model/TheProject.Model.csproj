@@ -45,6 +45,7 @@
     <Compile Include="Building.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="DeedsInfo.cs" />
+    <Compile Include="ErrorLog.cs" />
     <Compile Include="Facility.cs" />
     <Compile Include="GPSCoordinate.cs" />
     <Compile Include="Location.cs" />

@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace TheProject.Api.Controllers
+namespace TheProject.Api.Models
 {
     public class Picture
     {

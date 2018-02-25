@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using TheProject.Api.Models;
 using TheProject.Data;
 using TheProject.Model;
 
@@ -56,6 +57,7 @@ namespace TheProject.Api.Controllers
             catch (Exception ex)
             {
                 unit.Dispose();
+                ErrorHandling.LogError(ex.StackTrace, "UpdateFacility");
                 return Request.CreateResponse(ex);
             }
         }
@@ -150,6 +152,7 @@ namespace TheProject.Api.Controllers
             }
             catch (Exception ex)
             {
+                ErrorHandling.LogError(ex.StackTrace, "AddFacility");
                 throw ex;
             }
         }
@@ -189,45 +192,48 @@ namespace TheProject.Api.Controllers
             }
             catch (Exception ex)
             {
-                var outputLines = new List<string>
-                {
-                    ex.Message
-                };
-                File.AppendAllLines(@"c:\errors.txt", outputLines);
-                throw;
+                ErrorHandling.LogError(ex.StackTrace, "GetFacilities");
+                throw ex;
             }
         }
 
         private List<Building> GetBuildings(List<Building> buildings)
         {
-            List<Building> returnBuildings = new List<Building>();
-            foreach (var building in buildings)
+            try
             {
-                returnBuildings.Add(new Building
+                List<Building> returnBuildings = new List<Building>();
+                foreach (var building in buildings)
                 {
+                    returnBuildings.Add(new Building
+                    {
 
-                    BuildingName = building.BuildingName,
-                    BuildingNumber = building.BuildingNumber,
-                    BuildingStandard = building.BuildingStandard,
-                    Status = building.Status,
-                    BuildingType = building.BuildingType,
-                    NumberOfFloors = building.NumberOfFloors,
-                    FootPrintArea = building.FootPrintArea,
-                    ImprovedArea = building.ImprovedArea,
-                    Heritage = building.Heritage,
-                    OccupationYear = building.OccupationYear,
-                    DisabledAccess = building.DisabledAccess,
-                    DisabledComment = building.DisabledComment,
-                    ConstructionDescription = building.ConstructionDescription,
-                    GPSCoordinates = building.GPSCoordinates,
-                    Photo = building.Photo,
-                    CreatedDate = building.CreatedDate,
-                    ModifiedDate = building.ModifiedDate
+                        BuildingName = building.BuildingName,
+                        BuildingNumber = building.BuildingNumber,
+                        BuildingStandard = building.BuildingStandard,
+                        Status = building.Status,
+                        BuildingType = building.BuildingType,
+                        NumberOfFloors = building.NumberOfFloors,
+                        FootPrintArea = building.FootPrintArea,
+                        ImprovedArea = building.ImprovedArea,
+                        Heritage = building.Heritage,
+                        OccupationYear = building.OccupationYear,
+                        DisabledAccess = building.DisabledAccess,
+                        DisabledComment = building.DisabledComment,
+                        ConstructionDescription = building.ConstructionDescription,
+                        GPSCoordinates = building.GPSCoordinates,
+                        Photo = building.Photo,
+                        CreatedDate = building.CreatedDate,
+                        ModifiedDate = building.ModifiedDate
 
-                });
+                    });
+                }
+                return returnBuildings;
             }
-
-            return returnBuildings;
+            catch (Exception ex)
+            {
+                ErrorHandling.LogError(ex.StackTrace, "GetBuildings");
+                throw ex;
+            }
         }
 
         [HttpGet]
@@ -267,11 +273,7 @@ namespace TheProject.Api.Controllers
             }
             catch (Exception ex)
             {
-                var outputLines = new List<string>
-                {
-                    ex.Message
-                };
-                File.AppendAllLines(@"c:\errors.txt", outputLines);
+                ErrorHandling.LogError(ex.StackTrace, "GetFacilitiesByUserId");
                 throw;
             }
         }
