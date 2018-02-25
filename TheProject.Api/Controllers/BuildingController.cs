@@ -149,6 +149,7 @@ namespace TheProject.Api.Controllers
             }
             return gpsCoordinate;
         }
+      
 
         [HttpGet]
         public IEnumerable<Building> GetBuildingByFacilityId(int facilityId)
