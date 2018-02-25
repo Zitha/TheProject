@@ -17,20 +17,56 @@ namespace TheProject.Api.Controllers
         [HttpGet]
         public User Login(string username, string password)
         {
-            using (ApplicationUnit unit = new ApplicationUnit())
+            try
             {
-                User loginUser = unit.Users.GetAll()
-                    .FirstOrDefault(usr => usr.Username.ToLower() == username.ToLower());
-
-                if (loginUser != null)
+                using (ApplicationUnit unit = new ApplicationUnit())
                 {
-                    string decriptedPassword = EncryptString.Decrypt(loginUser.Password, "THEPROJECT");
-                    if (decriptedPassword == password)
+                    User loginUser = unit.Users.GetAll()
+                        .FirstOrDefault(usr => usr.Username.ToLower() == username.ToLower());
+
+                    if (loginUser != null)
                     {
-                        return loginUser;
+                        string decriptedPassword = EncryptString.Decrypt(loginUser.Password, "THEPROJECT");
+                        if (decriptedPassword == password)
+                        {
+                            Task addTask = new Task(() => LogAuditTrail("Login", string.Format("Successful Login {0}", loginUser.Username), loginUser.Id, loginUser.Id));
+                            addTask.Start();
+
+                            return loginUser;
+                        }
                     }
+                    return null;
                 }
-                return null;
+            }
+            catch (Exception ex)
+            {
+                ErrorHandling.LogError(ex.StackTrace, "AddBuilding");
+                throw ex;
+            }
+          
+        }
+
+        private void LogAuditTrail(string section, string type, int userId, int itemId)
+        {
+            try
+            {
+                using (ApplicationUnit unit = new ApplicationUnit())
+                {
+                    Audit audit = new Audit
+                    {
+                        ChangeDate = DateTime.Now,
+                        ItemId = itemId,
+                        Section = section,
+                        UserId = userId,
+                        Type = type
+                    };
+                    unit.Audits.Add(audit);
+                    unit.SaveChanges();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 

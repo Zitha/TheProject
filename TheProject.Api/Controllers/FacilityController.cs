@@ -36,12 +36,14 @@ namespace TheProject.Api.Controllers
                     updateFacility.Location = GetLocation(facility.Location, ref unit);
                     updateFacility.Buildings = facility.Buildings;
                     updateFacility.Status = facility.Status;
+                    updateFacility.ModifiedUserId = facility.ModifiedUserId;
 
                     unit.Facilities.Update(updateFacility);
                     unit.SaveChanges();
                     unit.Dispose();
 
-                    Task updateTask = new Task(() => LogAuditTrail("Facility", "Update", updateFacility.CreatedUserId, updateFacility.Id));
+                    int userId = facility.ModifiedUserId != null ? facility.ModifiedUserId.Value : 0;
+                    Task updateTask = new Task(() => LogAuditTrail("Facility", "Update", userId, updateFacility.Id));
                     updateTask.Start();
 
                     return Request.CreateResponse(HttpStatusCode.OK, new

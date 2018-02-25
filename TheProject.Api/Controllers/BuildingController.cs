@@ -121,7 +121,8 @@ namespace TheProject.Api.Controllers
                     unit.Buildings.Update(updateBudilng);
                     unit.SaveChanges();
 
-                    Task updateTask = new Task(() => LogAuditTrail("Building", "Update", updateBudilng.CreatedUserId, building.CreatedUserId));
+                    int userId = updateBudilng.ModifiedUserId != null ? updateBudilng.ModifiedUserId.Value : 0;
+                    Task updateTask = new Task(() => LogAuditTrail("Building", "Update", userId, updateBudilng.Id));
                     updateTask.Start();
 
                     building.Facility = null;
@@ -195,10 +196,8 @@ namespace TheProject.Api.Controllers
             }
             catch (Exception ex)
             {
-                var outputLines = new List<string>();
-                outputLines.Add(ex.Message);
-                File.AppendAllLines(@"c:\errors.txt", outputLines);
-                throw;
+                ErrorHandling.LogError(ex.StackTrace, "GetBuildingByFacilityId");
+                throw ex;
             }
         }
 
@@ -265,7 +264,6 @@ namespace TheProject.Api.Controllers
                 ErrorHandling.LogError(ex.StackTrace, "SaveImage");
                 throw ex;
             }
-
         }
 
 
