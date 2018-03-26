@@ -62,6 +62,20 @@
 
             return defered.promise;
         }
+        
+        var getUnassignedFacilities = function (facility) {
+            var defered = $q.defer();
+            var getUnassignedFacilitiesComplete = function (response) {
+                defered.resolve(response.data);
+            }
+
+            $http.get(projectApi + '/Facility/GetUnassignedFacilities')
+                .then(getUnassignedFacilitiesComplete, function (err, status) {
+                    defered.reject(err);
+                });
+
+            return defered.promise;
+        }
 
         //------------------User-----------------
         var addUser = function (user) {
@@ -205,7 +219,8 @@
             getClients: getClients,
             getPotfoliosbyClientId: getPotfoliosbyClientId,
             getBuildings: getBuildings,
-            updateBuilding: updateBuilding
+            updateBuilding: updateBuilding,
+            getUnassignedFacilities: getUnassignedFacilities
         };
 
     }

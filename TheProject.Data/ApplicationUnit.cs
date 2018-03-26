@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using TheProject.Data.Repositories;
 using TheProject.Model;
 
@@ -174,6 +176,13 @@ namespace TheProject.Data
             {
             }
         }
+
+        //public DbRawSqlQuery<T> ExecuteStoredProc(string storeProName)
+        //{
+        //    var results = _context.ex
+
+        //    return results;
+        //}
         public void Dispose()
         {
             if (_context != null)
@@ -181,5 +190,7 @@ namespace TheProject.Data
                 _context.Dispose();
             }
         }
+
+
     }
 }

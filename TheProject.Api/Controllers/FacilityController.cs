@@ -37,12 +37,13 @@ namespace TheProject.Api.Controllers
                     updateFacility.Buildings = facility.Buildings;
                     updateFacility.Status = facility.Status;
                     updateFacility.ModifiedUserId = facility.ModifiedUserId;
+                    updateFacility.ModifiedDate = DateTime.Now;
 
                     unit.Facilities.Update(updateFacility);
                     unit.SaveChanges();
                     unit.Dispose();
 
-                    int userId = facility.ModifiedUserId != null ? facility.ModifiedUserId.Value : 0;
+                    int userId = updateFacility.ModifiedUserId != null ? facility.ModifiedUserId.Value : 0;
                     Task updateTask = new Task(() => LogAuditTrail("Facility", "Update", userId, updateFacility.Id));
                     updateTask.Start();
 
@@ -123,6 +124,43 @@ namespace TheProject.Api.Controllers
                 }
             }
             return deedsInfo;
+        }
+
+        [HttpGet]
+        public List<Facility> GetUnassignedFacilities()
+        {
+            try
+            {
+                List<Facility> returnFacilities = new List<Facility>();
+                using (ApplicationUnit unit = new ApplicationUnit())
+                {
+                    List<Facility> facilities = unit.Facilities.ExecuteStoredProc("GetUnassignedFacilities").ToList();
+                    foreach (var facility in facilities)
+                    {
+                        returnFacilities.Add(new Facility
+                        {
+                            Id = facility.Id,
+                            Name = facility.Name,
+                            ClientCode = facility.ClientCode,
+                            SettlementType = facility.SettlementType,
+                            Zoning = facility.Zoning,
+                            IDPicture = facility.IDPicture,
+                            Status = facility.Status,
+                            DeedsInfo = facility.DeedsInfo,
+                            ResposiblePerson = facility.ResposiblePerson,
+                            Location = facility.Location,
+                            CreatedDate = facility.CreatedDate,
+                            ModifiedDate = facility.ModifiedDate
+                        });
+                    }
+                    return returnFacilities;
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorHandling.LogError(ex.StackTrace, "GetUnassignedFacilities");
+                throw ex;
+            }
         }
 
         [HttpPost]
@@ -292,6 +330,7 @@ namespace TheProject.Api.Controllers
                         ChangeDate = DateTime.Now,
                         ItemId = itemId,
                         Section = section,
+                        UserId = userId,
                         Type = type
                     };
                     unit.Audits.Add(audit);

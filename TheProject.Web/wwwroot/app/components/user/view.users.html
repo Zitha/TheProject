@@ -58,7 +58,8 @@
                                 </tr>
                             </tfoot>
                             <tbody>
-                                <tr ng-repeat="item in pagedItems[currentPage] | orderBy:sort.sortingOrder:sort.reverse">
+                                <tr ng-repeat="item in pagedItems[currentPage] | orderBy:sort.sortingOrder:sort.reverse"
+                                    ng-click="viewUser(item)">
                                     <td>{{item.Name}}</td>
                                     <td>{{item.Surname}}</td>
                                     <td>{{item.Username}}</td>

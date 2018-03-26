@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,5 +16,7 @@ namespace TheProject.Data
         void Delete(T entity);
         void Delete(int id);
         void Detach(T entity);
+
+        DbRawSqlQuery<T> ExecuteStoredProc(string storedProc);
     }
 }

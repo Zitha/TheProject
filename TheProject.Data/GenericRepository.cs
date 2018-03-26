@@ -91,5 +91,12 @@ namespace TheProject.Data
                 Delete(entity);
             }
         }
+
+        public DbRawSqlQuery<T> ExecuteStoredProc(string storeProName)
+        {
+            var results = Context.Database.SqlQuery<T>(storeProName);
+
+            return results;
+        }
     }
 }

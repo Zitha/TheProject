@@ -2,15 +2,19 @@
     'use strict';
 
     function AddUserController($location, $scope, TheProjectService) {
-        $scope.user = {};
+        $scope.hidePassword = false;
+        $scope.user = TheProjectService.getSelectedUser();
         init();
-
         function init() {
-            TheProjectService.getFacilities(function (data) {
-                if (data) {
-                    $scope.facilities = data;
-                }
-            });
+            if ($scope.user.Id != undefined) {
+                $scope.hidePassword = true;
+                TheProjectService.getUnassignedFacilities(function (data) {
+
+                    if (data) {
+                        $scope.facilities = data;
+                    }
+                });
+            }
         }
 
         $scope.roles = ['User', 'Admin'];

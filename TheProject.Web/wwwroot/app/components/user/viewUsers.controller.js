@@ -111,6 +111,11 @@
         $scope.setPage = function () {
             $scope.currentPage = this.n;
         };
+
+        $scope.viewUser = function (user) {
+            TheProjectService.setSelectedUser(user);
+            $location.path('/addUser');
+        }
     }
 
     angular.module('TheApp').controller('ViewUsersController', ViewUsersController);

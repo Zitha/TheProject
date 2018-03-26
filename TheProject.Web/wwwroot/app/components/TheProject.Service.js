@@ -5,13 +5,22 @@
         var self = this;
         self.selectedFacility = {};
         self.selectedBuilding = {};
+        self.selectedUser = {};
 
         self.setSelectedFacility = function (facility) {
-            self.selectedFacility=facility;
+            self.selectedFacility = facility;
         }
 
         self.getSelectedFacility = function () {
             return self.selectedFacility;
+        }
+
+        self.setSelectedUser = function (user) {
+            self.selectedUser = user;
+        }
+
+        self.getSelectedUser = function () {
+            return self.selectedUser;
         }
 
         self.setSelectedBuilding = function (building) {
@@ -90,6 +99,16 @@
                 //var templateUrl = '/app/common/alert/infoDialog.template.html';
                 //modal.show(templateUrl, 'alertDialogController');
             });
+        }
+
+        self.getUnassignedFacilities = function (callback) {
+            TheProjectFactory.getUnassignedFacilities().then(function (response) {
+                callback(response);
+            }, function (error) {
+                //alertDialogService.setHeaderAndMessage('Error Has Occurred ', 'Unable to get contracts. Please retry again, if the issue persists contact administrator.');
+                //var templateUrl = '/app/common/alert/infoDialog.template.html';
+                //modal.show(templateUrl, 'alertDialogController');
+            }); 
         }
 
         self.addUser = function (user, callback) {
