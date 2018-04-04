@@ -21,9 +21,9 @@ namespace TheProject.ConsoleApp
             try
             {
                 var context = new DataContext();
-                //context.Database.Initialize(true);
+                context.Database.Initialize(true);
 
-                //context.SaveChanges();
+                context.SaveChanges();
 
                 SerializeImage();
                 Console.WriteLine("Done...");

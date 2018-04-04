@@ -31,10 +31,6 @@ namespace TheProject.Api.Controllers
                     updateFacility.Zoning = facility.Zoning;
                     updateFacility.Name = facility.Name;
                     updateFacility.IDPicture = facility.IDPicture;
-                    updateFacility.DeedsInfo = GetDeedsInfo(facility.DeedsInfo, ref unit);
-                    updateFacility.ResposiblePerson = GetReposiblePerson(facility.ResposiblePerson, ref unit);
-                    updateFacility.Location = GetLocation(facility.Location, ref unit);
-                    updateFacility.Buildings = facility.Buildings;
                     updateFacility.Status = facility.Status;
                     updateFacility.ModifiedUserId = facility.ModifiedUserId;
                     updateFacility.ModifiedDate = DateTime.Now;

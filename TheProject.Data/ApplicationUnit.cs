@@ -112,6 +112,20 @@ namespace TheProject.Data
             }
         }
 
+        private IRepository<BoundryPolygon> _boundryPolygons;
+
+        public IRepository<BoundryPolygon> BoundryPolygons
+        {
+            get
+            {
+                if (_deedsInfos == null)
+                {
+                    _boundryPolygons = new BoundryPolygonRepository(_context);
+                }
+                return _boundryPolygons;
+            }
+        }
+
         private IRepository<Location> _locations;
 
         public IRepository<Location> Locations
