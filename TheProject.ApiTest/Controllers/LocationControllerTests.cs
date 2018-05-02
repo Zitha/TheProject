@@ -33,7 +33,8 @@ namespace TheProject.Api.Controllers.Tests
                     Longitude = "28.3658"
                 },                
                 CreatedDate = DateTime.Now,
-                CreatedUserId = 1
+                CreatedUserId = 1,
+                FacilityId = 5
             };
             boundryPolygon.Add(new BoundryPolygon() { Longitude = "24.3698",Latitude="-25.3652"});
             boundryPolygon.Add(new BoundryPolygon() { Longitude = "26.3698", Latitude = "-26.3652" });
@@ -52,19 +53,20 @@ namespace TheProject.Api.Controllers.Tests
             Location location = new Location()
             {
                 Id = 10,
-                StreetAddress = "Street Address 110",
+                StreetAddress = "Street Address 110 4545445454",
                 LocalMunicipality = "test",
                 Region = "JHB",
                 Suburb = "Test",
                 Province = "Gauteng",
                 GPSCoordinates = new GPSCoordinate()
                 {
-                    Id = 19,
-                    Latitude = "-26.3258",
-                    Longitude = "28.3658"
+                    Id = 24,
+                    Latitude = "-26.325822222",
+                    Longitude = "28.3658 2222"
                 },
                 CreatedDate = DateTime.Now,
-                CreatedUserId = 1
+                CreatedUserId = 1,
+                FacilityId = 5
             };
             boundryPolygon.Add(new BoundryPolygon() { Longitude = "25.3698", Latitude = "-25.3652" });
             boundryPolygon.Add(new BoundryPolygon() { Longitude = "11.3698", Latitude = "-11.3652" });

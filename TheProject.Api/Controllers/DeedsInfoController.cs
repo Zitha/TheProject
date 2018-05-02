@@ -71,15 +71,29 @@ namespace TheProject.Api.Controllers
         private void Create(ref ApplicationUnit unit, DeedsInfo deedsInfo)
         {
             deedsInfo.CreatedDate = DateTime.Now;
-            unit.DeedsInfos.Add(deedsInfo);
-            unit.SaveChanges();
+            Facility updateFacility = unit.Facilities.GetAll().FirstOrDefault(fc => fc.Id == deedsInfo.FacilityId);
+            if (updateFacility != null)
+            {
+                updateFacility.DeedsInfo = deedsInfo;
+                unit.Facilities.Update(updateFacility);
+                unit.SaveChanges();
+            }
         }
 
         private void Update(ref ApplicationUnit unit, DeedsInfo deedsInfo)
         {
-            deedsInfo.ModifiedDate = DateTime.Now;
-            unit.DeedsInfos.Update(deedsInfo);
-            unit.SaveChanges();
+            Facility updateFacility = unit.Facilities.GetAll().FirstOrDefault(fc => fc.Id == deedsInfo.FacilityId);
+            if (updateFacility != null)
+            {
+                updateFacility.DeedsInfo.ErFNumber = deedsInfo.ErFNumber;
+                updateFacility.DeedsInfo.TitleDeedNumber = deedsInfo.TitleDeedNumber;
+                updateFacility.DeedsInfo.Extent = deedsInfo.Extent;
+                updateFacility.DeedsInfo.OwnerInfomation = deedsInfo.OwnerInfomation;
+                updateFacility.DeedsInfo.ModifiedUserId = deedsInfo.ModifiedUserId;
+                updateFacility.DeedsInfo.ModifiedDate = DateTime.Now;
+                unit.Facilities.Update(updateFacility);
+                unit.SaveChanges();
+            }
         }
 
         private void LogAuditTrail(string section, string type, int userId, int itemId)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TheProject.Model
 {
@@ -21,5 +22,8 @@ namespace TheProject.Model
         public int CreatedUserId { get; set; }
 
         public int? ModifiedUserId { get; set; }
+
+        [NotMapped]
+        public int? FacilityId { get; set; }
     }
 }
