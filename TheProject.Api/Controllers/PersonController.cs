@@ -52,10 +52,11 @@ namespace TheProject.Api.Controllers
                         Update(ref unit, resposiblePerson);
                     }
                 }
-
-                unit.Dispose();
+                 unit.Dispose();
+                
                 Task updateTask = new Task(() => LogAuditTrail("Person", action, userId, resposiblePerson.Id));
                 updateTask.Start();
+               
                 return Request.CreateResponse(HttpStatusCode.OK, new
                 {
                     content = true
@@ -72,15 +73,29 @@ namespace TheProject.Api.Controllers
         private void Create(ref ApplicationUnit unit, Person resposiblePerson)
         {
             resposiblePerson.CreatedDate = DateTime.Now;
-            unit.People.Add(resposiblePerson);
-            unit.SaveChanges();
+            Facility updateFacility = unit.Facilities.GetAll().FirstOrDefault(fc => fc.Id == resposiblePerson.FacilityId);
+            if (updateFacility != null)
+            {
+                updateFacility.ResposiblePerson = resposiblePerson;
+                unit.Facilities.Update(updateFacility);
+                unit.SaveChanges();
+            }
         }
 
         private void Update(ref ApplicationUnit unit, Person resposiblePerson)
         {
-            resposiblePerson.ModifiedDate = DateTime.Now;
-            unit.People.Update(resposiblePerson);
-            unit.SaveChanges();
+            Facility updateFacility = unit.Facilities.GetAll().FirstOrDefault(fc => fc.Id == resposiblePerson.FacilityId);
+            if (updateFacility != null)
+            {
+                updateFacility.ResposiblePerson.FullName = resposiblePerson.FullName;
+                updateFacility.ResposiblePerson.Designation = resposiblePerson.Designation;
+                updateFacility.ResposiblePerson.PhoneNumber = resposiblePerson.PhoneNumber;
+                updateFacility.ResposiblePerson.EmailAddress = resposiblePerson.EmailAddress;
+                updateFacility.ResposiblePerson.ModifiedUserId = resposiblePerson.ModifiedUserId;
+                updateFacility.ResposiblePerson.ModifiedDate = DateTime.Now;
+                unit.Facilities.Update(updateFacility);
+                unit.SaveChanges();
+            }
         }
 
         private void LogAuditTrail(string section, string type, int userId, int itemId)
