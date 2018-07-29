@@ -70,6 +70,10 @@
       <Project>{de5fb03b-0668-4629-bb7e-a9019b5b1be6}</Project>
       <Name>TheProject.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TheProject.ReportGenerator\TheProject.ReportGenerator.csproj">
+      <Project>{7198dd4a-bb06-4f5b-a0f8-a3df737736e1}</Project>
+      <Name>TheProject.ReportGenerator</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

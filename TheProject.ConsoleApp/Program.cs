@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -9,6 +10,8 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using TheProject.Data;
+using TheProject.Model;
+using TheProject.ReportGenerator;
 
 namespace TheProject.ConsoleApp
 {
@@ -20,12 +23,13 @@ namespace TheProject.ConsoleApp
 
             try
             {
-                var context = new DataContext();
-                context.Database.Initialize(true);
+                //var context = new DataContext();
+                //context.Database.Initialize(true);
 
-                context.SaveChanges();
+                //context.SaveChanges();
 
-                SerializeImage();
+                //SerializeImage();
+                GenerateReport();
                 Console.WriteLine("Done...");
                 Console.ReadLine();
             }
@@ -74,6 +78,30 @@ namespace TheProject.ConsoleApp
             {
                 fileStream.Write(fileByte, 0, fileByte.Length);
                 fileStream.Close();
+            }
+        }
+
+        private static void GenerateReport()
+        {
+            FacilityReport facilityReport = new FacilityReport();
+            ApplicationUnit unit = new ApplicationUnit();
+
+            List<Facility> facilities = unit.Facilities.GetAll()
+                                        .Include(b => b.Buildings)
+                                        .Include(d => d.DeedsInfo)
+                                        .Include(c => c.Portfolio)
+                                        .Include(p => p.ResposiblePerson)
+                                        .Include(l => l.Location)
+                                        .ToList();
+
+            int i = 0;
+            foreach (var facility in facilities)
+            {
+                if (i < 30)
+                {
+                    string facilityLocation = facilityReport.GenerateInvoice(facility);
+                    i++;
+                }
             }
         }
     }
