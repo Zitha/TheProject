@@ -1,0 +1,162 @@
+﻿@model TheProject.ReportWebApplication.Models.Building
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Building</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.BuildingNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BuildingNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BuildingName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BuildingName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BuildingType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BuildingType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BuildingStandard)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BuildingStandard)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NumberOfFloors)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NumberOfFloors)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FootPrintArea)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FootPrintArea)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ImprovedArea)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ImprovedArea)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Heritage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Heritage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OccupationYear)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OccupationYear)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DisabledAccess)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DisabledAccess)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DisabledComment)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DisabledComment)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ConstructionDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ConstructionDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Photo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Photo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedUserId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedUserId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedUserId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedUserId)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

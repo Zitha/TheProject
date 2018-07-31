@@ -1,0 +1,135 @@
+﻿@model IEnumerable<TheProject.ReportWebApplication.Models.Building>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.BuildingNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BuildingName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BuildingType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BuildingStandard)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NumberOfFloors)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FootPrintArea)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ImprovedArea)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Heritage)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OccupationYear)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DisabledAccess)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DisabledComment)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ConstructionDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Photo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedUserId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ModifiedDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ModifiedUserId)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.BuildingNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BuildingName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BuildingType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BuildingStandard)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NumberOfFloors)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FootPrintArea)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ImprovedArea)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Heritage)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OccupationYear)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DisabledAccess)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DisabledComment)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ConstructionDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Photo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreatedDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreatedUserId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ModifiedDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ModifiedUserId)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>
