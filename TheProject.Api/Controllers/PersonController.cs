@@ -43,12 +43,12 @@ namespace TheProject.Api.Controllers
                 {
                     if (resposiblePerson.Id == 0)
                     {
-                        userId = resposiblePerson.CreatedUserId;
+                   //     userId = resposiblePerson.CreatedUserId;
                         Create(ref unit, resposiblePerson);
                     }
                     else
                     {
-                        userId = resposiblePerson.ModifiedUserId.Value;
+                    //    userId = resposiblePerson.ModifiedUserId.Value;
                         Update(ref unit, resposiblePerson);
                     }
                 }
@@ -72,30 +72,30 @@ namespace TheProject.Api.Controllers
 
         private void Create(ref ApplicationUnit unit, Person resposiblePerson)
         {
-            resposiblePerson.CreatedDate = DateTime.Now;
-            Facility updateFacility = unit.Facilities.GetAll().FirstOrDefault(fc => fc.Id == resposiblePerson.FacilityId);
-            if (updateFacility != null)
-            {
-                updateFacility.ResposiblePerson = resposiblePerson;
-                unit.Facilities.Update(updateFacility);
-                unit.SaveChanges();
-            }
+            //resposiblePerson.CreatedDate = DateTime.Now;
+            //Facility updateFacility = unit.Facilities.GetAll().FirstOrDefault(fc => fc.Id == resposiblePerson.FacilityId);
+            //if (updateFacility != null)
+            //{
+            //    updateFacility.ResposiblePerson = resposiblePerson;
+            //    unit.Facilities.Update(updateFacility);
+            //    unit.SaveChanges();
+            //}
         }
 
         private void Update(ref ApplicationUnit unit, Person resposiblePerson)
         {
-            Facility updateFacility = unit.Facilities.GetAll().FirstOrDefault(fc => fc.Id == resposiblePerson.FacilityId);
-            if (updateFacility != null)
-            {
-                updateFacility.ResposiblePerson.FullName = resposiblePerson.FullName;
-                updateFacility.ResposiblePerson.Designation = resposiblePerson.Designation;
-                updateFacility.ResposiblePerson.PhoneNumber = resposiblePerson.PhoneNumber;
-                updateFacility.ResposiblePerson.EmailAddress = resposiblePerson.EmailAddress;
-                updateFacility.ResposiblePerson.ModifiedUserId = resposiblePerson.ModifiedUserId;
-                updateFacility.ResposiblePerson.ModifiedDate = DateTime.Now;
-                unit.Facilities.Update(updateFacility);
-                unit.SaveChanges();
-            }
+            //Facility updateFacility = unit.Facilities.GetAll().FirstOrDefault(fc => fc.Id == resposiblePerson.FacilityId);
+            //if (updateFacility != null)
+            //{
+            //    updateFacility.ResposiblePerson.FullName = resposiblePerson.FullName;
+            //    updateFacility.ResposiblePerson.Designation = resposiblePerson.Designation;
+            //    updateFacility.ResposiblePerson.PhoneNumber = resposiblePerson.PhoneNumber;
+            //    updateFacility.ResposiblePerson.EmailAddress = resposiblePerson.EmailAddress;
+            //    //updateFacility.ResposiblePerson.ModifiedUserId = resposiblePerson.ModifiedUserId;
+            //    //updateFacility.ResposiblePerson.ModifiedDate = DateTime.Now;
+            //    unit.Facilities.Update(updateFacility);
+            //    unit.SaveChanges();
+            //}
         }
 
         private void LogAuditTrail(string section, string type, int userId, int itemId)

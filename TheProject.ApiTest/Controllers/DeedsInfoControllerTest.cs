@@ -26,9 +26,9 @@ namespace TheProject.Api.Controllers.Tests
                 TitleDeedNumber= "123456",
                 Extent= "Ext 2",
                 OwnerInfomation = "Mr P",
-                CreatedDate = DateTime.Now,
-                CreatedUserId = 1,
-                FacilityId = 2
+                //CreatedDate = DateTime.Now,
+                //CreatedUserId = 1,
+                //FacilityId = 2
             };
             var result = controller.CreateEdit(deedsInfo);
             Assert.IsTrue(result.IsSuccessStatusCode);
@@ -56,11 +56,11 @@ namespace TheProject.Api.Controllers.Tests
                 TitleDeedNumber = "123456",
                 Extent = "Test Edit",
                 OwnerInfomation = "Mr P Changed",
-                CreatedDate = DateTime.Now,
-                CreatedUserId = 1,
-                ModifiedDate = DateTime.Now,
-                ModifiedUserId = 1,
-                FacilityId = 2
+                //CreatedDate = DateTime.Now,
+                //CreatedUserId = 1,
+                //ModifiedDate = DateTime.Now,
+                //ModifiedUserId = 1,
+                //FacilityId = 2
             };
             var result = controller.CreateEdit(deedsInfo);
             Assert.IsTrue(result.IsSuccessStatusCode);

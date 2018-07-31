@@ -60,7 +60,7 @@ namespace TheProject.Api.Controllers
                     }
 
                     if (location.Id == 0) {
-                        userId = location.CreatedUserId;
+                      //  userId = location.CreatedUserId;
                         Create(ref unit, location);
                     }                       
                     else {
@@ -70,7 +70,7 @@ namespace TheProject.Api.Controllers
                         _location.Suburb = location.Suburb;
                         _location.LocalMunicipality = location.LocalMunicipality;
                         _location.Province = location.Province;
-                        _location.FacilityId = location.FacilityId;
+                       // _location.FacilityId = location.FacilityId;
                         _location.GPSCoordinates = location.GPSCoordinates;
                         _location.BoundryPolygon = location.BoundryPolygon;
                         Update(ref unit, _location);
@@ -95,32 +95,32 @@ namespace TheProject.Api.Controllers
 
         private void Create(ref ApplicationUnit unit, Location location)
         {
-            location.CreatedDate = DateTime.Now;
+           // location.CreatedDate = DateTime.Now;
 
-            Facility updateFacility = unit.Facilities.GetAll().FirstOrDefault(fc => fc.Id == location.FacilityId);
-            if (updateFacility != null)
-            {
-                updateFacility.Location = location;
-                unit.Facilities.Update(updateFacility);
-                unit.SaveChanges();
-            }
+            //Facility updateFacility = unit.Facilities.GetAll().FirstOrDefault(fc => fc.Id == location.FacilityId);
+            //if (updateFacility != null)
+            //{
+            //    updateFacility.Location = location;
+            //    unit.Facilities.Update(updateFacility);
+            //    unit.SaveChanges();
+            //}
         }
 
         private void Update(ref ApplicationUnit unit, Location location)
         {
-            Facility updateFacility = unit.Facilities.GetAll().FirstOrDefault(fc => fc.Id == location.FacilityId);
-            if (updateFacility != null)
-            {
-                updateFacility.Location.StreetAddress = location.StreetAddress;
-                updateFacility.Location.Suburb = location.Suburb;
-                updateFacility.Location.Province = location.Province;
-                updateFacility.Location.LocalMunicipality = location.LocalMunicipality;
-                updateFacility.Location.Region = location.Region;
-                updateFacility.Location.ModifiedUserId = location.ModifiedUserId;
-                updateFacility.Location.ModifiedDate = DateTime.Now;
-                unit.Facilities.Update(updateFacility);
-                unit.SaveChanges();
-            }
+            //Facility updateFacility = unit.Facilities.GetAll().FirstOrDefault(fc => fc.Id == location.FacilityId);
+            //if (updateFacility != null)
+            //{
+            //    updateFacility.Location.StreetAddress = location.StreetAddress;
+            //    updateFacility.Location.Suburb = location.Suburb;
+            //    updateFacility.Location.Province = location.Province;
+            //    updateFacility.Location.LocalMunicipality = location.LocalMunicipality;
+            //    updateFacility.Location.Region = location.Region;
+            //    updateFacility.Location.ModifiedUserId = location.ModifiedUserId;
+            //    updateFacility.Location.ModifiedDate = DateTime.Now;
+            //    unit.Facilities.Update(updateFacility);
+            //    unit.SaveChanges();
+            //}
         }
         private void CreateEditBoundryPolygon(List<BoundryPolygon> boundryPolygons, ref ApplicationUnit unit, Location location)
         {          

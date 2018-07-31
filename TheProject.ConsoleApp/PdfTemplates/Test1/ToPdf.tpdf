@@ -1,0 +1,67 @@
+﻿<html>
+<head>
+	<title>Index PdfView </title>
+	<style type="text/css" >
+	.name {
+		background-color: red;
+	}
+	.myTable {
+		width: 100%;
+		background-color: gray;
+		border: 1px;
+		border-color: brown;
+	}
+	td{
+		font-family: "Segoe UI",Arial,Sans-Serif;
+		font-size: 12px;
+		line-height: normal;
+		color: #111;
+	}
+</style>
+</head>
+<body>
+<table style="width: 700px">
+	<tr>
+		<td><table>
+				<tr>
+					<td><b>GUARANTEE CERTIFICATE</b></td>
+					<td><img style="width: 100px; height: 50px;" src="http://localhost:55273/Images/syscap_logo.png" /></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr><td>To: {To}</td></tr>
+	<tr><td>FAO: {FAO}</td></tr>
+	<tr><td>Date: {RefDate}</td></tr>
+	<tr><td>Warranty Expiry Date: {WarrantyExpiryDate}</td></tr>	
+	<tr><td>Guarantee Certificate No.:{RefNo}</td></tr>
+	<tr><td>&nbsp;</td></tr>
+	<tr><td>Customer: {Name}</td></tr>
+	<tr><td>Customer Address:  {Address}</td></tr>
+	<tr><td>&nbsp;</td></tr>
+	<tr>
+		<td>
+			This product’s warranty, provided by our company, covers a period of 1 year 
+			form the dahe Material against above Purchase order is guaranteed for any manufacturing damage / damage as per specification for 
+			(Type possible time period as per your product, here we example) 2 years from date of commissioning or for 48 Months (Example) from date of supply, whichever is earlier. 
+		</td>
+	</tr>
+	<tr><td>&nbsp;</td></tr>
+	<tr>
+		<td>
+			Further, you can also note for any particular product part like – This Guarantee is only for value of _____________________________  ( Name of Parts or name of product ).
+		</td>
+	</tr>
+	<tr><td>&nbsp;</td></tr>
+	<tr>
+		<td>
+			For, ABCDEF Company,
+		</td>
+
+	</tr>
+	<tr><td>&nbsp;</td></tr>
+	<tr><td>Authorized Signature & Stamp</td></tr>
+
+</table>
+</body>
+</html> 

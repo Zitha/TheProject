@@ -8,6 +8,8 @@ using TheProject.ReportWebApplication.Services;
 using System.Data.Entity;
 using System.Net;
 using System.Net.Mime;
+using System.IO;
+using System.IO.Compression;
 
 namespace TheProject.ReportWebApplication.Controllers
 {
@@ -35,7 +37,7 @@ namespace TheProject.ReportWebApplication.Controllers
 
         // GET: Facility/Edit/5
         [HttpPost]
-        public ActionResult DownloadFacility([Bind(Include = "ClientCode")] Facility facility)
+        public FileResult DownloadFacility([Bind(Include = "ClientCode")] Facility facility)
         {
             FacilityReport facilityReport = new FacilityReport();
             ApplicationUnit unit = new ApplicationUnit();
@@ -55,7 +57,7 @@ namespace TheProject.ReportWebApplication.Controllers
             {
                 if (!System.IO.File.Exists(filePath))
                 {
-                    return HttpNotFound();
+                    return null;
                 }
                 byte[] file = webClient.DownloadData(filePath);
                 return File(file, MediaTypeNames.Application.Pdf);
@@ -78,13 +80,18 @@ namespace TheProject.ReportWebApplication.Controllers
                                         .Include("Location.BoundryPolygon")
                                         .Where(ss => ss.Status == "Submitted")
                                         .ToList();
-
-            foreach (var facility in dbFacilities)
+            using (var memoryStream = new MemoryStream())
             {
-                facilityReport.GenerateFacilityReport(facility);
+                using (var ziparchive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+                {
+                    foreach (var facility in dbFacilities)
+                    {
+                        var filePath = facilityReport.GenerateFacilityReport(facility);
+                        ziparchive.CreateEntryFromFile(filePath, facility.ClientCode + ".pdf");
+                    }
+                }
+                return File(memoryStream.ToArray(), "application/zip", "facilities.zip");
             }
-
-            return View();
         }
         #endregion
     }

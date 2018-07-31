@@ -28,9 +28,9 @@ namespace TheProject.Api.Controllers.Tests
                 Designation = "",
                 PhoneNumber = "01245637895",
                 EmailAddress = "g@g.com",                
-                CreatedDate = DateTime.Now,
-                CreatedUserId = 1,
-                FacilityId = 2
+                //CreatedDate = DateTime.Now,
+                //CreatedUserId = 1,
+                //FacilityId = 2
             };
             var result = controller.CreateEdit(person);
             Assert.IsTrue(result.IsSuccessStatusCode);
@@ -49,11 +49,11 @@ namespace TheProject.Api.Controllers.Tests
                 Designation = "Principal",
                 PhoneNumber = "01245637895",
                 EmailAddress = "imaila@dalparkprivate.co.za",
-                CreatedDate = DateTime.Now,
-                CreatedUserId = 1,
-                ModifiedDate = DateTime.Now,
-                ModifiedUserId = 1,
-                FacilityId = 2
+                //CreatedDate = DateTime.Now,
+                //CreatedUserId = 1,
+                //ModifiedDate = DateTime.Now,
+                //ModifiedUserId = 1,
+                //FacilityId = 2
             };
             var result = controller.CreateEdit(person);
             Assert.IsTrue(result.IsSuccessStatusCode);

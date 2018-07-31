@@ -37,7 +37,7 @@ namespace TheProject.ReportGenerator
             {
                 if (i < 30)
                 {
-                    string facilityLocation = facilityReport.GenerateInvoice(facility);
+                    string facilityLocation = facilityReport.GenerateFacilityReport(facility);
                     dictionary.Add(facilityLocation, facility.ClientCode);
                     i++;
                 }
@@ -64,7 +64,7 @@ namespace TheProject.ReportGenerator
             int i = 0;
             if (facility != null)
             {
-                string facilityLocation = facilityReport.GenerateInvoice(facility);
+                string facilityLocation = facilityReport.GenerateFacilityReport(facility);
                 return facilityLocation;
             }
             else {
