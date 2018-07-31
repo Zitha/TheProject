@@ -15,7 +15,7 @@ namespace TheProject.ReportGenerator
     {
         // string _currpath = @"C:\Projects\TheProject\TheProject.Web\TheProject.ReportGenerator\Reports\";
 
-        public string GenerateInvoice(Facility facility)
+        public string GenerateFacilityReport(Facility facility)
         {
             string _currpath = @"C:\Projects\TheProject\TheProject.Web\TheProject.ReportGenerator\Reports\";
             var doc = new Document(PageSize.A4);
@@ -49,12 +49,20 @@ namespace TheProject.ReportGenerator
 
             //------------------------//--------------------------------------------------//
             PdfPTable fourthTable = GetFourthTable(facility);
+            fourthTable.SpacingBefore = 10f;
+            fourthTable.SpacingAfter = 10f;
             //-----------------------//---------------------------------------------------//
+
+            PdfPTable fithTable = GetFithTable(facility);
+
             doc.Add(mainTable);
             doc.Add(firstTable);
             doc.Add(secondTable);
+            // doc.Add(firstTable);
             doc.Add(thirdTable);
+            //doc.Add(firstTable);
             doc.Add(fourthTable);
+            doc.Add(fithTable);
 
             doc.Close();
             output.Close();
@@ -91,7 +99,7 @@ namespace TheProject.ReportGenerator
                 BackgroundColor = BaseColor.LIGHT_GRAY,
                 BorderColor = BaseColor.BLACK
             };
-            invNumberCellData.AddElement(new Phrase(string.Format("User Department:\n Facility Management and Real Estate"),
+            invNumberCellData.AddElement(new Phrase(string.Format("User Department:\n Facilities Management and Real Estate"),
                 FontFactory.GetFont(FontFactory.HELVETICA, 12, Font.BOLD, BaseColor.BLACK)));
             invNumberCellData.VerticalAlignment = Element.ALIGN_LEFT;
 
@@ -120,7 +128,7 @@ namespace TheProject.ReportGenerator
             table.AddCell(venusNumberCell);
             table.AddCell(venusNumberCellData);
 
-            //Label for Access Card
+            //Label for Asset Card
             var accessCardCell = new PdfPCell
             {
                 VerticalAlignment = Element.ALIGN_MIDDLE,
@@ -130,7 +138,7 @@ namespace TheProject.ReportGenerator
                 Colspan = 4,
                 PaddingLeft = 170
             };
-            accessCardCell.AddElement(new Phrase("Access Card",
+            accessCardCell.AddElement(new Phrase("Asset Card",
                 FontFactory.GetFont(FontFactory.HELVETICA, 12, Font.BOLD, BaseColor.BLACK)));
             table.AddCell(accessCardCell);
 
@@ -146,7 +154,7 @@ namespace TheProject.ReportGenerator
                 WidthPercentage = 90
             };
 
-            //Access Identification Label
+            //Asset Identification Label
             var accessIdentificationCellLbl = new PdfPCell
             {
                 Colspan = 5,
@@ -157,7 +165,7 @@ namespace TheProject.ReportGenerator
                 HorizontalAlignment = Element.ALIGN_CENTER,
                 PaddingLeft = 170
             };
-            accessIdentificationCellLbl.AddElement(new Phrase("Access Identification",
+            accessIdentificationCellLbl.AddElement(new Phrase("Asset Identification",
                 FontFactory.GetFont(FontFactory.HELVETICA, 12, Font.BOLD, BaseColor.BLACK)));
             accessIdentificationCellLbl.VerticalAlignment = Element.ALIGN_LEFT;
             table.AddCell(accessIdentificationCellLbl);
@@ -228,7 +236,7 @@ namespace TheProject.ReportGenerator
             table.AddCell(titleDeedData);
 
             //Ward Label and Data2
-            PdfPCell zooningLabel = GetCell("Zooning", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
+            PdfPCell zooningLabel = GetCell("Zoning", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
             PdfPCell zooningData = GetCell(facility.Zoning, BaseColor.BLACK, BaseColor.WHITE);
 
             table.AddCell(zooningLabel);
@@ -249,15 +257,16 @@ namespace TheProject.ReportGenerator
             table.AddCell(extentData);
 
             //User Label and Data
+            string resposoblePersonName = facility.ResposiblePerson != null ? facility.ResposiblePerson.FullName : string.Empty;
             PdfPCell userLabel = GetCell("User", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
-            PdfPCell userData = GetCell("facility.ResposiblePerson.FullName", BaseColor.BLACK, BaseColor.WHITE);
+            PdfPCell userData = GetCell(resposoblePersonName, BaseColor.BLACK, BaseColor.WHITE);
 
             table.AddCell(userLabel);
             table.AddCell(userData);
 
-            //Extent Label and Data
+            string resposoblePersonEmail = facility.ResposiblePerson != null ? facility.ResposiblePerson.FullName : string.Empty;
             PdfPCell contactLabel = GetCell("Contact", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
-            PdfPCell contactData = GetCell("facility.ResposiblePerson.EmailAddress", BaseColor.BLACK, BaseColor.WHITE);
+            PdfPCell contactData = GetCell(resposoblePersonEmail, BaseColor.BLACK, BaseColor.WHITE);
 
             table.AddCell(contactLabel);
             table.AddCell(contactData);
@@ -274,7 +283,7 @@ namespace TheProject.ReportGenerator
                 WidthPercentage = 90
             };
 
-            //Label for Access Card
+            //Label for Asset Card
             var emptyCell = new PdfPCell
             {
                 VerticalAlignment = Element.ALIGN_TOP,
@@ -294,8 +303,8 @@ namespace TheProject.ReportGenerator
                 Colspan = 2,
                 MinimumHeight = 120
             };
-            idPhotoCell.AddElement(new Phrase("ID Photo",
-                FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK)));
+
+            List<Image> images = GetImages(facility.IDPicture);
 
             var locationCell = new PdfPCell
             {
@@ -306,8 +315,30 @@ namespace TheProject.ReportGenerator
                 Colspan = 2,
                 MinimumHeight = 120
             };
-            locationCell.AddElement(new Phrase("Locaton (Google)",
-                FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK)));
+            if (images.Count > 0)
+            {
+                images[0].ScaleToFit(300f, 120f);
+                images[0].Alignment = 50;
+
+                idPhotoCell.AddElement(images[0]);
+            }
+            else
+            {
+                idPhotoCell.AddElement(new Phrase("Photo",
+               FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK)));
+            }
+
+            if (images.Count > 1)
+            {
+                images[1].ScaleToFit(300f, 120f);
+                images[1].Alignment = 50;
+                locationCell.AddElement(images[1]);
+            }
+            else
+            {
+                locationCell.AddElement(new Phrase("Sketch",
+                        FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK)));
+            }
 
             var sketachCell = new PdfPCell
             {
@@ -318,7 +349,7 @@ namespace TheProject.ReportGenerator
                 Colspan = 4,
                 MinimumHeight = 120
             };
-            sketachCell.AddElement(new Phrase("Sketch",
+            sketachCell.AddElement(new Phrase("Locaton (Google) ",
                 FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK)));
             table.AddCell(emptyCell);
             table.AddCell(idPhotoCell);
@@ -326,6 +357,24 @@ namespace TheProject.ReportGenerator
             table.AddCell(sketachCell);
 
             return table;
+        }
+
+        private List<Image> GetImages(string iDPicture)
+        {
+            List<Image> images = new List<Image>();
+            if (!string.IsNullOrEmpty(iDPicture))
+            {
+                string[] pictures = iDPicture.Split(',');
+                for (int i = 0; i < pictures.Length; i++)
+                {
+                    string imagesLocation = @"C:\Users\Ndavhe\Desktop\UploadPictures\";
+                    if (File.Exists(imagesLocation + pictures[i] + ".png"))
+                    {
+                        images.Add(Image.GetInstance(imagesLocation + pictures[i] + ".png"));
+                    }
+                }
+            }
+            return images;
         }
 
         private PdfPTable GetFourthTable(Facility updatedfacility, Facility oldFacility = null)
@@ -351,17 +400,18 @@ namespace TheProject.ReportGenerator
             table.AddCell(verficationInfoCell);
 
             //GPS Co-Ordinates Label and Data
-            string facilityLatitude = updatedfacility.Location.GPSCoordinates != null ? updatedfacility.Location.GPSCoordinates.Latitude : string.Empty;
-            string facilityLongitude = updatedfacility.Location.GPSCoordinates != null ? updatedfacility.Location.GPSCoordinates.Longitude : string.Empty;
+
             PdfPCell bGpsLabel = GetCell("GPS Co-Ordinates", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
-            PdfPCell bGpsData = GetCell(string.Format("Latitude {0} \n Longitude {1}",
-                facilityLatitude, facilityLongitude), BaseColor.BLACK, BaseColor.WHITE);
+            PdfPCell bGpsData = GetCell(string.Format("Latitude: {0} \nLongitude: {1}",
+                "", ""), BaseColor.BLACK, BaseColor.WHITE);
 
             table.AddCell(bGpsLabel);
             table.AddCell(bGpsData);
 
+            string facilityLatitude = updatedfacility.Location.GPSCoordinates != null ? updatedfacility.Location.GPSCoordinates.Latitude : string.Empty;
+            string facilityLongitude = updatedfacility.Location.GPSCoordinates != null ? updatedfacility.Location.GPSCoordinates.Longitude : string.Empty;
             PdfPCell aGpsLabel = GetCell("GPS Co-Ordinates", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
-            PdfPCell aGpsData = GetCell(string.Format("Latitude {0} \n Longitude {1}", facilityLatitude,
+            PdfPCell aGpsData = GetCell(string.Format("Latitude: {0} \nLongitude: {1}", facilityLatitude,
                 facilityLongitude), BaseColor.BLACK, BaseColor.WHITE);
 
             table.AddCell(aGpsLabel);
@@ -369,20 +419,20 @@ namespace TheProject.ReportGenerator
 
             //Usage Label and Data
             PdfPCell bUsageLabel = GetCell("Usage", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
-            PdfPCell bUsageData = GetCell(updatedfacility.Status, BaseColor.BLACK, BaseColor.WHITE);
+            PdfPCell bUsageData = GetCell("", BaseColor.BLACK, BaseColor.WHITE);
 
             table.AddCell(bUsageLabel);
             table.AddCell(bUsageData);
 
             PdfPCell aUsageLabel = GetCell("Usage", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
-            PdfPCell aUsageData = GetCell(updatedfacility.Status, BaseColor.BLACK, BaseColor.WHITE);
+            PdfPCell aUsageData = GetCell(updatedfacility.SettlementType, BaseColor.BLACK, BaseColor.WHITE);
 
             table.AddCell(aUsageLabel);
             table.AddCell(aUsageData);
 
             //"No. Improvements Label and Data
             PdfPCell bImprovementLabel = GetCell("No. Improvements", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
-            PdfPCell bImprovementData = GetCell(string.Format("{0}", updatedfacility.Buildings.Capacity), BaseColor.BLACK, BaseColor.WHITE);
+            PdfPCell bImprovementData = GetCell(string.Format("{0}", ""), BaseColor.BLACK, BaseColor.WHITE);
 
             table.AddCell(bImprovementLabel);
             table.AddCell(bImprovementData);
@@ -395,7 +445,7 @@ namespace TheProject.ReportGenerator
 
             //Local Municipality Label and Data
             PdfPCell bImproveSizeLabel = GetCell("Improvements Size (M2)", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
-            PdfPCell bImproveSizeData = GetCell(string.Format("{0}", updatedfacility.Buildings.Capacity), BaseColor.BLACK, BaseColor.WHITE);
+            PdfPCell bImproveSizeData = GetCell(string.Format("{0}", ""), BaseColor.BLACK, BaseColor.WHITE);
 
             table.AddCell(bImproveSizeLabel);
             table.AddCell(bImproveSizeData);
@@ -408,7 +458,7 @@ namespace TheProject.ReportGenerator
 
             //Occupation Status (Capacity) Label and Data
             PdfPCell bOccStatusLabel = GetCell("Occupation Status (Capacity)", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
-            PdfPCell bOccStatusData = GetCell(updatedfacility.Status, BaseColor.BLACK, BaseColor.WHITE);
+            PdfPCell bOccStatusData = GetCell("", BaseColor.BLACK, BaseColor.WHITE);
 
             table.AddCell(bOccStatusLabel);
             table.AddCell(bOccStatusData);
@@ -419,24 +469,33 @@ namespace TheProject.ReportGenerator
             table.AddCell(aOccStatusLabel);
             table.AddCell(aOccStatusData);
 
-            int i = 1;
-            foreach (var building in updatedfacility.Buildings)
+
+            for (int i = 0; i < 5; i++)
             {
-                PdfPCell bPolygonLabel = GetCell("Boundary Polygon " + i, BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
-                PdfPCell bPolygonData = GetCell(string.Format("Latitude {0} \n Longitude {1}",
-                building.GPSCoordinates.Latitude, building.GPSCoordinates.Longitude), BaseColor.BLACK, BaseColor.WHITE);
+                BoundryPolygon polygon = null;
+                if (i < updatedfacility.Location.BoundryPolygon.Count)
+                {
+                    polygon = updatedfacility.Location.BoundryPolygon[i];
+                }
+
+                //string bpolygon = polygon != null ? string.Format("Latitude: {0} \nLongitude: {1}",
+                //polygon.Latitude, polygon.Longitude) : "N/A";
+                int count = i + 1;
+                PdfPCell bPolygonLabel = GetCell("Boundary Polygon " + count, BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
+                PdfPCell bPolygonData = GetCell("N/A", BaseColor.BLACK, BaseColor.WHITE);
 
                 table.AddCell(bPolygonLabel);
                 table.AddCell(bPolygonData);
 
-                PdfPCell aPolygonLabel = GetCell("Boundary Polygon " + i, BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
-                PdfPCell aPolygonData = GetCell(string.Format("Latitude {0} \n Longitude {1}",
-                building.GPSCoordinates.Latitude, building.GPSCoordinates.Longitude), BaseColor.BLACK, BaseColor.WHITE);
+                string apolygon = polygon != null ? string.Format("Latitude: {0} \nLongitude: {1}",
+                polygon.Latitude, polygon.Longitude) : "N/A";
+                PdfPCell aPolygonLabel = GetCell("Boundary Polygon " + count, BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
+                PdfPCell aPolygonData = GetCell(apolygon, BaseColor.BLACK, BaseColor.WHITE);
 
                 table.AddCell(aPolygonLabel);
                 table.AddCell(aPolygonData);
-                i++;
             }
+
             //Comments
             var commentsCell = new PdfPCell
             {
@@ -450,6 +509,92 @@ namespace TheProject.ReportGenerator
             commentsCell.AddElement(new Phrase("Comments",
                 FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK)));
             table.AddCell(commentsCell);
+
+            return table;
+        }
+
+        private PdfPTable GetFithTable(Facility updatedfacility, Facility oldFacility = null)
+        {
+            PdfPTable firstTable = new PdfPTable(1)
+            {
+                HorizontalAlignment = Element.ALIGN_CENTER,
+                WidthPercentage = 90
+            };
+            //Building Table
+            PdfPTable table = new PdfPTable(6)
+            {
+                HorizontalAlignment = Element.ALIGN_CENTER,
+                WidthPercentage = 90
+            };
+
+            //Building Infomation
+            PdfPCell baseInfoCell = GetCell("Improvement/Building Schedule", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
+            baseInfoCell.Colspan = 6;
+            baseInfoCell.MinimumHeight = 15;
+
+            table.AddCell(baseInfoCell);
+
+            PdfPCell cell = new PdfPCell
+            {
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                BorderColor = BaseColor.WHITE,
+                BackgroundColor = BaseColor.WHITE
+            };
+            cell.AddElement(new Phrase(string.Empty, FontFactory.GetFont(FontFactory.HELVETICA, 10, BaseColor.WHITE)));
+            cell.Colspan = 6;
+
+            table.AddCell(cell);
+
+            PdfPCell b1 = GetCell("No ", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
+            PdfPCell b2 = GetCell("Id ", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
+            PdfPCell b3 = GetCell("Name ", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
+            PdfPCell b4 = GetCell("Size(m2) ", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
+            PdfPCell b5 = GetCell("Photo ", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
+            PdfPCell b6 = GetCell("Sketch ", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
+
+            table.AddCell(b1);
+            table.AddCell(b2);
+            table.AddCell(b3);
+            table.AddCell(b4);
+            table.AddCell(b5);
+            table.AddCell(b6);
+
+            int i = 1;
+            foreach (var building in updatedfacility.Buildings)
+            {
+                PdfPCell bb1 = GetCell(i.ToString(), BaseColor.BLACK, BaseColor.WHITE, Font.NORMAL);
+                PdfPCell bb2 = GetCell(building.BuildingNumber.ToString(), BaseColor.BLACK, BaseColor.WHITE, Font.NORMAL);
+                PdfPCell bb3 = GetCell(building.BuildingName.ToString(), BaseColor.BLACK, BaseColor.WHITE, Font.NORMAL);
+                PdfPCell bb4 = GetCell(building.FootPrintArea.ToString(), BaseColor.BLACK, BaseColor.WHITE, Font.NORMAL);
+
+                //Building Images
+                List<Image> images = GetImages(building.Photo);
+                PdfPCell bb5 = GetCell(string.Empty, BaseColor.BLACK, BaseColor.WHITE, Font.NORMAL);
+                PdfPCell bb6 = GetCell(string.Empty, BaseColor.BLACK, BaseColor.WHITE, Font.NORMAL);
+
+                if (images.Count>0)
+                {
+                    images[0].ScaleToFit(90f, 50f);
+                    images[0].Alignment = 50;
+
+                    bb5.AddElement(images[0]);
+                }
+                if (images.Count > 1)
+                {
+                    images[1].ScaleToFit(90f, 50f);
+                    images[1].Alignment = 50;
+
+                    bb6.AddElement(images[1]);
+                }
+
+                table.AddCell(bb1);
+                table.AddCell(bb2);
+                table.AddCell(bb3);
+                table.AddCell(bb4);
+                table.AddCell(bb5);
+                table.AddCell(bb6);
+                i++;
+            }
 
             return table;
         }

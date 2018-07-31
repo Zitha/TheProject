@@ -91,16 +91,16 @@ namespace TheProject.ConsoleApp
                                         .Include(d => d.DeedsInfo)
                                         .Include(c => c.Portfolio)
                                         .Include(p => p.ResposiblePerson)
-                                        .Include(l => l.Location)
+                                        .Include("Location.GPSCoordinates")
+                                        .Include("Location.BoundryPolygon")
                                         .ToList();
-
-            int i = 0;
+                //facility.ClientCode== "N14000000003740000000000000" || facility.ClientCode== "R22000000004960000000000000"
+                    //|| facility.ClientCode == "N14000000006110000000000000" ||
             foreach (var facility in facilities)
             {
-                if (i < 30)
+                if (facility.ClientCode == "H21005000022300000000000000"||facility.ClientCode== "H21000000001280000000000000")
                 {
-                    string facilityLocation = facilityReport.GenerateInvoice(facility);
-                    i++;
+                    string facilityLocation = facilityReport.GenerateFacilityReport(facility);
                 }
             }
         }

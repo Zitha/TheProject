@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
+using TheProject.Data;
+using TheProject.ReportGenerator;
 using TheProject.ReportWebApplication.Models;
 using TheProject.ReportWebApplication.Services;
-using TheProject.ReportGenerator;
-using System.IO.Compression;
+using System.Data.Entity;
+using System.Net;
+using System.Net.Mime;
 
 namespace TheProject.ReportWebApplication.Controllers
 {
@@ -34,56 +34,57 @@ namespace TheProject.ReportWebApplication.Controllers
         }
 
         // GET: Facility/Edit/5
+        [HttpPost]
         public ActionResult DownloadFacility([Bind(Include = "ClientCode")] Facility facility)
         {
-            if (string.IsNullOrEmpty(facility.ClientCode))
-            {
-                ModelState.AddModelError("", "Please Enter Client Code.");
-                return RedirectToAction("Index", "Facility");
-            }
-            else {
-                GenerateReport generateReport = new GenerateReport();
-                string fullPath = generateReport.GenerateOneReport(facility.ClientCode);
-                if (string.IsNullOrEmpty(fullPath))
-                {
-                    ModelState.AddModelError("", "Please Enter Client Code.");
-                    return RedirectToAction("Index", "Facility");
-                }
-                else {
-                    byte[] fileBytes = GetFile(fullPath);
-                    return File(fileBytes, "application/pdf", facility.ClientCode + ".pdf");
-                }               
-            }
-           
-        }
+            FacilityReport facilityReport = new FacilityReport();
+            ApplicationUnit unit = new ApplicationUnit();
 
-        byte[] GetFile(string s)
-        {
-            System.IO.FileStream fs = System.IO.File.OpenRead(s);
-            byte[] data = new byte[fs.Length];
-            int br = fs.Read(data, 0, data.Length);
-            if (br != fs.Length)
-                throw new System.IO.IOException(s);
-            return data;
+            Model.Facility dbFacility = unit.Facilities.GetAll()
+                                        .Include(b => b.Buildings)
+                                        .Include(d => d.DeedsInfo)
+                                        .Include(c => c.Portfolio)
+                                        .Include(p => p.ResposiblePerson)
+                                        .Include("Location.GPSCoordinates")
+                                        .Include("Location.BoundryPolygon")
+                                        .Where(f => f.ClientCode == facility.ClientCode).FirstOrDefault();
+
+            var filePath = facilityReport.GenerateFacilityReport(dbFacility);
+
+            using (var webClient = new WebClient())
+            {
+                if (!System.IO.File.Exists(filePath))
+                {
+                    return HttpNotFound();
+                }
+                byte[] file = webClient.DownloadData(filePath);
+                return File(file, MediaTypeNames.Application.Pdf);
+            }
         }
 
         // GET: Facility/Edit/5
         [HttpPost]
-        public FileResult DownloadAllFacility()
+        public ActionResult DownloadAllFacility()
         {
-            GenerateReport generateReport = new GenerateReport();
-            Dictionary<string, string> fullPathList = generateReport.GenerateAllReport();
-            using (var memoryStream = new MemoryStream())
+            FacilityReport facilityReport = new FacilityReport();
+            ApplicationUnit unit = new ApplicationUnit();
+
+            List<Model.Facility> dbFacilities = unit.Facilities.GetAll()
+                                        .Include(b => b.Buildings)
+                                        .Include(d => d.DeedsInfo)
+                                        .Include(c => c.Portfolio)
+                                        .Include(p => p.ResposiblePerson)
+                                        .Include("Location.GPSCoordinates")
+                                        .Include("Location.BoundryPolygon")
+                                        .Where(ss => ss.Status == "Submitted")
+                                        .ToList();
+
+            foreach (var facility in dbFacilities)
             {
-                using (var ziparchive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
-                {
-                    foreach (var item in fullPathList)
-                    {
-                        ziparchive.CreateEntryFromFile(item.Key, item.Value + ".pdf");
-                    }
-                }
-                return File(memoryStream.ToArray(), "application/zip", "facilities.zip");
+                facilityReport.GenerateFacilityReport(facility);
             }
+
+            return View();
         }
         #endregion
     }
