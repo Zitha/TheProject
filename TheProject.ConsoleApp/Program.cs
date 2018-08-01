@@ -2,16 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
 using TheProject.Data;
 using TheProject.Model;
 using TheProject.ReportGenerator;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace TheProject.ConsoleApp
 {
@@ -29,13 +27,45 @@ namespace TheProject.ConsoleApp
                 //context.SaveChanges();
 
                 //SerializeImage();
-                GenerateReport();
+                //GenerateReport();
+
+                ReadExcelData();
                 Console.WriteLine("Done...");
                 Console.ReadLine();
             }
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+
+        private static void ReadExcelData()
+        {
+            string path = @"C:\Projects\TheProject\TheProject.Web\TheProject.Web\Data\EMM list 20180507.xls";
+
+            Excel.Application xlApp = new Excel.Application();
+            Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(path);
+            var workSheets = xlWorkbook.Sheets.Count;
+            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
+            Excel.Range xlRange = xlWorksheet.UsedRange;
+
+            int rowCount = xlRange.Rows.Count;
+            int colCount = xlRange.Columns.Count;
+
+            //iterate over the rows and columns and print to the console as it appears in the file
+            //excel is not zero based!!
+            for (int i = 1; i <= rowCount; i++)
+            {
+                for (int j = 1; j <= colCount; j++)
+                {
+                    //new line
+                    if (j == 1)
+                        Console.Write("\r\n");
+
+                    //write the value to the console
+                    if (xlRange.Cells[i, j] != null && xlRange.Cells[i, j].Value2 != null)
+                        Console.Write(xlRange.Cells[i, j].Value2.ToString() + "\t");
+                }
             }
         }
 

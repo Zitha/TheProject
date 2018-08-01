@@ -1,12 +1,9 @@
 ﻿using iTextSharp.text;
 using iTextSharp.text.pdf;
-using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web;
 using TheProject.Model;
 
 namespace TheProject.ReportGenerator
@@ -17,7 +14,13 @@ namespace TheProject.ReportGenerator
 
         public string GenerateFacilityReport(Facility facility)
         {
-            string _currpath = @"C:\Projects\TheProject\TheProject.Web\TheProject.ReportGenerator\Reports\";
+            string _currpath = HttpContext.Current.Server.MapPath("~/Reports");
+            //string _currpath = @"C:\Projects\TheProject\TheProject.Web\TheProject.ReportGenerator\Reports\";
+            if (!Directory.Exists(_currpath))
+            {
+                Directory.CreateDirectory(_currpath);
+            }
+           
             var doc = new Document(PageSize.A4);
             _currpath = string.Format("{0}{1}.pdf", _currpath, facility.ClientCode);
             var output = new FileStream(_currpath, FileMode.Create);
@@ -367,7 +370,8 @@ namespace TheProject.ReportGenerator
                 string[] pictures = iDPicture.Split(',');
                 for (int i = 0; i < pictures.Length; i++)
                 {
-                    string imagesLocation = @"C:\Users\Ndavhe\Desktop\UploadPictures\";
+                    string imagesLocation = ConfigurationManager.AppSettings["PicturesPath"];
+
                     if (File.Exists(imagesLocation + pictures[i] + ".png"))
                     {
                         images.Add(Image.GetInstance(imagesLocation + pictures[i] + ".png"));
