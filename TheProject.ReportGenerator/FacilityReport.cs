@@ -17,7 +17,8 @@ namespace TheProject.ReportGenerator
 
         public string GenerateFacilityReport(Facility facility)
         {
-            string _currpath = @"C:\Projects\TheProject\TheProject.Web\TheProject.ReportGenerator\Reports\";
+
+            string _currpath = ConfigurationManager.AppSettings["ReportsPath"];
             var doc = new Document(PageSize.A4);
             _currpath = string.Format("{0}{1}.pdf", _currpath, facility.ClientCode);
             var output = new FileStream(_currpath, FileMode.Create);
