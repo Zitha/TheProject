@@ -37,7 +37,8 @@ namespace TheProject.ReportWebApplication.Controllers
 
         // GET: Facility/Edit/5
         [HttpPost]
-        public FileResult DownloadFacility([Bind(Include = "ClientCode")] Facility facility)
+        [ValidateAntiForgeryToken]
+        public ActionResult Index([Bind(Include = "ClientCode")] Facility facility)
         {
             FacilityReport facilityReport = new FacilityReport();
             ApplicationUnit unit = new ApplicationUnit();
@@ -50,6 +51,11 @@ namespace TheProject.ReportWebApplication.Controllers
                                         .Include("Location.BoundryPolygon")
                                         .Where(f => f.ClientCode == facility.ClientCode).FirstOrDefault();
 
+            if (dbFacility == null)
+            {
+                ModelState.AddModelError("", "Facility Does Not Exist.");
+                return View(facility);
+            }
             var filePath = facilityReport.GenerateFacilityReport(dbFacility);
 
             using (var webClient = new WebClient())

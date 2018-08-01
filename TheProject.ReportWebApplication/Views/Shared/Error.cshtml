@@ -1,13 +1,53 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Error</title>
-</head>
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Error";
+}
+
 <body>
-    <hgroup>
+    <div class="text-danger">
         <h1>Error.</h1>
         <h2>An error occurred while processing your request.</h2>
-    </hgroup>
+
+        @if (Request.IsLocal)
+        {
+            if (Model != null && Model.Exception != null)
+            {
+                <div class="col-md-2">
+                    <h4>Occured On:</h4>
+                </div>
+                <div class="col-md-10">
+                    <h4>@DateTime.Now</h4>
+                </div>
+
+                <div class="col-md-2">
+                    <h4>Exception Details:</h4>
+                </div>
+                <div class="col-md-10">
+                    <h4>@Model.Exception.ToString()</h4>
+                </div>
+            }
+            else
+            {
+                <h3>Exception was null</h3>
+            }
+        }
+        else
+        {
+            <div class="col-md-2">
+                <h4>Error Message:</h4>
+            </div>
+            <div class="col-md-10">
+                <h4>@Model.Exception.Message</h4>
+            </div>
+
+            <div class="col-md-2">
+                <h4>Occured On:</h4>
+            </div>
+            <div class="col-md-10">
+                <h4>@DateTime.Now</h4>
+            </div>
+        }
+    </div>
+
 </body>
-</html>
