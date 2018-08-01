@@ -32,9 +32,9 @@ namespace TheProject.Api.Controllers.Tests
                     Latitude = "-26.3258",
                     Longitude = "28.3658"
                 },                
-                CreatedDate = DateTime.Now,
-                CreatedUserId = 1,
-                FacilityId = 5
+                //CreatedDate = DateTime.Now,
+                //CreatedUserId = 1,
+                //FacilityId = 5
             };
             boundryPolygon.Add(new BoundryPolygon() { Longitude = "24.3698",Latitude="-25.3652"});
             boundryPolygon.Add(new BoundryPolygon() { Longitude = "26.3698", Latitude = "-26.3652" });
@@ -64,9 +64,9 @@ namespace TheProject.Api.Controllers.Tests
                     Latitude = "-26.325822222",
                     Longitude = "28.3658 2222"
                 },
-                CreatedDate = DateTime.Now,
-                CreatedUserId = 1,
-                FacilityId = 5
+                //CreatedDate = DateTime.Now,
+                //CreatedUserId = 1,
+                //FacilityId = 5
             };
             boundryPolygon.Add(new BoundryPolygon() { Longitude = "25.3698", Latitude = "-25.3652" });
             boundryPolygon.Add(new BoundryPolygon() { Longitude = "11.3698", Latitude = "-11.3652" });

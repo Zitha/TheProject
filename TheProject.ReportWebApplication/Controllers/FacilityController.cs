@@ -13,7 +13,7 @@ using System.IO.Compression;
 
 namespace TheProject.ReportWebApplication.Controllers
 {
-    public class FacilityController : Controller
+    public class FacilityController : BaseController
     {
         #region Properties
         private FacilityService facilityService;
@@ -41,7 +41,6 @@ namespace TheProject.ReportWebApplication.Controllers
         {
             FacilityReport facilityReport = new FacilityReport();
             ApplicationUnit unit = new ApplicationUnit();
-
             Model.Facility dbFacility = unit.Facilities.GetAll()
                                         .Include(b => b.Buildings)
                                         .Include(d => d.DeedsInfo)

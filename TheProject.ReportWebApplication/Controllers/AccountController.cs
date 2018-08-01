@@ -11,7 +11,7 @@ using TheProject.ReportWebApplication.Services;
 namespace TheProject.ReportWebApplication.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         #region Properties
         private UserService userService;
