@@ -1,5 +1,6 @@
 ﻿using iTextSharp.text;
 using iTextSharp.text.pdf;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
@@ -10,11 +11,17 @@ namespace TheProject.ReportGenerator
 {
     public class FacilityReport
     {
-        // string _currpath = @"C:\Projects\TheProject\TheProject.Web\TheProject.ReportGenerator\Reports\";
-
         public string GenerateFacilityReport(Facility facility)
         {
-            string _currpath = @"C:\Projects\TheProject\TheProject.Web\TheProject.ReportGenerator\Reports\";
+            string _currpath = HttpContext.Current.Server.MapPath("~/FacilityReport");
+            //string _currpath = @"C:\Projects\TheProject\TheProject.Web\TheProject.ReportGenerator\Reports\";
+
+            //_invoicepath = @"C:\Projects\Rustivia\IntroductionMVC5\IntroductionMVC5\ArsloInvoice";
+            if (!Directory.Exists(_currpath))
+            {
+                Directory.CreateDirectory(_currpath);
+            }
+
             var doc = new Document(PageSize.A4);
             _currpath = string.Format("{0}{1}.pdf", _currpath, facility.ClientCode);
             var output = new FileStream(_currpath, FileMode.Create);
@@ -375,9 +382,9 @@ namespace TheProject.ReportGenerator
             return images;
         }
 
-        private PdfPTable GetFourthTable(Facility updatedfacility, Facility oldFacility = null)
+        private PdfPTable GetFourthTable(Facility updatedfacility)
         {
-            //Second Table
+            //Fourth Table
             PdfPTable table = new PdfPTable(4)
             {
                 HorizontalAlignment = Element.ALIGN_CENTER,
