@@ -89,7 +89,7 @@ namespace TheProject.ReportWebApplication.Controllers
                                         .ToList();
             using (var memoryStream = new MemoryStream())
             {
-                using (var ziparchive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+                using (ZipArchive ziparchive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
                 {
                     foreach (var facility in dbFacilities)
                     {
