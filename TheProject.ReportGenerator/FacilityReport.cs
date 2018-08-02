@@ -13,7 +13,7 @@ namespace TheProject.ReportGenerator
     {
         public string GenerateFacilityReport(Facility facility)
         {
-            string _currpath = HttpContext.Current.Server.MapPath("~/FacilityReport");
+            string _currpath = ConfigurationManager.AppSettings["ReportsPath"];
             //string _currpath = @"C:\Projects\TheProject\TheProject.Web\TheProject.ReportGenerator\Reports\";
 
             //_invoicepath = @"C:\Projects\Rustivia\IntroductionMVC5\IntroductionMVC5\ArsloInvoice";
@@ -184,8 +184,7 @@ namespace TheProject.ReportGenerator
             //Location/Address Label and Data
 
             PdfPCell locationCell = GetCell("Location/Address", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
-            PdfPCell locationCellData = GetCell(string.Format("{0} \n {1}", facility.Location.Suburb, facility.Location.StreetAddress
-                ), BaseColor.BLACK, BaseColor.WHITE);
+            PdfPCell locationCellData = GetCell(string.Format("{1} \n{0}", facility.Location.Suburb, facility.Location.StreetAddress), BaseColor.BLACK, BaseColor.WHITE);
 
             table.AddCell(locationCell);
             table.AddCell(locationCellData);
@@ -355,7 +354,17 @@ namespace TheProject.ReportGenerator
                 Colspan = 4,
                 MinimumHeight = 120
             };
-            sketachCell.AddElement(locatonImage);
+            if (locatonImage !=null)
+            {
+                sketachCell.AddElement(locatonImage);
+            }
+            else
+            {
+                locationCell.AddElement(new Phrase("Location (Google)",
+                        FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK)));
+            }
+            
+          
             table.AddCell(emptyCell);
             table.AddCell(idPhotoCell);
             table.AddCell(locationCell);

@@ -27,9 +27,9 @@ namespace TheProject.ConsoleApp
                 //context.SaveChanges();
 
                 //SerializeImage();
-                //GenerateReport();
+                GenerateReport();
 
-                ReadExcelData();
+                //ReadExcelData();
                 Console.WriteLine("Done...");
                 Console.ReadLine();
             }
