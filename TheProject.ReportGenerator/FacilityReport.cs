@@ -344,6 +344,8 @@ namespace TheProject.ReportGenerator
                         FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK)));
             }
 
+            string imageUrl = "https://maps.googleapis.com/maps/api/staticmap?center="+ facility.Location.GPSCoordinates.Longitude + "," + facility.Location.GPSCoordinates.Latitude + "&zoom=12&size=600x200&maptype=roadmap&markers=color:red%7Clabel:S%7C" + facility.Location.GPSCoordinates.Longitude + "," + facility.Location.GPSCoordinates.Latitude + "&markers=color:green%7Clabel:G%7C" + facility.Location.GPSCoordinates.Longitude + "," + facility.Location.GPSCoordinates.Latitude + "&markers=color:red%7Clabel:C%7C" + facility.Location.GPSCoordinates.Longitude + "," + facility.Location.GPSCoordinates.Latitude + "&key=AIzaSyDBO8aaqwAq2x9_0uI-GtnQ4ulWxISpbiM";
+            Image locatonImage = Image.GetInstance(imageUrl);
             var sketachCell = new PdfPCell
             {
                 VerticalAlignment = Element.ALIGN_TOP,
@@ -353,8 +355,7 @@ namespace TheProject.ReportGenerator
                 Colspan = 4,
                 MinimumHeight = 120
             };
-            sketachCell.AddElement(new Phrase("Locaton (Google) ",
-                FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK)));
+            sketachCell.AddElement(locatonImage);
             table.AddCell(emptyCell);
             table.AddCell(idPhotoCell);
             table.AddCell(locationCell);
