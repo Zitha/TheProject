@@ -23,17 +23,3 @@
 </div>
 }
 
-@using (Html.BeginForm("DownloadAllFacility", "Facility", FormMethod.Post))
-{
-    @Html.AntiForgeryToken()
-
-    <div class="form-horizontal">
-        <br />
-        <div class="form-group">
-            <div class="col-md-8">
-                <input type="submit" value="Download All Reports" class="btn btn-default" style="float: right; margin-right: -45px;" />
-            </div>
-        </div>
-    </div>
-}
-

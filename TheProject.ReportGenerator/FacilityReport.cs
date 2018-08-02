@@ -341,7 +341,14 @@ namespace TheProject.ReportGenerator
                         FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK)));
             }
 
-            string imageUrl = "https://maps.googleapis.com/maps/api/staticmap?center="+ facility.Location.GPSCoordinates.Longitude + "," + facility.Location.GPSCoordinates.Latitude + "&zoom=12&size=600x200&maptype=roadmap&markers=color:red%7Clabel:S%7C" + facility.Location.GPSCoordinates.Longitude + "," + facility.Location.GPSCoordinates.Latitude + "&markers=color:green%7Clabel:G%7C" + facility.Location.GPSCoordinates.Longitude + "," + facility.Location.GPSCoordinates.Latitude + "&markers=color:red%7Clabel:C%7C" + facility.Location.GPSCoordinates.Longitude + "," + facility.Location.GPSCoordinates.Latitude + "&key=AIzaSyDBO8aaqwAq2x9_0uI-GtnQ4ulWxISpbiM";
+            string imageUrl = "";
+
+            if (CheckNegative(facility.Location.GPSCoordinates.Longitude.Trim())) {
+                imageUrl = "https://maps.googleapis.com/maps/api/staticmap?center=" + facility.Location.GPSCoordinates.Longitude.Trim() + "," + facility.Location.GPSCoordinates.Latitude.Trim() + "&zoom=18&size=600x200&maptype=satellite&markers=color:red%7Clabel:S%7C" + facility.Location.GPSCoordinates.Longitude.Trim() + "," + facility.Location.GPSCoordinates.Latitude.Trim() + "&markers=color:green%7Clabel:G%7C" + facility.Location.GPSCoordinates.Longitude.Trim() + "," + facility.Location.GPSCoordinates.Latitude.Trim() + "&markers=color:red%7Clabel:C%7C" + facility.Location.GPSCoordinates.Longitude.Trim() + "," + facility.Location.GPSCoordinates.Latitude.Trim() + "&key=AIzaSyDBO8aaqwAq2x9_0uI-GtnQ4ulWxISpbiM";
+            } else {
+                imageUrl = "https://maps.googleapis.com/maps/api/staticmap?center=" + facility.Location.GPSCoordinates.Latitude.Trim() + "," + facility.Location.GPSCoordinates.Longitude.Trim() + "&zoom=18&size=600x200&maptype=satellite&markers=color:red%7Clabel:S%7C" + facility.Location.GPSCoordinates.Latitude.Trim() + "," + facility.Location.GPSCoordinates.Longitude.Trim() + "&markers=color:green%7Clabel:G%7C" + facility.Location.GPSCoordinates.Latitude.Trim() + "," + facility.Location.GPSCoordinates.Longitude.Trim() + "&markers=color:red%7Clabel:C%7C" + facility.Location.GPSCoordinates.Latitude.Trim() + "," + facility.Location.GPSCoordinates.Longitude.Trim() + "&key=AIzaSyDBO8aaqwAq2x9_0uI-GtnQ4ulWxISpbiM";
+            }            
+            
             Image locatonImage = Image.GetInstance(imageUrl);
             var sketachCell = new PdfPCell
             {
@@ -359,6 +366,17 @@ namespace TheProject.ReportGenerator
             table.AddCell(sketachCell);
 
             return table;
+        }
+
+        private bool CheckNegative(dynamic number)
+        {
+            if (number.ToLower().Contains(",") == true)
+            {
+                number = number.Replace(',', '.');
+            }
+
+            number = Convert.ToDecimal(number);
+            return number < 0;
         }
 
         private List<Image> GetImages(string iDPicture)

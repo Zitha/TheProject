@@ -10,6 +10,7 @@ using System.Net;
 using System.Net.Mime;
 using System.IO;
 using System.IO.Compression;
+using System.Configuration;
 
 namespace TheProject.ReportWebApplication.Controllers
 {
@@ -65,6 +66,7 @@ namespace TheProject.ReportWebApplication.Controllers
                     return null;
                 }
                 byte[] file = webClient.DownloadData(filePath);
+                DeleteAllFile();
                 return File(file, MediaTypeNames.Application.Pdf);
             }
         }
@@ -95,9 +97,23 @@ namespace TheProject.ReportWebApplication.Controllers
                         ziparchive.CreateEntryFromFile(filePath, facility.ClientCode + ".pdf");
                     }
                 }
+                DeleteAllFile();
                 return File(memoryStream.ToArray(), "application/zip", "facilities.zip");
             }
+
+            
         }
-        #endregion
-    }
+
+        private void DeleteAllFile() {
+
+            string _currpath = ConfigurationManager.AppSettings["ReportsPath"];
+            DirectoryInfo di = new DirectoryInfo(_currpath);
+            foreach (FileInfo file in di.GetFiles())
+            {
+                file.Delete();
+            }
+       
+}
+    #endregion
+}
 }
