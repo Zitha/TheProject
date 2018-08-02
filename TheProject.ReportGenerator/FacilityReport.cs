@@ -6,6 +6,7 @@ using System.Configuration;
 using System.IO;
 using System.Web;
 using TheProject.Model;
+using System.Linq;
 
 namespace TheProject.ReportGenerator
 {
@@ -343,7 +344,7 @@ namespace TheProject.ReportGenerator
                         FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK)));
             }
 
-            string imageUrl = "https://maps.googleapis.com/maps/api/staticmap?center="+ facility.Location.GPSCoordinates.Longitude + "," + facility.Location.GPSCoordinates.Latitude + "&zoom=12&size=600x200&maptype=roadmap&markers=color:red%7Clabel:S%7C" + facility.Location.GPSCoordinates.Longitude + "," + facility.Location.GPSCoordinates.Latitude + "&markers=color:green%7Clabel:G%7C" + facility.Location.GPSCoordinates.Longitude + "," + facility.Location.GPSCoordinates.Latitude + "&markers=color:red%7Clabel:C%7C" + facility.Location.GPSCoordinates.Longitude + "," + facility.Location.GPSCoordinates.Latitude + "&key=AIzaSyDBO8aaqwAq2x9_0uI-GtnQ4ulWxISpbiM";
+            string imageUrl = "https://maps.googleapis.com/maps/api/staticmap?center=" + facility.Location.GPSCoordinates.Longitude + "," + facility.Location.GPSCoordinates.Latitude + "&zoom=12&size=600x200&maptype=roadmap&markers=color:red%7Clabel:S%7C" + facility.Location.GPSCoordinates.Longitude + "," + facility.Location.GPSCoordinates.Latitude + "&markers=color:green%7Clabel:G%7C" + facility.Location.GPSCoordinates.Longitude + "," + facility.Location.GPSCoordinates.Latitude + "&markers=color:red%7Clabel:C%7C" + facility.Location.GPSCoordinates.Longitude + "," + facility.Location.GPSCoordinates.Latitude + "&key=AIzaSyDBO8aaqwAq2x9_0uI-GtnQ4ulWxISpbiM";
             Image locatonImage = Image.GetInstance(imageUrl);
             var sketachCell = new PdfPCell
             {
@@ -354,7 +355,7 @@ namespace TheProject.ReportGenerator
                 Colspan = 4,
                 MinimumHeight = 120
             };
-            if (locatonImage !=null)
+            if (locatonImage != null)
             {
                 sketachCell.AddElement(locatonImage);
             }
@@ -363,8 +364,8 @@ namespace TheProject.ReportGenerator
                 locationCell.AddElement(new Phrase("Location (Google)",
                         FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK)));
             }
-            
-          
+
+
             table.AddCell(emptyCell);
             table.AddCell(idPhotoCell);
             table.AddCell(locationCell);
@@ -453,7 +454,7 @@ namespace TheProject.ReportGenerator
             table.AddCell(bImprovementData);
 
             PdfPCell aImprovementLabel = GetCell("No. Improvements", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
-            PdfPCell aImprovementData = GetCell(string.Format("{0}", updatedfacility.Buildings.Capacity), BaseColor.BLACK, BaseColor.WHITE);
+            PdfPCell aImprovementData = GetCell(string.Format("{0}", updatedfacility.Buildings.Count), BaseColor.BLACK, BaseColor.WHITE);
 
             table.AddCell(aImprovementLabel);
             table.AddCell(aImprovementData);
@@ -465,8 +466,9 @@ namespace TheProject.ReportGenerator
             table.AddCell(bImproveSizeLabel);
             table.AddCell(bImproveSizeData);
 
+            double improvedArea = updatedfacility.Buildings.Sum(b => b.ImprovedArea);
             PdfPCell aImproveSizeLabel = GetCell("Improvements Size (M2)", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
-            PdfPCell aImproveSizeData = GetCell(string.Format("{0}", updatedfacility.Buildings.Capacity), BaseColor.BLACK, BaseColor.WHITE);
+            PdfPCell aImproveSizeData = GetCell(string.Format("{0}", improvedArea), BaseColor.BLACK, BaseColor.WHITE);
 
             table.AddCell(aImproveSizeLabel);
             table.AddCell(aImproveSizeData);
@@ -478,8 +480,10 @@ namespace TheProject.ReportGenerator
             table.AddCell(bOccStatusLabel);
             table.AddCell(bOccStatusData);
 
+            double utiliatonStatusTotal = updatedfacility.Buildings.Sum(b => Convert.ToDouble(b.Status));
+
             PdfPCell aOccStatusLabel = GetCell("Occupation Status (Capacity)", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
-            PdfPCell aOccStatusData = GetCell(updatedfacility.Status, BaseColor.BLACK, BaseColor.WHITE);
+            PdfPCell aOccStatusData = GetCell(string.Format("{0}", utiliatonStatusTotal / updatedfacility.Buildings.Count), BaseColor.BLACK, BaseColor.WHITE);
 
             table.AddCell(aOccStatusLabel);
             table.AddCell(aOccStatusData);
@@ -536,15 +540,18 @@ namespace TheProject.ReportGenerator
                 WidthPercentage = 90
             };
             //Building Table
-            PdfPTable table = new PdfPTable(6)
+            PdfPTable table = new PdfPTable(7)
             {
                 HorizontalAlignment = Element.ALIGN_CENTER,
                 WidthPercentage = 90
             };
 
+            int[] firstTablecellwidth = { 10, 35, 15, 25, 25, 25, 25 };
+            table.SetWidths(firstTablecellwidth);
+
             //Building Infomation
             PdfPCell baseInfoCell = GetCell("Improvement/Building Schedule", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
-            baseInfoCell.Colspan = 6;
+            baseInfoCell.Colspan = 7;
             baseInfoCell.MinimumHeight = 15;
 
             table.AddCell(baseInfoCell);
@@ -553,10 +560,11 @@ namespace TheProject.ReportGenerator
             {
                 VerticalAlignment = Element.ALIGN_MIDDLE,
                 BorderColor = BaseColor.WHITE,
-                BackgroundColor = BaseColor.WHITE
+                BackgroundColor = BaseColor.WHITE,
+                MinimumHeight = 10
             };
             cell.AddElement(new Phrase(string.Empty, FontFactory.GetFont(FontFactory.HELVETICA, 10, BaseColor.WHITE)));
-            cell.Colspan = 6;
+            cell.Colspan = 7;
 
             table.AddCell(cell);
 
@@ -566,6 +574,7 @@ namespace TheProject.ReportGenerator
             PdfPCell b4 = GetCell("Size(m2) ", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
             PdfPCell b5 = GetCell("Photo ", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
             PdfPCell b6 = GetCell("Sketch ", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
+            PdfPCell b7 = GetCell("Heritage", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
 
             table.AddCell(b1);
             table.AddCell(b2);
@@ -573,6 +582,7 @@ namespace TheProject.ReportGenerator
             table.AddCell(b4);
             table.AddCell(b5);
             table.AddCell(b6);
+            table.AddCell(b7);
 
             int i = 1;
             foreach (var building in updatedfacility.Buildings)
@@ -586,8 +596,9 @@ namespace TheProject.ReportGenerator
                 List<Image> images = GetImages(building.Photo);
                 PdfPCell bb5 = GetCell(string.Empty, BaseColor.BLACK, BaseColor.WHITE, Font.NORMAL);
                 PdfPCell bb6 = GetCell(string.Empty, BaseColor.BLACK, BaseColor.WHITE, Font.NORMAL);
+                PdfPCell bb7 = GetCell(string.Format("{0}", building.Heritage ? "Yes" : "No"), BaseColor.BLACK, BaseColor.WHITE, Font.NORMAL);
 
-                if (images.Count>0)
+                if (images.Count > 0)
                 {
                     images[0].ScaleToFit(90f, 50f);
                     images[0].Alignment = 50;
@@ -608,6 +619,7 @@ namespace TheProject.ReportGenerator
                 table.AddCell(bb4);
                 table.AddCell(bb5);
                 table.AddCell(bb6);
+                table.AddCell(bb7);
                 i++;
             }
 
