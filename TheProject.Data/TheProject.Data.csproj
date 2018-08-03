@@ -58,6 +58,7 @@
     <Compile Include="Configuration\FacilityConfiguration.cs" />
     <Compile Include="Configuration\GPSCoordinateConfiguration.cs" />
     <Compile Include="Configuration\LocationConfiguration.cs" />
+    <Compile Include="Configuration\OriginalDataConfiguration.cs" />
     <Compile Include="Configuration\PortfolioConfiguration.cs" />
     <Compile Include="CustomDatabaseInitializer.cs" />
     <Compile Include="DataContext.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Repositories\FacilityRepository.cs" />
     <Compile Include="Repositories\GPSCoordinateRepository.cs" />
     <Compile Include="Repositories\LocationRepository.cs" />
+    <Compile Include="Repositories\OriginalDataRepository.cs" />
     <Compile Include="Repositories\PersonRepository.cs" />
     <Compile Include="Repositories\PortfolioRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />

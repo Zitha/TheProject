@@ -37,7 +37,8 @@ namespace TheProject.ReportGenerator
             {
                 if (i < 30)
                 {
-                    string facilityLocation = facilityReport.GenerateFacilityReport(facility);
+                    Model.OriginalData dbOriginalData = unit.OriginalDatas.GetAll().Where(o => o.VENUS_CODE.Trim().ToLower() == facility.ClientCode.Trim().ToLower()).FirstOrDefault();
+                    string facilityLocation = facilityReport.GenerateFacilityReport(facility, dbOriginalData);
                     dictionary.Add(facilityLocation, facility.ClientCode);
                     i++;
                 }
@@ -60,11 +61,11 @@ namespace TheProject.ReportGenerator
                                         .ToList();
 
             Facility facility = facilities.Where(f => f.ClientCode.Trim().ToLower() == clientCode.Trim().ToLower()).FirstOrDefault();
-
+            Model.OriginalData dbOriginalData = unit.OriginalDatas.GetAll().Where(o => o.VENUS_CODE.Trim().ToLower() == facility.ClientCode.Trim().ToLower()).FirstOrDefault();
             int i = 0;
             if (facility != null)
             {
-                string facilityLocation = facilityReport.GenerateFacilityReport(facility);
+                string facilityLocation = facilityReport.GenerateFacilityReport(facility, dbOriginalData);
                 return facilityLocation;
             }
             else {

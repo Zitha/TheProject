@@ -180,6 +180,20 @@ namespace TheProject.Data
             }
         }
 
+        private IRepository<OriginalData> _originalDatas;
+        public IRepository<OriginalData> OriginalDatas
+        {
+            get
+            {
+                if (_originalDatas == null)
+                {
+                    _originalDatas = new OriginalDataRepository(_context);
+                }
+                return _originalDatas;
+            }
+        }
+        
+
         public void SaveChanges()
         {
             try

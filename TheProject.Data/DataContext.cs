@@ -98,6 +98,12 @@ namespace TheProject.Data
             set;
         }
 
+        public DbSet<OriginalData> OriginalDatas
+        {
+            get;
+            set;
+        }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Configurations.Add(new BoundryPolygonConfiguration());
@@ -110,6 +116,7 @@ namespace TheProject.Data
             modelBuilder.Configurations.Add(new PortfolioConfiguration());
             modelBuilder.Configurations.Add(new UserConfiguration());
             modelBuilder.Configurations.Add(new AuditConfiguration());
+            modelBuilder.Configurations.Add(new OriginalDataConfiguration());
         }
 
     }

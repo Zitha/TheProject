@@ -50,6 +50,7 @@
     <Compile Include="Facility.cs" />
     <Compile Include="GPSCoordinate.cs" />
     <Compile Include="Location.cs" />
+    <Compile Include="OriginalData.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Portfolio.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

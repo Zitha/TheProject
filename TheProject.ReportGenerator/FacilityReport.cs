@@ -12,12 +12,9 @@ namespace TheProject.ReportGenerator
 {
     public class FacilityReport
     {
-        public string GenerateFacilityReport(Facility facility)
+        public string GenerateFacilityReport(Facility facility, OriginalData originalData)
         {
             string _currpath = ConfigurationManager.AppSettings["ReportsPath"];
-            //string _currpath = @"C:\Projects\TheProject\TheProject.Web\TheProject.ReportGenerator\Reports\";
-
-            //_invoicepath = @"C:\Projects\Rustivia\IntroductionMVC5\IntroductionMVC5\ArsloInvoice";
             if (!Directory.Exists(_currpath))
             {
                 Directory.CreateDirectory(_currpath);
@@ -43,7 +40,7 @@ namespace TheProject.ReportGenerator
             firstTable.SpacingAfter = 10f;
             //-------------------------//--------------------------------------------------//
             //Second Table
-            PdfPTable secondTable = GetSecondTable(facility);
+            PdfPTable secondTable = GetSecondTable(facility, originalData);
             secondTable.SpacingBefore = 10f;
             secondTable.SpacingAfter = 10f;
 
@@ -53,7 +50,7 @@ namespace TheProject.ReportGenerator
             thirdTable.SpacingAfter = 10f;
 
             //------------------------//--------------------------------------------------//
-            PdfPTable fourthTable = GetFourthTable(facility);
+            PdfPTable fourthTable = GetFourthTable(facility, originalData);
             fourthTable.SpacingBefore = 10f;
             fourthTable.SpacingAfter = 10f;
             //-----------------------//---------------------------------------------------//
@@ -65,7 +62,8 @@ namespace TheProject.ReportGenerator
             doc.Add(secondTable);
             // doc.Add(firstTable);
             doc.Add(thirdTable);
-            //doc.Add(firstTable);
+            doc.NewPage();
+            doc.Add(firstTable);
             doc.Add(fourthTable);
             doc.Add(fithTable);
 
@@ -113,14 +111,14 @@ namespace TheProject.ReportGenerator
 
             //Labels For project name and Data
             PdfPCell projectNameCell = GetCell("Project Name", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
-            PdfPCell UCRCellData = GetCell("Ekuruleni Project", BaseColor.BLACK, BaseColor.WHITE);
+            PdfPCell UCRCellData = GetCell("Ekurhuleni Project", BaseColor.BLACK, BaseColor.WHITE);
 
             table.AddCell(projectNameCell);
             table.AddCell(UCRCellData);
 
             //Labels for Project number and Data
             PdfPCell projectNumberCell = GetCell("Project Number", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
-            PdfPCell projectNumberCellData = GetCell("Ekuruleni Project", BaseColor.BLACK, BaseColor.WHITE);
+            PdfPCell projectNumberCellData = GetCell("Ekurhuleni Project", BaseColor.BLACK, BaseColor.WHITE);
 
             table.AddCell(projectNumberCell);
             table.AddCell(projectNumberCellData);
@@ -150,7 +148,7 @@ namespace TheProject.ReportGenerator
             return table;
         }
 
-        private PdfPTable GetSecondTable(Facility facility)
+        private PdfPTable GetSecondTable(Facility facility, OriginalData originalData)
         {
             //Second Table
             PdfPTable table = new PdfPTable(4)
@@ -227,7 +225,7 @@ namespace TheProject.ReportGenerator
 
             //Ward Label and Data2
             PdfPCell wardLabel = GetCell("Ward", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
-            PdfPCell wardData = GetCell(facility.Location.Region, BaseColor.BLACK, BaseColor.WHITE);
+            PdfPCell wardData = GetCell(originalData.WARD_NO, BaseColor.BLACK, BaseColor.WHITE);
 
             table.AddCell(wardLabel);
             table.AddCell(wardData);
@@ -409,7 +407,7 @@ namespace TheProject.ReportGenerator
             return images;
         }
 
-        private PdfPTable GetFourthTable(Facility updatedfacility)
+        private PdfPTable GetFourthTable(Facility updatedfacility, OriginalData originalData)
         {
             //Fourth Table
             PdfPTable table = new PdfPTable(4)
@@ -451,7 +449,7 @@ namespace TheProject.ReportGenerator
 
             //Usage Label and Data
             PdfPCell bUsageLabel = GetCell("Usage", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
-            PdfPCell bUsageData = GetCell("", BaseColor.BLACK, BaseColor.WHITE);
+            PdfPCell bUsageData = GetCell(originalData.Usage_Descrip, BaseColor.BLACK, BaseColor.WHITE);
 
             table.AddCell(bUsageLabel);
             table.AddCell(bUsageData);

@@ -52,12 +52,14 @@ namespace TheProject.ReportWebApplication.Controllers
                                         .Include("Location.BoundryPolygon")
                                         .Where(f => f.ClientCode == facility.ClientCode).FirstOrDefault();
 
+            Model.OriginalData dbOriginalData = unit.OriginalDatas.GetAll().Where(o => o.VENUS_CODE.Trim().ToLower() == dbFacility.ClientCode.Trim().ToLower()).FirstOrDefault();
+
             if (dbFacility == null)
             {
                 ModelState.AddModelError("", "Facility Does Not Exist.");
                 return View(facility);
             }
-            var filePath = facilityReport.GenerateFacilityReport(dbFacility);
+            var filePath = facilityReport.GenerateFacilityReport(dbFacility, dbOriginalData);
 
             using (var webClient = new WebClient())
             {
@@ -73,35 +75,48 @@ namespace TheProject.ReportWebApplication.Controllers
 
         // GET: Facility/Edit/5
         [HttpPost]
-        public ActionResult DownloadAllFacility()
+        public ActionResult DownloadAllFacility([Bind(Include = "Region")] Facility facility)
         {
+
+            if (string.IsNullOrEmpty(facility.Region))
+            {
+                ModelState.AddModelError("", "Please Select Region.");
+                return View(facility);
+
+            }
             FacilityReport facilityReport = new FacilityReport();
             ApplicationUnit unit = new ApplicationUnit();
 
             List<Model.Facility> dbFacilities = unit.Facilities.GetAll()
                                         .Include(b => b.Buildings)
                                         .Include(d => d.DeedsInfo)
-                                        .Include(c => c.Portfolio)
                                         .Include(p => p.ResposiblePerson)
                                         .Include("Location.GPSCoordinates")
                                         .Include("Location.BoundryPolygon")
-                                        .Where(ss => ss.Status == "Submitted")
+                                        .Where(ss => ss.Status == "Submitted" && ss.Location.Region.Trim().ToLower() == facility.Region.Trim().ToLower())
                                         .ToList();
-            using (var memoryStream = new MemoryStream())
-            {
-                using (ZipArchive ziparchive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
-                {
-                    foreach (var facility in dbFacilities)
-                    {
-                        var filePath = facilityReport.GenerateFacilityReport(facility);
-                        ziparchive.CreateEntryFromFile(filePath, facility.ClientCode + ".pdf");
-                    }
-                }
-                DeleteAllFile();
-                return File(memoryStream.ToArray(), "application/zip", "facilities.zip");
-            }
 
-            
+            if (dbFacilities.Count() == 0)
+            {
+                ModelState.AddModelError("", "No Facilities Found For Selected Region.");
+               return null;
+            }
+            else {
+                using (var memoryStream = new MemoryStream())
+                {
+                    using (ZipArchive ziparchive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+                    {
+                        foreach (var item in dbFacilities)
+                        {
+                            Model.OriginalData dbOriginalData = unit.OriginalDatas.GetAll().Where(o => o.VENUS_CODE.Trim().ToLower() == item.ClientCode.Trim().ToLower()).FirstOrDefault();
+                            var filePath = facilityReport.GenerateFacilityReport(item, dbOriginalData);
+                            ziparchive.CreateEntryFromFile(filePath, item.ClientCode + ".pdf");
+                        }
+                    }
+                    DeleteAllFile();
+                    return File(memoryStream.ToArray(), "application/zip", "facilities.zip");
+                }
+            }            
         }
 
         private void DeleteAllFile() {
