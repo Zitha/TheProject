@@ -113,14 +113,14 @@ namespace TheProject.ReportGenerator
 
             //Labels For project name and Data
             PdfPCell projectNameCell = GetCell("Project Name", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
-            PdfPCell UCRCellData = GetCell("Ekuruleni Project", BaseColor.BLACK, BaseColor.WHITE);
+            PdfPCell UCRCellData = GetCell("Ekurhuleni Project", BaseColor.BLACK, BaseColor.WHITE);
 
             table.AddCell(projectNameCell);
             table.AddCell(UCRCellData);
 
             //Labels for Project number and Data
             PdfPCell projectNumberCell = GetCell("Project Number", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
-            PdfPCell projectNumberCellData = GetCell("Ekuruleni Project", BaseColor.BLACK, BaseColor.WHITE);
+            PdfPCell projectNumberCellData = GetCell("Ekurhuleni Project", BaseColor.BLACK, BaseColor.WHITE);
 
             table.AddCell(projectNumberCell);
             table.AddCell(projectNumberCellData);
@@ -331,12 +331,17 @@ namespace TheProject.ReportGenerator
                 idPhotoCell.AddElement(new Phrase("Photo",
                FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK)));
             }
-
-            if (images.Count > 1)
+            //C:\Users\Ndavhe\Desktop\Report
+            Image sketch = null;
+            if (File.Exists(ConfigurationManager.AppSettings["SketchPath"] + facility.ClientCode + ".jpg"))
             {
-                images[1].ScaleToFit(300f, 120f);
-                images[1].Alignment = 50;
-                locationCell.AddElement(images[1]);
+                sketch = Image.GetInstance(ConfigurationManager.AppSettings["SketchPath"] + facility.ClientCode + ".jpg");
+            }
+            if (sketch != null)
+            {
+                sketch.ScaleToFit(300f, 120f);
+                sketch.Alignment = 50;
+                locationCell.AddElement(sketch);
             }
             else
             {
@@ -347,10 +352,10 @@ namespace TheProject.ReportGenerator
             string imageUrl = "";
 
             if (CheckNegative(facility.Location.GPSCoordinates.Longitude.Trim()))
-                imageUrl = "https://maps.googleapis.com/maps/api/staticmap?center=" + facility.Location.GPSCoordinates.Longitude.Trim() + "," + facility.Location.GPSCoordinates.Latitude.Trim() + "&zoom=18&size=600x200&maptype=satellite&markers=color:red%7Clabel:S%7C" + facility.Location.GPSCoordinates.Longitude.Trim() + "," + facility.Location.GPSCoordinates.Latitude.Trim() + "&markers=color:green%7Clabel:G%7C" + facility.Location.GPSCoordinates.Longitude.Trim() + "," + facility.Location.GPSCoordinates.Latitude.Trim() + "&markers=color:red%7Clabel:C%7C" + facility.Location.GPSCoordinates.Longitude.Trim() + "," + facility.Location.GPSCoordinates.Latitude.Trim() + "&key=AIzaSyDBO8aaqwAq2x9_0uI-GtnQ4ulWxISpbiM";           
+                imageUrl = "https://maps.googleapis.com/maps/api/staticmap?center=" + facility.Location.GPSCoordinates.Longitude.Trim() + "," + facility.Location.GPSCoordinates.Latitude.Trim() + "&zoom=18&size=600x200&maptype=satellite&markers=color:red%7Clabel:S%7C" + facility.Location.GPSCoordinates.Longitude.Trim() + "," + facility.Location.GPSCoordinates.Latitude.Trim() + "&markers=color:green%7Clabel:G%7C" + facility.Location.GPSCoordinates.Longitude.Trim() + "," + facility.Location.GPSCoordinates.Latitude.Trim() + "&markers=color:red%7Clabel:C%7C" + facility.Location.GPSCoordinates.Longitude.Trim() + "," + facility.Location.GPSCoordinates.Latitude.Trim() + "&key=AIzaSyDBO8aaqwAq2x9_0uI-GtnQ4ulWxISpbiM";
             else
                 imageUrl = "https://maps.googleapis.com/maps/api/staticmap?center=" + facility.Location.GPSCoordinates.Latitude.Trim() + "," + facility.Location.GPSCoordinates.Longitude.Trim() + "&zoom=18&size=600x200&maptype=satellite&markers=color:red%7Clabel:S%7C" + facility.Location.GPSCoordinates.Latitude.Trim() + "," + facility.Location.GPSCoordinates.Longitude.Trim() + "&markers=color:green%7Clabel:G%7C" + facility.Location.GPSCoordinates.Latitude.Trim() + "," + facility.Location.GPSCoordinates.Longitude.Trim() + "&markers=color:red%7Clabel:C%7C" + facility.Location.GPSCoordinates.Latitude.Trim() + "," + facility.Location.GPSCoordinates.Longitude.Trim() + "&key=AIzaSyDBO8aaqwAq2x9_0uI-GtnQ4ulWxISpbiM";
-           
+
             Image locatonImage = Image.GetInstance(imageUrl);
             var sketachCell = new PdfPCell
             {

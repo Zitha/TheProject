@@ -97,23 +97,20 @@ namespace TheProject.ReportWebApplication.Controllers
                         ziparchive.CreateEntryFromFile(filePath, facility.ClientCode + ".pdf");
                     }
                 }
-                DeleteAllFile();
+                //DeleteAllFile();
                 return File(memoryStream.ToArray(), "application/zip", "facilities.zip");
             }
-
-            
         }
 
-        private void DeleteAllFile() {
-
+        private void DeleteAllFile()
+        {
             string _currpath = ConfigurationManager.AppSettings["ReportsPath"];
             DirectoryInfo di = new DirectoryInfo(_currpath);
             foreach (FileInfo file in di.GetFiles())
             {
                 file.Delete();
             }
-       
-}
-    #endregion
-}
+        }
+        #endregion
+    }
 }
