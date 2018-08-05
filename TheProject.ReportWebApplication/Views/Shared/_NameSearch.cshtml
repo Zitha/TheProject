@@ -1,0 +1,36 @@
+﻿@model string
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery-1.10.2.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("ul.filtroAlfab a").click(function (e) {
+            $.ajax({
+                url: this.href, success: function (data) {
+                    $("#ajaxResponse").html(data);
+                }
+            });
+            return false;
+        });
+    });
+    $(function () {
+        $("#from").datepicker();
+        $("#to").datepicker();
+    });
+</script>
+@using (Html.BeginForm("Search", Model))
+{
+    <div class="searchBox" style="margin-top: 5px;">
+        <div class="row">
+            <div class="col-md-6">
+                <input name="search" id="search_Box" type="text" value="@Request["search"]"
+                       placeholder="Facility" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <input type="submit" value="Search" class="btn btn-info btn-sm" />
+                <a href="?filter=clear" class="btn btn-default btn-sm">Refresh</a>
+            </div>
+        </div>
+    </div>
+}

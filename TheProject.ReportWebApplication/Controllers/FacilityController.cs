@@ -11,6 +11,7 @@ using System.Net.Mime;
 using System.IO;
 using System.IO.Compression;
 using System.Configuration;
+using TheProject.ReportWebApplication.Utilities;
 
 namespace TheProject.ReportWebApplication.Controllers
 {
@@ -18,6 +19,7 @@ namespace TheProject.ReportWebApplication.Controllers
     {
         #region Properties
         private FacilityService facilityService;
+        int _defaultPageSize = 20;
 
         #endregion
 
@@ -31,15 +33,51 @@ namespace TheProject.ReportWebApplication.Controllers
         #region Methods
 
         // GET: Facility
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
-            return View();
+            List<Facility> facilities = GetSubmittedFacilities();
+
+            int currentPageIndex = page.HasValue ? page.Value - 1 : 0;
+            IPagedList<Facility> providersListPaged = facilities.ToPagedList(currentPageIndex, _defaultPageSize);
+
+            List<string> regions = facilities.Select(d => d.Region).Distinct().ToList();
+
+            ViewBag.Regions = new SelectList(regions);
+
+            return View(providersListPaged);
+        }
+
+        private List<Facility> GetSubmittedFacilities()
+        {
+            using (ApplicationUnit unit = new ApplicationUnit())
+            {
+                var dbfacilities = unit.Facilities.GetAll()
+                                      .Include(b => b.Buildings)
+                                      .Include(d => d.DeedsInfo)
+                                      .Include(p => p.ResposiblePerson)
+                                      .Include("Location.GPSCoordinates")
+                                      .Include("Location.BoundryPolygon")
+                                      .Where(ss => ss.Status == "Submitted")
+                                      .ToList();
+                List<Facility> facilities = new List<Facility>();
+                foreach (var item in dbfacilities)
+                {
+                    facilities.Add(new Facility
+                    {
+                        ClientCode = item.ClientCode,
+                        SettlementType = item.SettlementType,
+                        Zoning = item.Zoning,
+                        Region = item.Location.Region
+                    });
+                }
+                return facilities;
+            }
         }
 
         // GET: Facility/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Index([Bind(Include = "ClientCode")] Facility facility)
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        public ActionResult DownloadFacility(string clientCode)
         {
             FacilityReport facilityReport = new FacilityReport();
             ApplicationUnit unit = new ApplicationUnit();
@@ -50,16 +88,18 @@ namespace TheProject.ReportWebApplication.Controllers
                                         .Include(p => p.ResposiblePerson)
                                         .Include("Location.GPSCoordinates")
                                         .Include("Location.BoundryPolygon")
-                                        .Where(f => f.ClientCode == facility.ClientCode).FirstOrDefault();
-
-            Model.OriginalData dbOriginalData = unit.OriginalDatas.GetAll().Where(o => o.VENUS_CODE.Trim().ToLower() == dbFacility.ClientCode.Trim().ToLower()).FirstOrDefault();
-
+                                        .Where(f => f.ClientCode.ToLower() == clientCode.ToLower()).FirstOrDefault();
             if (dbFacility == null)
             {
-                ModelState.AddModelError("", "Facility Does Not Exist.");
-                return View(facility);
+                return RedirectToAction("Index");
             }
-            var filePath = facilityReport.GenerateFacilityReport(dbFacility, dbOriginalData);
+
+            Model.OriginalData dbOriginalData = unit.OriginalDatas.GetAll()
+                .Where(o => o.VENUS_CODE.Trim().ToLower()
+                == dbFacility.ClientCode.Trim().ToLower())
+                .FirstOrDefault();
+
+            string filePath = facilityReport.GenerateFacilityReport(dbFacility, dbOriginalData);
 
             using (var webClient = new WebClient())
             {
@@ -99,9 +139,10 @@ namespace TheProject.ReportWebApplication.Controllers
             if (dbFacilities.Count() == 0)
             {
                 ModelState.AddModelError("", "No Facilities Found For Selected Region.");
-               return null;
+                return null;
             }
-            else {
+            else
+            {
                 using (var memoryStream = new MemoryStream())
                 {
                     using (ZipArchive ziparchive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
@@ -109,17 +150,18 @@ namespace TheProject.ReportWebApplication.Controllers
                         foreach (var item in dbFacilities)
                         {
                             Model.OriginalData dbOriginalData = unit.OriginalDatas.GetAll().Where(o => o.VENUS_CODE.Trim().ToLower() == item.ClientCode.Trim().ToLower()).FirstOrDefault();
-                            var filePath = facilityReport.GenerateFacilityReport(item, dbOriginalData);
+                            string filePath = facilityReport.GenerateFacilityReport(item, dbOriginalData);
                             ziparchive.CreateEntryFromFile(filePath, item.ClientCode + ".pdf");
                         }
                     }
                     DeleteAllFile();
                     return File(memoryStream.ToArray(), "application/zip", "facilities.zip");
                 }
-            }            
+            }
         }
 
-        private void DeleteAllFile() {
+        private void DeleteAllFile()
+        {
 
             string _currpath = ConfigurationManager.AppSettings["ReportsPath"];
             DirectoryInfo di = new DirectoryInfo(_currpath);
@@ -127,8 +169,28 @@ namespace TheProject.ReportWebApplication.Controllers
             {
                 file.Delete();
             }
-       
-}
-    #endregion
-}
+
+        }
+
+        public ViewResultBase Search(string search)
+        {
+            const int currentPageIndex = 0;
+            List<Facility> facilities = GetSubmittedFacilities();
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                facilities = facilities.OrderBy(s => s.ClientCode)
+                    .Where(
+                        s =>
+                            s.ClientCode.ToUpper().Contains(search.ToUpper())).ToList();
+            }
+            IPagedList<Facility> providersListPaged = facilities.ToPagedList(currentPageIndex,
+               _defaultPageSize);
+
+            if (Request.IsAjaxRequest())
+                return PartialView("Index", providersListPaged);
+            return View("Index", providersListPaged);
+        }
+        #endregion
+    }
 }

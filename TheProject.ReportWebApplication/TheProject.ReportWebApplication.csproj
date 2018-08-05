@@ -173,6 +173,10 @@
     <Compile Include="Services\FacilityService.cs" />
     <Compile Include="Services\ReportService.cs" />
     <Compile Include="Services\UserService.cs" />
+    <Compile Include="Utilities\IPagedList.cs" />
+    <Compile Include="Utilities\PagedList.cs" />
+    <Compile Include="Utilities\Pager.cs" />
+    <Compile Include="Utilities\PagingExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -218,6 +222,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Facility\Index.cshtml" />
+    <Content Include="Views\Shared\_NameSearch.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

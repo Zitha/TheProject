@@ -130,7 +130,7 @@ namespace TheProject.ConsoleApp
             {
                 if (facility.ClientCode == "H21005000022300000000000000"||facility.ClientCode== "H21000000001280000000000000")
                 {
-                    string facilityLocation = facilityReport.GenerateFacilityReport(facility);
+                    //string facilityLocation = facilityReport.GenerateFacilityReport(facility);
                 }
             }
         }

@@ -1,69 +1,104 @@
-﻿@model TheProject.ReportWebApplication.Models.Facility
-
+﻿
+@using TheProject.ReportWebApplication.Utilities
+@model IPagedList<TheProject.ReportWebApplication.Models.Facility>
+@{
+    ViewBag.Title = "Facilities";
+}
 @{
     ViewBag.Title = "Facility Report";
 }
 
-@using (Html.BeginForm("Index", "Facility", FormMethod.Post))
-{
-    @Html.AntiForgeryToken()
-    <div class="form-horizontal">
-        <br />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            <label class="control-label col-md-2">Client Code</label>
-            <div class="col-md-4">
-                @Html.EditorFor(model => model.ClientCode, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ClientCode, "", new { @class = "text-danger" })
-            </div>
-            <div class="col-md-8">
-                <input type="submit" formtarget="_blank" value="Download" class="btn btn-default" style="float: right; margin-top: -35px;" />
+<table style="width: 100%;">
+    <tr>
+        <td style="width: 50%">
+            <h3>Facilities</h3>
+        </td>
+    </tr>
+</table>
+<table style="width: 100%;">
+    <tr>
+        <td style="width: 50%">
+
+            @using (Html.BeginForm("DownloadAllFacility", "Facility", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    <br />
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Region</label>
+                        <div class="col-md-4">
+                            @Html.DropDownList("Region", (SelectList)ViewBag.Regions, string.Empty, new { @class = "form-control" })
+                        </div>
+                        <div class="col-md-2">
+                            <input type="submit" value="Download Reports By Region" class="btn btn-success" />
+                        </div>
+                    </div>
+                </div>
+            }
+        </td>
+        <td style="margin: 5px; text-align: right; width: 100%;">
+            @{ Html.RenderPartial("_NameSearch", "Facility");}
+        </td>
+    </tr>
+</table>
+<table class="table table-bordered">
+    <thead>
+        <tr class="info">
+            <th>
+                Client Code
+            </th>
+            <th>
+                Settlement Type
+            </th>
+
+            <th>
+                Zoning
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+
+    @foreach (var item in Model)
+    {
+        using (Html.BeginForm("DownloadFacility", "Facility", new { clientCode = item.ClientCode }, FormMethod.Post))
+        {
+            <tr class="active">
+                @Html.AntiForgeryToken()
+                <td>
+                    @Html.DisplayFor(modelItem => item.ClientCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SettlementType)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Zoning)
+                </td>
+                <td>
+                    <input type="submit" target="_blank" formtarget="_blank" value="Download" class="btn btn-info btn-xs" />
+                </td>
+            </tr>
+        }
+    }
+</table>
+@Html.Pager(Model.PageSize, Model.PageNumber, Model.TotalItemCount)
+
+@*@using (Html.BeginForm("Index", "Facility", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-horizontal">
+            <br />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <label class="control-label col-md-2">Client Code</label>
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.ClientCode, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ClientCode, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-8">
+                    <input type="submit" formtarget="_blank" value="Download" class="btn btn-default" style="float: right; margin-top: -35px;" />
+                </div>
             </div>
         </div>
-    </div>
-}
-
-@using (Html.BeginForm("DownloadAllFacility", "Facility", FormMethod.Post))
-{
-    @Html.AntiForgeryToken()
-
-    <div class="form-horizontal">
-        <br />
-        <div class="form-group">
-            <label class="control-label col-md-2">Region</label>
-            <div class="col-md-4">
-                @Html.DropDownListFor(x => Model.Region, new List<SelectListItem> {
-                    new SelectListItem { Text = "A", Value = "A" },
-                    new SelectListItem { Text = "B", Value = "B" },
-                    new SelectListItem { Text = "C", Value = "C" },
-                    new SelectListItem { Text = "D", Value = "D" },
-                    new SelectListItem { Text = "E", Value = "E" },
-                    new SelectListItem { Text = "F", Value = "F" },
-                    new SelectListItem { Text = "G", Value = "G" },
-                    new SelectListItem { Text = "H", Value = "H" },
-                    new SelectListItem { Text = "I", Value = "I" },
-                    new SelectListItem { Text = "J", Value = "J" },
-                    new SelectListItem { Text = "K", Value = "K" },
-                    new SelectListItem { Text = "L", Value = "L" },
-                    new SelectListItem { Text = "M", Value = "M" },
-                    new SelectListItem { Text = "N", Value = "N" },
-                    new SelectListItem { Text = "O", Value = "O" },
-                    new SelectListItem { Text = "P", Value = "P" },
-                    new SelectListItem { Text = "Q", Value = "Q" },
-                    new SelectListItem { Text = "R", Value = "R" },
-                    new SelectListItem { Text = "S", Value = "S" },
-                    new SelectListItem { Text = "T", Value = "T" },
-                    new SelectListItem { Text = "U", Value = "U" },
-                    new SelectListItem { Text = "V", Value = "V" },
-                    new SelectListItem { Text = "W", Value = "W" },
-                    new SelectListItem { Text = "X", Value = "X" },
-                    new SelectListItem { Text = "Y", Value = "Y" },
-                    new SelectListItem { Text = "Z", Value = "Z" }}, new { @class = "form-control" })
-                @Html.ValidationMessageFor(x => x.Region, "", new { @class = "text-danger" })
-            </div>
-            <div class="col-md-4">
-                <input type="submit" value="Download Reports By Region" class="btn btn-default" style="margin-right: -45px;" />
-            </div>
-        </div>
-    </div>
-}
+    }*@
