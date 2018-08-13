@@ -187,6 +187,9 @@ namespace TheProject.ReportWebApplication.Controllers
             IPagedList<Facility> providersListPaged = facilities.ToPagedList(currentPageIndex,
                _defaultPageSize);
 
+            List<string> regions = facilities.Select(d => d.Region).Distinct().ToList();
+            ViewBag.Regions = new SelectList(regions);
+
             if (Request.IsAjaxRequest())
                 return PartialView("Index", providersListPaged);
             return View("Index", providersListPaged);
