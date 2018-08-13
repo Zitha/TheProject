@@ -470,7 +470,7 @@ namespace TheProject.ReportGenerator
             table.AddCell(bUsageData);
 
             PdfPCell aUsageLabel = GetCell("Usage", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
-            PdfPCell aUsageData = GetCell(updatedfacility.SettlementType, BaseColor.BLACK, BaseColor.WHITE);
+            PdfPCell aUsageData = GetCell(originalData.Usage_Descrip, BaseColor.BLACK, BaseColor.WHITE);
 
             table.AddCell(aUsageLabel);
             table.AddCell(aUsageData);
@@ -512,7 +512,7 @@ namespace TheProject.ReportGenerator
             double utiliatonStatusTotal = updatedfacility.Buildings.Sum(b => Convert.ToDouble(b.Status));
             double results = updatedfacility.Buildings.Count != 0 ? utiliatonStatusTotal / updatedfacility.Buildings.Count : utiliatonStatusTotal;
             PdfPCell aOccStatusLabel = GetCell("Occupation Status (Capacity)", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
-            PdfPCell aOccStatusData = GetCell(string.Format("{0}", results), BaseColor.BLACK, BaseColor.WHITE);
+            PdfPCell aOccStatusData = GetCell(string.Format("{0} %", results), BaseColor.BLACK, BaseColor.WHITE);
 
             table.AddCell(aOccStatusLabel);
             table.AddCell(aOccStatusData);
