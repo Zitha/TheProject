@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="abb5307ce18841c89687fef7594abf30" Name="Diagram1">
+        <EntityTypeShape EntityType="TheProjectModel.Audit" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TheProjectModel.BoundryPolygon" Width="1.5" PointX="5.25" PointY="13.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TheProjectModel.Building" Width="1.5" PointX="3" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TheProjectModel.Client" Width="1.5" PointX="3.75" PointY="21.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TheProjectModel.DeedsInfo" Width="1.5" PointX="6" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TheProjectModel.ErrorLog" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TheProjectModel.Facility" Width="1.5" PointX="8.25" PointY="12.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TheProjectModel.GPSCoordinate" Width="1.5" PointX="0.75" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="TheProjectModel.Location" Width="1.5" PointX="3" PointY="13" IsExpanded="true" />
+        <EntityTypeShape EntityType="TheProjectModel.Person" Width="1.5" PointX="6" PointY="17.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TheProjectModel.Portfolio" Width="1.5" PointX="6" PointY="21.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TheProjectModel.User" Width="1.5" PointX="6" PointY="24.375" IsExpanded="true" />
+        <AssociationConnector Association="TheProjectModel.FK_dbo_BoundryPolygons_dbo_Locations_Location_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="TheProjectModel.FK_dbo_Buildings_dbo_Facilities_Facility_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="TheProjectModel.FK_dbo_Buildings_dbo_GPSCoordinates_GPSCoordinates_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="TheProjectModel.FK_dbo_Portfolios_dbo_Clients_Client_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="TheProjectModel.FK_dbo_Facilities_dbo_DeedsInfoes_DeedsInfo_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="TheProjectModel.FK_dbo_Facilities_dbo_Locations_Location_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="TheProjectModel.FK_dbo_Facilities_dbo_People_ResposiblePerson_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="TheProjectModel.FK_dbo_Facilities_dbo_Portfolios_Portfolio_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="TheProjectModel.FK_dbo_Facilities_dbo_Users_User_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="TheProjectModel.FK_dbo_Locations_dbo_GPSCoordinates_GPSCoordinates_Id" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

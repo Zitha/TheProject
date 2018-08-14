@@ -552,7 +552,7 @@ namespace TheProject.ReportGenerator
                 BackgroundColor = BaseColor.WHITE,
                 BorderColor = BaseColor.DARK_GRAY,
                 Colspan = 4,
-                MinimumHeight = 300
+                MinimumHeight = 200
             };
             commentsCell.AddElement(new Phrase("Comments",
                 FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK)));

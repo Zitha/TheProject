@@ -1,0 +1,955 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="TheProjectModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Audits">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Section" Type="nvarchar(max)" />
+          <Property Name="Type" Type="nvarchar(max)" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="ChangeDate" Type="datetime" Nullable="false" />
+          <Property Name="ItemId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BoundryPolygons">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Longitude" Type="nvarchar(max)" />
+          <Property Name="Latitude" Type="nvarchar(max)" />
+          <Property Name="Location_Id" Type="int" />
+        </EntityType>
+        <EntityType Name="Buildings">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BuildingName" Type="nvarchar(max)" />
+          <Property Name="BuildingNumber" Type="nvarchar(max)" />
+          <Property Name="BuildingType" Type="nvarchar(max)" />
+          <Property Name="BuildingStandard" Type="nvarchar(max)" />
+          <Property Name="Status" Type="nvarchar(max)" />
+          <Property Name="NumberOfFloors" Type="int" Nullable="false" />
+          <Property Name="FootPrintArea" Type="float" Nullable="false" />
+          <Property Name="ImprovedArea" Type="float" Nullable="false" />
+          <Property Name="Heritage" Type="bit" Nullable="false" />
+          <Property Name="OccupationYear" Type="nvarchar(max)" />
+          <Property Name="DisabledAccess" Type="nvarchar(max)" />
+          <Property Name="DisabledComment" Type="nvarchar(max)" />
+          <Property Name="ConstructionDescription" Type="nvarchar(max)" />
+          <Property Name="Photo" Type="nvarchar(max)" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+          <Property Name="CreatedUserId" Type="int" Nullable="false" />
+          <Property Name="ModifiedUserId" Type="int" />
+          <Property Name="Facility_Id" Type="int" />
+          <Property Name="GPSCoordinates_Id" Type="int" />
+        </EntityType>
+        <EntityType Name="Clients">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClientName" Type="nvarchar(max)" />
+          <Property Name="ClientId" Type="nvarchar(max)" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+          <Property Name="CreatedUserId" Type="int" Nullable="false" />
+          <Property Name="ModifiedUserId" Type="int" />
+        </EntityType>
+        <EntityType Name="DeedsInfoes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ErFNumber" Type="nvarchar(max)" />
+          <Property Name="TitleDeedNumber" Type="nvarchar(max)" />
+          <Property Name="Extent" Type="nvarchar(max)" />
+          <Property Name="OwnerInfomation" Type="nvarchar(max)" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="CreatedUserId" Type="int" Nullable="false" />
+          <Property Name="ModifiedUserId" Type="int" />
+        </EntityType>
+        <EntityType Name="ErrorLogs">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ErrorMessage" Type="nvarchar(max)" />
+          <Property Name="Source" Type="nvarchar(max)" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'TheProject.dbo.ExcelBoundryPolygons' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="ExcelBoundryPolygons">
+          <Property Name="ClientCode" Type="varchar" MaxLength="500" />
+          <Property Name="latitude" Type="varchar" MaxLength="50" />
+          <Property Name="longitude" Type="varchar" MaxLength="50" />
+        </EntityType>-->
+        <EntityType Name="Facilities">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="ClientCode" Type="nvarchar(max)" />
+          <Property Name="SettlementType" Type="nvarchar(max)" />
+          <Property Name="Zoning" Type="nvarchar(max)" />
+          <Property Name="IDPicture" Type="nvarchar(max)" />
+          <Property Name="Status" Type="nvarchar(max)" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+          <Property Name="CreatedUserId" Type="int" Nullable="false" />
+          <Property Name="ModifiedUserId" Type="int" />
+          <Property Name="DeedsInfo_Id" Type="int" />
+          <Property Name="Location_Id" Type="int" />
+          <Property Name="Portfolio_Id" Type="int" />
+          <Property Name="ResposiblePerson_Id" Type="int" />
+          <Property Name="User_Id" Type="int" />
+        </EntityType>
+        <EntityType Name="GPSCoordinates">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Longitude" Type="nvarchar(max)" />
+          <Property Name="Latitude" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Locations">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StreetAddress" Type="nvarchar(max)" />
+          <Property Name="Suburb" Type="nvarchar(max)" />
+          <Property Name="Province" Type="nvarchar(max)" />
+          <Property Name="LocalMunicipality" Type="nvarchar(max)" />
+          <Property Name="Region" Type="nvarchar(max)" />
+          <Property Name="GPSCoordinates_Id" Type="int" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="CreatedUserId" Type="int" Nullable="false" />
+          <Property Name="ModifiedUserId" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'TheProject.dbo.OriginalDatas' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="OriginalDatas">
+          <Property Name="OBJECTID" Type="float" />
+          <Property Name="TrackerDoNotDo" Type="nvarchar" MaxLength="255" />
+          <Property Name="REGION" Type="nvarchar" MaxLength="255" />
+          <Property Name="GIS_KEY" Type="nvarchar" MaxLength="255" />
+          <Property Name="VENUS_CODE" Type="nvarchar" MaxLength="255" />
+          <Property Name="TOWNSHIP" Type="nvarchar" MaxLength="255" />
+          <Property Name="PROPDESC" Type="nvarchar" MaxLength="255" />
+          <Property Name="WARD_NO" Type="nvarchar" MaxLength="255" />
+          <Property Name="LATITUDE" Type="float" />
+          <Property Name="LONGITUDE" Type="float" />
+          <Property Name="Stand_Descrip" Type="nvarchar" MaxLength="255" />
+          <Property Name="Owner_Name" Type="nvarchar" MaxLength="255" />
+          <Property Name="Prop_Category" Type="nvarchar" MaxLength="255" />
+          <Property Name="Physical_Addr" Type="nvarchar" MaxLength="255" />
+          <Property Name="Street_No" Type="nvarchar" MaxLength="255" />
+          <Property Name="Size_" Type="float" />
+          <Property Name="Market_Value" Type="float" />
+          <Property Name="Usage_Descrip" Type="nvarchar" MaxLength="255" />
+          <Property Name="Empty_Stand_Ind" Type="nvarchar" MaxLength="255" />
+          <Property Name="Deed_Date" Type="float" />
+          <Property Name="Deed_No" Type="nvarchar" MaxLength="255" />
+          <Property Name="Register_Date" Type="float" />
+          <Property Name="Register_No" Type="nvarchar" MaxLength="255" />
+          <Property Name="Capture_Date" Type="float" />
+          <Property Name="ZONING" Type="nvarchar" MaxLength="255" />
+          <Property Name="AREA_CODE" Type="nvarchar" MaxLength="255" />
+          <Property Name="One" Type="float" />
+        </EntityType>-->
+        <EntityType Name="People">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FullName" Type="nvarchar(max)" />
+          <Property Name="Designation" Type="nvarchar(max)" />
+          <Property Name="PhoneNumber" Type="nvarchar(max)" />
+          <Property Name="EmailAddress" Type="nvarchar(max)" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="CreatedUserId" Type="int" Nullable="false" />
+          <Property Name="ModifiedUserId" Type="int" />
+        </EntityType>
+        <EntityType Name="Portfolios">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="Client_Id" Type="int" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="Surname" Type="nvarchar(max)" />
+          <Property Name="Username" Type="nvarchar(max)" />
+          <Property Name="Password" Type="nvarchar(max)" />
+          <Property Name="Role" Type="nvarchar(max)" />
+          <Property Name="Email" Type="nvarchar(max)" />
+          <Property Name="PasswordIsChanged" Type="bit" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+          <Property Name="CreatedUserId" Type="int" Nullable="false" />
+          <Property Name="ModifiedUserId" Type="int" />
+        </EntityType>
+        <Association Name="FK_dbo_BoundryPolygons_dbo_Locations_Location_Id">
+          <End Role="Locations" Type="Self.Locations" Multiplicity="0..1" />
+          <End Role="BoundryPolygons" Type="Self.BoundryPolygons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Locations">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BoundryPolygons">
+              <PropertyRef Name="Location_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Buildings_dbo_Facilities_Facility_Id">
+          <End Role="Facilities" Type="Self.Facilities" Multiplicity="0..1" />
+          <End Role="Buildings" Type="Self.Buildings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Facilities">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Buildings">
+              <PropertyRef Name="Facility_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Buildings_dbo_GPSCoordinates_GPSCoordinates_Id">
+          <End Role="GPSCoordinates" Type="Self.GPSCoordinates" Multiplicity="0..1" />
+          <End Role="Buildings" Type="Self.Buildings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GPSCoordinates">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Buildings">
+              <PropertyRef Name="GPSCoordinates_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Facilities_dbo_DeedsInfoes_DeedsInfo_Id">
+          <End Role="DeedsInfoes" Type="Self.DeedsInfoes" Multiplicity="0..1" />
+          <End Role="Facilities" Type="Self.Facilities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DeedsInfoes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Facilities">
+              <PropertyRef Name="DeedsInfo_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Facilities_dbo_Locations_Location_Id">
+          <End Role="Locations" Type="Self.Locations" Multiplicity="0..1" />
+          <End Role="Facilities" Type="Self.Facilities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Locations">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Facilities">
+              <PropertyRef Name="Location_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Facilities_dbo_People_ResposiblePerson_Id">
+          <End Role="People" Type="Self.People" Multiplicity="0..1" />
+          <End Role="Facilities" Type="Self.Facilities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="People">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Facilities">
+              <PropertyRef Name="ResposiblePerson_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Facilities_dbo_Portfolios_Portfolio_Id">
+          <End Role="Portfolios" Type="Self.Portfolios" Multiplicity="0..1" />
+          <End Role="Facilities" Type="Self.Facilities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Portfolios">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Facilities">
+              <PropertyRef Name="Portfolio_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Facilities_dbo_Users_User_Id">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Facilities" Type="Self.Facilities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Facilities">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Locations_dbo_GPSCoordinates_GPSCoordinates_Id">
+          <End Role="GPSCoordinates" Type="Self.GPSCoordinates" Multiplicity="0..1" />
+          <End Role="Locations" Type="Self.Locations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GPSCoordinates">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Locations">
+              <PropertyRef Name="GPSCoordinates_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Portfolios_dbo_Clients_Client_Id">
+          <End Role="Clients" Type="Self.Clients" Multiplicity="0..1" />
+          <End Role="Portfolios" Type="Self.Portfolios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clients">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Portfolios">
+              <PropertyRef Name="Client_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TheProjectModelStoreContainer">
+          <EntitySet Name="Audits" EntityType="Self.Audits" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BoundryPolygons" EntityType="Self.BoundryPolygons" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Buildings" EntityType="Self.Buildings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Clients" EntityType="Self.Clients" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DeedsInfoes" EntityType="Self.DeedsInfoes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ErrorLogs" EntityType="Self.ErrorLogs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Facilities" EntityType="Self.Facilities" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GPSCoordinates" EntityType="Self.GPSCoordinates" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Locations" EntityType="Self.Locations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="People" EntityType="Self.People" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Portfolios" EntityType="Self.Portfolios" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_dbo_BoundryPolygons_dbo_Locations_Location_Id" Association="Self.FK_dbo_BoundryPolygons_dbo_Locations_Location_Id">
+            <End Role="Locations" EntitySet="Locations" />
+            <End Role="BoundryPolygons" EntitySet="BoundryPolygons" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Buildings_dbo_Facilities_Facility_Id" Association="Self.FK_dbo_Buildings_dbo_Facilities_Facility_Id">
+            <End Role="Facilities" EntitySet="Facilities" />
+            <End Role="Buildings" EntitySet="Buildings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Buildings_dbo_GPSCoordinates_GPSCoordinates_Id" Association="Self.FK_dbo_Buildings_dbo_GPSCoordinates_GPSCoordinates_Id">
+            <End Role="GPSCoordinates" EntitySet="GPSCoordinates" />
+            <End Role="Buildings" EntitySet="Buildings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Facilities_dbo_DeedsInfoes_DeedsInfo_Id" Association="Self.FK_dbo_Facilities_dbo_DeedsInfoes_DeedsInfo_Id">
+            <End Role="DeedsInfoes" EntitySet="DeedsInfoes" />
+            <End Role="Facilities" EntitySet="Facilities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Facilities_dbo_Locations_Location_Id" Association="Self.FK_dbo_Facilities_dbo_Locations_Location_Id">
+            <End Role="Locations" EntitySet="Locations" />
+            <End Role="Facilities" EntitySet="Facilities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Facilities_dbo_People_ResposiblePerson_Id" Association="Self.FK_dbo_Facilities_dbo_People_ResposiblePerson_Id">
+            <End Role="People" EntitySet="People" />
+            <End Role="Facilities" EntitySet="Facilities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Facilities_dbo_Portfolios_Portfolio_Id" Association="Self.FK_dbo_Facilities_dbo_Portfolios_Portfolio_Id">
+            <End Role="Portfolios" EntitySet="Portfolios" />
+            <End Role="Facilities" EntitySet="Facilities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Facilities_dbo_Users_User_Id" Association="Self.FK_dbo_Facilities_dbo_Users_User_Id">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Facilities" EntitySet="Facilities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Locations_dbo_GPSCoordinates_GPSCoordinates_Id" Association="Self.FK_dbo_Locations_dbo_GPSCoordinates_GPSCoordinates_Id">
+            <End Role="GPSCoordinates" EntitySet="GPSCoordinates" />
+            <End Role="Locations" EntitySet="Locations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Portfolios_dbo_Clients_Client_Id" Association="Self.FK_dbo_Portfolios_dbo_Clients_Client_Id">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="Portfolios" EntitySet="Portfolios" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TheProjectModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Audit">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Section" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="ChangeDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ItemId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BoundryPolygon">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Longitude" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Latitude" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Location_Id" Type="Int32" />
+          <NavigationProperty Name="Location" Relationship="Self.FK_dbo_BoundryPolygons_dbo_Locations_Location_Id" FromRole="BoundryPolygons" ToRole="Locations" />
+        </EntityType>
+        <EntityType Name="Building">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BuildingName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BuildingNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BuildingType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BuildingStandard" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NumberOfFloors" Type="Int32" Nullable="false" />
+          <Property Name="FootPrintArea" Type="Double" Nullable="false" />
+          <Property Name="ImprovedArea" Type="Double" Nullable="false" />
+          <Property Name="Heritage" Type="Boolean" Nullable="false" />
+          <Property Name="OccupationYear" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DisabledAccess" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DisabledComment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ConstructionDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Photo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedUserId" Type="Int32" Nullable="false" />
+          <Property Name="ModifiedUserId" Type="Int32" />
+          <Property Name="Facility_Id" Type="Int32" />
+          <Property Name="GPSCoordinates_Id" Type="Int32" />
+          <NavigationProperty Name="Facility" Relationship="Self.FK_dbo_Buildings_dbo_Facilities_Facility_Id" FromRole="Buildings" ToRole="Facilities" />
+          <NavigationProperty Name="GPSCoordinate" Relationship="Self.FK_dbo_Buildings_dbo_GPSCoordinates_GPSCoordinates_Id" FromRole="Buildings" ToRole="GPSCoordinates" />
+        </EntityType>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClientName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClientId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedUserId" Type="Int32" Nullable="false" />
+          <Property Name="ModifiedUserId" Type="Int32" />
+          <NavigationProperty Name="Portfolios" Relationship="Self.FK_dbo_Portfolios_dbo_Clients_Client_Id" FromRole="Clients" ToRole="Portfolios" />
+        </EntityType>
+        <EntityType Name="DeedsInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ErFNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TitleDeedNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Extent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OwnerInfomation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedUserId" Type="Int32" Nullable="false" />
+          <Property Name="ModifiedUserId" Type="Int32" />
+          <NavigationProperty Name="Facilities" Relationship="Self.FK_dbo_Facilities_dbo_DeedsInfoes_DeedsInfo_Id" FromRole="DeedsInfoes" ToRole="Facilities" />
+        </EntityType>
+        <EntityType Name="ErrorLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ErrorMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Source" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="Facility">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClientCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SettlementType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Zoning" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IDPicture" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedUserId" Type="Int32" Nullable="false" />
+          <Property Name="ModifiedUserId" Type="Int32" />
+          <Property Name="DeedsInfo_Id" Type="Int32" />
+          <Property Name="Location_Id" Type="Int32" />
+          <Property Name="Portfolio_Id" Type="Int32" />
+          <Property Name="ResposiblePerson_Id" Type="Int32" />
+          <Property Name="User_Id" Type="Int32" />
+          <NavigationProperty Name="Buildings" Relationship="Self.FK_dbo_Buildings_dbo_Facilities_Facility_Id" FromRole="Facilities" ToRole="Buildings" />
+          <NavigationProperty Name="DeedsInfo" Relationship="Self.FK_dbo_Facilities_dbo_DeedsInfoes_DeedsInfo_Id" FromRole="Facilities" ToRole="DeedsInfoes" />
+          <NavigationProperty Name="Location" Relationship="Self.FK_dbo_Facilities_dbo_Locations_Location_Id" FromRole="Facilities" ToRole="Locations" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_dbo_Facilities_dbo_People_ResposiblePerson_Id" FromRole="Facilities" ToRole="People" />
+          <NavigationProperty Name="Portfolio" Relationship="Self.FK_dbo_Facilities_dbo_Portfolios_Portfolio_Id" FromRole="Facilities" ToRole="Portfolios" />
+          <NavigationProperty Name="User" Relationship="Self.FK_dbo_Facilities_dbo_Users_User_Id" FromRole="Facilities" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="GPSCoordinate">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Longitude" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Latitude" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Buildings" Relationship="Self.FK_dbo_Buildings_dbo_GPSCoordinates_GPSCoordinates_Id" FromRole="GPSCoordinates" ToRole="Buildings" />
+          <NavigationProperty Name="Locations" Relationship="Self.FK_dbo_Locations_dbo_GPSCoordinates_GPSCoordinates_Id" FromRole="GPSCoordinates" ToRole="Locations" />
+        </EntityType>
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StreetAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Suburb" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Province" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LocalMunicipality" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Region" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="GPSCoordinates_Id" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedUserId" Type="Int32" Nullable="false" />
+          <Property Name="ModifiedUserId" Type="Int32" />
+          <NavigationProperty Name="BoundryPolygons" Relationship="Self.FK_dbo_BoundryPolygons_dbo_Locations_Location_Id" FromRole="Locations" ToRole="BoundryPolygons" />
+          <NavigationProperty Name="Facilities" Relationship="Self.FK_dbo_Facilities_dbo_Locations_Location_Id" FromRole="Locations" ToRole="Facilities" />
+          <NavigationProperty Name="GPSCoordinate" Relationship="Self.FK_dbo_Locations_dbo_GPSCoordinates_GPSCoordinates_Id" FromRole="Locations" ToRole="GPSCoordinates" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FullName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Designation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EmailAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedUserId" Type="Int32" Nullable="false" />
+          <Property Name="ModifiedUserId" Type="Int32" />
+          <NavigationProperty Name="Facilities" Relationship="Self.FK_dbo_Facilities_dbo_People_ResposiblePerson_Id" FromRole="People" ToRole="Facilities" />
+        </EntityType>
+        <EntityType Name="Portfolio">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Client_Id" Type="Int32" />
+          <NavigationProperty Name="Client" Relationship="Self.FK_dbo_Portfolios_dbo_Clients_Client_Id" FromRole="Portfolios" ToRole="Clients" />
+          <NavigationProperty Name="Facilities" Relationship="Self.FK_dbo_Facilities_dbo_Portfolios_Portfolio_Id" FromRole="Portfolios" ToRole="Facilities" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Surname" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Username" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Role" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PasswordIsChanged" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedUserId" Type="Int32" Nullable="false" />
+          <Property Name="ModifiedUserId" Type="Int32" />
+          <NavigationProperty Name="Facilities" Relationship="Self.FK_dbo_Facilities_dbo_Users_User_Id" FromRole="Users" ToRole="Facilities" />
+        </EntityType>
+        <Association Name="FK_dbo_BoundryPolygons_dbo_Locations_Location_Id">
+          <End Role="Locations" Type="Self.Location" Multiplicity="0..1" />
+          <End Role="BoundryPolygons" Type="Self.BoundryPolygon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Locations">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BoundryPolygons">
+              <PropertyRef Name="Location_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Buildings_dbo_Facilities_Facility_Id">
+          <End Role="Facilities" Type="Self.Facility" Multiplicity="0..1" />
+          <End Role="Buildings" Type="Self.Building" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Facilities">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Buildings">
+              <PropertyRef Name="Facility_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Buildings_dbo_GPSCoordinates_GPSCoordinates_Id">
+          <End Role="GPSCoordinates" Type="Self.GPSCoordinate" Multiplicity="0..1" />
+          <End Role="Buildings" Type="Self.Building" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GPSCoordinates">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Buildings">
+              <PropertyRef Name="GPSCoordinates_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Portfolios_dbo_Clients_Client_Id">
+          <End Role="Clients" Type="Self.Client" Multiplicity="0..1" />
+          <End Role="Portfolios" Type="Self.Portfolio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clients">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Portfolios">
+              <PropertyRef Name="Client_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Facilities_dbo_DeedsInfoes_DeedsInfo_Id">
+          <End Role="DeedsInfoes" Type="Self.DeedsInfo" Multiplicity="0..1" />
+          <End Role="Facilities" Type="Self.Facility" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DeedsInfoes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Facilities">
+              <PropertyRef Name="DeedsInfo_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Facilities_dbo_Locations_Location_Id">
+          <End Role="Locations" Type="Self.Location" Multiplicity="0..1" />
+          <End Role="Facilities" Type="Self.Facility" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Locations">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Facilities">
+              <PropertyRef Name="Location_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Facilities_dbo_People_ResposiblePerson_Id">
+          <End Role="People" Type="Self.Person" Multiplicity="0..1" />
+          <End Role="Facilities" Type="Self.Facility" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="People">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Facilities">
+              <PropertyRef Name="ResposiblePerson_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Facilities_dbo_Portfolios_Portfolio_Id">
+          <End Role="Portfolios" Type="Self.Portfolio" Multiplicity="0..1" />
+          <End Role="Facilities" Type="Self.Facility" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Portfolios">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Facilities">
+              <PropertyRef Name="Portfolio_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Facilities_dbo_Users_User_Id">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Facilities" Type="Self.Facility" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Facilities">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Locations_dbo_GPSCoordinates_GPSCoordinates_Id">
+          <End Role="GPSCoordinates" Type="Self.GPSCoordinate" Multiplicity="0..1" />
+          <End Role="Locations" Type="Self.Location" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GPSCoordinates">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Locations">
+              <PropertyRef Name="GPSCoordinates_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TheProjectEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Audits" EntityType="Self.Audit" />
+          <EntitySet Name="BoundryPolygons" EntityType="Self.BoundryPolygon" />
+          <EntitySet Name="Buildings" EntityType="Self.Building" />
+          <EntitySet Name="Clients" EntityType="Self.Client" />
+          <EntitySet Name="DeedsInfoes" EntityType="Self.DeedsInfo" />
+          <EntitySet Name="ErrorLogs" EntityType="Self.ErrorLog" />
+          <EntitySet Name="Facilities" EntityType="Self.Facility" />
+          <EntitySet Name="GPSCoordinates" EntityType="Self.GPSCoordinate" />
+          <EntitySet Name="Locations" EntityType="Self.Location" />
+          <EntitySet Name="People" EntityType="Self.Person" />
+          <EntitySet Name="Portfolios" EntityType="Self.Portfolio" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK_dbo_BoundryPolygons_dbo_Locations_Location_Id" Association="Self.FK_dbo_BoundryPolygons_dbo_Locations_Location_Id">
+            <End Role="Locations" EntitySet="Locations" />
+            <End Role="BoundryPolygons" EntitySet="BoundryPolygons" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Buildings_dbo_Facilities_Facility_Id" Association="Self.FK_dbo_Buildings_dbo_Facilities_Facility_Id">
+            <End Role="Facilities" EntitySet="Facilities" />
+            <End Role="Buildings" EntitySet="Buildings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Buildings_dbo_GPSCoordinates_GPSCoordinates_Id" Association="Self.FK_dbo_Buildings_dbo_GPSCoordinates_GPSCoordinates_Id">
+            <End Role="GPSCoordinates" EntitySet="GPSCoordinates" />
+            <End Role="Buildings" EntitySet="Buildings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Portfolios_dbo_Clients_Client_Id" Association="Self.FK_dbo_Portfolios_dbo_Clients_Client_Id">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="Portfolios" EntitySet="Portfolios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Facilities_dbo_DeedsInfoes_DeedsInfo_Id" Association="Self.FK_dbo_Facilities_dbo_DeedsInfoes_DeedsInfo_Id">
+            <End Role="DeedsInfoes" EntitySet="DeedsInfoes" />
+            <End Role="Facilities" EntitySet="Facilities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Facilities_dbo_Locations_Location_Id" Association="Self.FK_dbo_Facilities_dbo_Locations_Location_Id">
+            <End Role="Locations" EntitySet="Locations" />
+            <End Role="Facilities" EntitySet="Facilities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Facilities_dbo_People_ResposiblePerson_Id" Association="Self.FK_dbo_Facilities_dbo_People_ResposiblePerson_Id">
+            <End Role="People" EntitySet="People" />
+            <End Role="Facilities" EntitySet="Facilities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Facilities_dbo_Portfolios_Portfolio_Id" Association="Self.FK_dbo_Facilities_dbo_Portfolios_Portfolio_Id">
+            <End Role="Portfolios" EntitySet="Portfolios" />
+            <End Role="Facilities" EntitySet="Facilities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Facilities_dbo_Users_User_Id" Association="Self.FK_dbo_Facilities_dbo_Users_User_Id">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Facilities" EntitySet="Facilities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Locations_dbo_GPSCoordinates_GPSCoordinates_Id" Association="Self.FK_dbo_Locations_dbo_GPSCoordinates_GPSCoordinates_Id">
+            <End Role="GPSCoordinates" EntitySet="GPSCoordinates" />
+            <End Role="Locations" EntitySet="Locations" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TheProjectModelStoreContainer" CdmEntityContainer="TheProjectEntities">
+          <EntitySetMapping Name="Audits">
+            <EntityTypeMapping TypeName="TheProjectModel.Audit">
+              <MappingFragment StoreEntitySet="Audits">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Section" ColumnName="Section" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ChangeDate" ColumnName="ChangeDate" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BoundryPolygons">
+            <EntityTypeMapping TypeName="TheProjectModel.BoundryPolygon">
+              <MappingFragment StoreEntitySet="BoundryPolygons">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="Location_Id" ColumnName="Location_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Buildings">
+            <EntityTypeMapping TypeName="TheProjectModel.Building">
+              <MappingFragment StoreEntitySet="Buildings">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="BuildingName" ColumnName="BuildingName" />
+                <ScalarProperty Name="BuildingNumber" ColumnName="BuildingNumber" />
+                <ScalarProperty Name="BuildingType" ColumnName="BuildingType" />
+                <ScalarProperty Name="BuildingStandard" ColumnName="BuildingStandard" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="NumberOfFloors" ColumnName="NumberOfFloors" />
+                <ScalarProperty Name="FootPrintArea" ColumnName="FootPrintArea" />
+                <ScalarProperty Name="ImprovedArea" ColumnName="ImprovedArea" />
+                <ScalarProperty Name="Heritage" ColumnName="Heritage" />
+                <ScalarProperty Name="OccupationYear" ColumnName="OccupationYear" />
+                <ScalarProperty Name="DisabledAccess" ColumnName="DisabledAccess" />
+                <ScalarProperty Name="DisabledComment" ColumnName="DisabledComment" />
+                <ScalarProperty Name="ConstructionDescription" ColumnName="ConstructionDescription" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedUserId" ColumnName="CreatedUserId" />
+                <ScalarProperty Name="ModifiedUserId" ColumnName="ModifiedUserId" />
+                <ScalarProperty Name="Facility_Id" ColumnName="Facility_Id" />
+                <ScalarProperty Name="GPSCoordinates_Id" ColumnName="GPSCoordinates_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Clients">
+            <EntityTypeMapping TypeName="TheProjectModel.Client">
+              <MappingFragment StoreEntitySet="Clients">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ClientName" ColumnName="ClientName" />
+                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedUserId" ColumnName="CreatedUserId" />
+                <ScalarProperty Name="ModifiedUserId" ColumnName="ModifiedUserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DeedsInfoes">
+            <EntityTypeMapping TypeName="TheProjectModel.DeedsInfo">
+              <MappingFragment StoreEntitySet="DeedsInfoes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ErFNumber" ColumnName="ErFNumber" />
+                <ScalarProperty Name="TitleDeedNumber" ColumnName="TitleDeedNumber" />
+                <ScalarProperty Name="Extent" ColumnName="Extent" />
+                <ScalarProperty Name="OwnerInfomation" ColumnName="OwnerInfomation" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedUserId" ColumnName="CreatedUserId" />
+                <ScalarProperty Name="ModifiedUserId" ColumnName="ModifiedUserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ErrorLogs">
+            <EntityTypeMapping TypeName="TheProjectModel.ErrorLog">
+              <MappingFragment StoreEntitySet="ErrorLogs">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ErrorMessage" ColumnName="ErrorMessage" />
+                <ScalarProperty Name="Source" ColumnName="Source" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Facilities">
+            <EntityTypeMapping TypeName="TheProjectModel.Facility">
+              <MappingFragment StoreEntitySet="Facilities">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ClientCode" ColumnName="ClientCode" />
+                <ScalarProperty Name="SettlementType" ColumnName="SettlementType" />
+                <ScalarProperty Name="Zoning" ColumnName="Zoning" />
+                <ScalarProperty Name="IDPicture" ColumnName="IDPicture" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedUserId" ColumnName="CreatedUserId" />
+                <ScalarProperty Name="ModifiedUserId" ColumnName="ModifiedUserId" />
+                <ScalarProperty Name="DeedsInfo_Id" ColumnName="DeedsInfo_Id" />
+                <ScalarProperty Name="Location_Id" ColumnName="Location_Id" />
+                <ScalarProperty Name="Portfolio_Id" ColumnName="Portfolio_Id" />
+                <ScalarProperty Name="ResposiblePerson_Id" ColumnName="ResposiblePerson_Id" />
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GPSCoordinates">
+            <EntityTypeMapping TypeName="TheProjectModel.GPSCoordinate">
+              <MappingFragment StoreEntitySet="GPSCoordinates">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Locations">
+            <EntityTypeMapping TypeName="TheProjectModel.Location">
+              <MappingFragment StoreEntitySet="Locations">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="StreetAddress" ColumnName="StreetAddress" />
+                <ScalarProperty Name="Suburb" ColumnName="Suburb" />
+                <ScalarProperty Name="Province" ColumnName="Province" />
+                <ScalarProperty Name="LocalMunicipality" ColumnName="LocalMunicipality" />
+                <ScalarProperty Name="Region" ColumnName="Region" />
+                <ScalarProperty Name="GPSCoordinates_Id" ColumnName="GPSCoordinates_Id" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedUserId" ColumnName="CreatedUserId" />
+                <ScalarProperty Name="ModifiedUserId" ColumnName="ModifiedUserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="People">
+            <EntityTypeMapping TypeName="TheProjectModel.Person">
+              <MappingFragment StoreEntitySet="People">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Designation" ColumnName="Designation" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedUserId" ColumnName="CreatedUserId" />
+                <ScalarProperty Name="ModifiedUserId" ColumnName="ModifiedUserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Portfolios">
+            <EntityTypeMapping TypeName="TheProjectModel.Portfolio">
+              <MappingFragment StoreEntitySet="Portfolios">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Client_Id" ColumnName="Client_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="TheProjectModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="PasswordIsChanged" ColumnName="PasswordIsChanged" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedUserId" ColumnName="CreatedUserId" />
+                <ScalarProperty Name="ModifiedUserId" ColumnName="ModifiedUserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
