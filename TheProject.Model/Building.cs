@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,11 +36,16 @@ namespace TheProject.Model
 
         public string ConstructionDescription { get; set; }
 
-        public virtual  GPSCoordinate GPSCoordinates { get; set; }
+        public virtual GPSCoordinate GPSCoordinates { get; set; }
 
         public string Photo { get; set; }
 
         public virtual Facility Facility { get; set; }
+
+        public int? ConditionAssessment_Id { get; set; }
+
+        [ForeignKey("ConditionAssessment_Id")]
+        public virtual ConditionAssessment ConditionAssessment { get; set; }
 
         public DateTime CreatedDate { get; set; }
 

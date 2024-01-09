@@ -104,6 +104,12 @@ namespace TheProject.Data
             set;
         }
 
+        public DbSet<ConditionAssessment> ConditionAssessment
+        {
+            get;
+            set;
+        }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Configurations.Add(new BoundryPolygonConfiguration());
@@ -113,10 +119,12 @@ namespace TheProject.Data
             modelBuilder.Configurations.Add(new FacilityConfiguration());
             modelBuilder.Configurations.Add(new GPSCoordinateConfiguration());
             modelBuilder.Configurations.Add(new LocationConfiguration());
+            modelBuilder.Configurations.Add(new ConditionAssessmentDataConfiguration());
             modelBuilder.Configurations.Add(new PortfolioConfiguration());
             modelBuilder.Configurations.Add(new UserConfiguration());
             modelBuilder.Configurations.Add(new AuditConfiguration());
             modelBuilder.Configurations.Add(new OriginalDataConfiguration());
+                     
         }
 
     }

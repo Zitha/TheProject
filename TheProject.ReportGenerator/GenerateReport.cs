@@ -23,7 +23,7 @@ namespace TheProject.ReportGenerator
             ApplicationUnit unit = new ApplicationUnit();
 
             List<Facility> facilities = unit.Facilities.GetAll()
-                                        .Include(b => b.Buildings)
+                                        .Include(b => b.Buildings.Select(o => o.ConditionAssessment))
                                         .Include(d => d.DeedsInfo)
                                         .Include(c => c.Portfolio)
                                         .Include(p => p.ResposiblePerson)
@@ -38,7 +38,7 @@ namespace TheProject.ReportGenerator
                 if (i < 30)
                 {
                     Model.OriginalData dbOriginalData = unit.OriginalDatas.GetAll().Where(o => o.VENUS_CODE.Trim().ToLower() == facility.ClientCode.Trim().ToLower()).FirstOrDefault();
-                    string facilityLocation = facilityReport.GenerateFacilityReport(facility, dbOriginalData);
+                    string facilityLocation = facilityReport.GenerateFacilityReport(facility);
                     dictionary.Add(facilityLocation, facility.ClientCode);
                     i++;
                 }
@@ -53,7 +53,7 @@ namespace TheProject.ReportGenerator
             ApplicationUnit unit = new ApplicationUnit();
 
             List<Facility> facilities = unit.Facilities.GetAll()
-                                        .Include(b => b.Buildings)
+                                        .Include(b => b.Buildings.Select(o => o.ConditionAssessment))
                                         .Include(d => d.DeedsInfo)
                                         .Include(c => c.Portfolio)
                                         .Include(p => p.ResposiblePerson)
@@ -65,7 +65,7 @@ namespace TheProject.ReportGenerator
             int i = 0;
             if (facility != null)
             {
-                string facilityLocation = facilityReport.GenerateFacilityReport(facility, dbOriginalData);
+                string facilityLocation = facilityReport.GenerateFacilityReport(facility);
                 return facilityLocation;
             }
             else {

@@ -192,7 +192,20 @@ namespace TheProject.Data
                 return _originalDatas;
             }
         }
-        
+
+        private IRepository<ConditionAssessment> _conditionAssessments;
+
+        public IRepository<ConditionAssessment> ConditionAssessments
+        {
+            get
+            {
+                if (_conditionAssessments == null)
+                {
+                    _conditionAssessments = new ConditionAssessmentRepository(_context);
+                }
+                return _conditionAssessments;
+            }
+        }
 
         public void SaveChanges()
         {

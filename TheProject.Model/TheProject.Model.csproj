@@ -45,6 +45,7 @@
     <Compile Include="BoundryPolygon.cs" />
     <Compile Include="Building.cs" />
     <Compile Include="Client.cs" />
+    <Compile Include="ConditionAssessment.cs" />
     <Compile Include="DeedsInfo.cs" />
     <Compile Include="ErrorLog.cs" />
     <Compile Include="Facility.cs" />

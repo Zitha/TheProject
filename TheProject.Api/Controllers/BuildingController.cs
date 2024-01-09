@@ -25,7 +25,8 @@ namespace TheProject.Api.Controllers
             {
                 using (ApplicationUnit unit = new ApplicationUnit())
                 {
-                    Facility facility = unit.Facilities.GetAll().Include(b => b.Buildings)
+                    Facility facility = unit.Facilities.GetAll()
+                        .Include(b => b.Buildings)
                         .FirstOrDefault(fc => fc.Id == building.Facility.Id);
 
                     if (facility != null)
@@ -50,6 +51,11 @@ namespace TheProject.Api.Controllers
 
                             Task addTask = new Task(() => LogAuditTrail("Building", "Add", building.CreatedUserId, building.Id));
                             addTask.Start();
+
+                            if (building.ConditionAssessment != null)
+                            {
+                                AddConditionAssessment(building.ConditionAssessment);
+                            }
 
                             return Request.CreateResponse(HttpStatusCode.OK, new
                             {
@@ -126,6 +132,16 @@ namespace TheProject.Api.Controllers
                     updateTask.Start();
 
                     building.Facility = null;
+
+                    if (building.ConditionAssessment != null && building.ConditionAssessment.Id != 0)
+                    {
+                        UpdateConditionAssessment(building.ConditionAssessment);
+                    }
+                    else
+                    {
+                        AddConditionAssessment(building.ConditionAssessment);
+                    }
+
                     return Request.CreateResponse(HttpStatusCode.OK, new
                     {
                         content = building
@@ -188,7 +204,9 @@ namespace TheProject.Api.Controllers
                             GPSCoordinates = building.GPSCoordinates,
                             Photo = building.Photo,
                             CreatedDate = building.CreatedDate,
-                            ModifiedDate = building.ModifiedDate
+                            ModifiedDate = building.ModifiedDate,
+                            ConditionAssessment = building.ConditionAssessment,
+                            ConditionAssessment_Id = building.ConditionAssessment_Id
                         });
                     }
                     return returnBuildings;
@@ -209,7 +227,7 @@ namespace TheProject.Api.Controllers
                 List<Building> returnBuildings = new List<Building>();
                 using (ApplicationUnit unit = new ApplicationUnit())
                 {
-                    List<Building> buildings = unit.Buildings.GetAll().ToList();
+                    List<Building> buildings = unit.Buildings.GetAll().Include(ca => ca.ConditionAssessment).ToList();
                     foreach (var building in buildings)
                     {
                         returnBuildings.Add(new Building
@@ -231,7 +249,8 @@ namespace TheProject.Api.Controllers
                             GPSCoordinates = building.GPSCoordinates,
                             Photo = building.Photo,
                             CreatedDate = building.CreatedDate,
-                            ModifiedDate = building.ModifiedDate
+                            ModifiedDate = building.ModifiedDate,
+                            ConditionAssessment = building.ConditionAssessment
                         });
                     }
 
@@ -246,7 +265,7 @@ namespace TheProject.Api.Controllers
         }
 
         [HttpPost]
-        public void SaveImage([FromBody]List<Picture> pictures)
+        public void SaveImage([FromBody] List<Picture> pictures)
         {
             try
             {
@@ -288,5 +307,61 @@ namespace TheProject.Api.Controllers
             }
 
         }
+
+        private int AddConditionAssessment(ConditionAssessment conditionAssessment)
+        {
+            try
+            {
+                using (ApplicationUnit unit = new ApplicationUnit())
+                {
+
+                    unit.ConditionAssessments.Add(conditionAssessment);
+                    unit.SaveChanges();
+
+                    Task addTask = new Task(() => LogAuditTrail("Condition Assessment", "Add", conditionAssessment.Id, conditionAssessment.Id));
+                    addTask.Start();
+
+                    return conditionAssessment.Id;
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorHandling.LogError(ex.StackTrace, "AddConditionAssessment");
+                throw ex;
+            }
+        }
+
+        private void UpdateConditionAssessment(ConditionAssessment conditionAssessment)
+        {
+            ApplicationUnit unit = new ApplicationUnit();
+            try
+            {
+                ConditionAssessment updateConditionAssessment = unit.ConditionAssessments.GetAll().FirstOrDefault(c => c.Id == conditionAssessment.Id);
+                if (updateConditionAssessment != null)
+                {
+                    updateConditionAssessment.Id = conditionAssessment.Id;
+                    //updateConditionAssessment.BuildingId = conditionAssessment.BuildingId;
+                    updateConditionAssessment.Roof = conditionAssessment.Roof.Trim();
+                    updateConditionAssessment.Walls = conditionAssessment.Walls.Trim();
+                    updateConditionAssessment.DoorsWindows = conditionAssessment.DoorsWindows.Trim();
+                    updateConditionAssessment.Floors = conditionAssessment.Floors.Trim();
+                    updateConditionAssessment.Civils = conditionAssessment.Civils.Trim();
+                    updateConditionAssessment.Plumbing = conditionAssessment.Plumbing.Trim();
+                    updateConditionAssessment.Electrical = conditionAssessment.Electrical.Trim();
+
+                    unit.ConditionAssessments.Update(updateConditionAssessment);
+                    unit.SaveChanges();
+
+                    Task updateTask = new Task(() => LogAuditTrail("ConditionAssessment", "Update", updateConditionAssessment.Id, updateConditionAssessment.Id));
+                    updateTask.Start();
+                }
+            }
+            catch (Exception ex)
+            {
+                unit.Dispose();
+                ErrorHandling.LogError(ex.StackTrace, "UpdateBuilding");
+            }
+        }
+
     }
 }

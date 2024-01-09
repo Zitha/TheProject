@@ -3505,7 +3505,7 @@ forEach({
 
   toggleClass: function(element, selector, condition) {
     if (selector) {
-      forEach(selector.split(' '), function(className) {
+      forEach(selector.split(' '), function(className) {r5
         var classCondition = condition;
         if (isUndefined(classCondition)) {
           classCondition = !jqLiteHasClass(element, className);

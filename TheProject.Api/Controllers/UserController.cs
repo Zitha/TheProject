@@ -86,7 +86,7 @@ namespace TheProject.Api.Controllers
                     Task sendEmailTask = new Task(() => emailService.SendResertPasswordEmail(foundUser.Email, decriptedPassword));
                     // Start the task.
                     sendEmailTask.Start();
-
+                    
                     return true;
                 }
                 return false;

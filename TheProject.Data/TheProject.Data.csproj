@@ -53,6 +53,7 @@
     <Compile Include="Configuration\BoundryPolygonConfiguration.cs" />
     <Compile Include="Configuration\BuildingConfiguration.cs" />
     <Compile Include="Configuration\ClientConfiguration.cs" />
+    <Compile Include="Configuration\ConditionAssessmentDataConfiguration.cs" />
     <Compile Include="Configuration\DeedsInfoConfiguration.cs" />
     <Compile Include="Configuration\ErrorLogConfiguration.cs" />
     <Compile Include="Configuration\FacilityConfiguration.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="Repositories\BoundryPolygonRepository.cs" />
     <Compile Include="Repositories\BuildingRepository.cs" />
     <Compile Include="Repositories\ClientRepository.cs" />
+    <Compile Include="Repositories\ConditionAssessmentRepository.cs" />
     <Compile Include="Repositories\DeedsInfoRepository.cs" />
     <Compile Include="Repositories\ErrorLogRepository.cs" />
     <Compile Include="Repositories\FacilityRepository.cs" />

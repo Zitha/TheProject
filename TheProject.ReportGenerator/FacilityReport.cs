@@ -12,7 +12,7 @@ namespace TheProject.ReportGenerator
 {
     public class FacilityReport
     {
-        public string GenerateFacilityReport(Facility facility, OriginalData originalData)
+        public string GenerateFacilityReport(Facility facility)//, OriginalData originalData
         {
             string _currpath = ConfigurationManager.AppSettings["ReportsPath"];
             if (!Directory.Exists(_currpath))
@@ -40,17 +40,17 @@ namespace TheProject.ReportGenerator
             firstTable.SpacingAfter = 10f;
             //-------------------------//--------------------------------------------------//
             //Second Table
-            PdfPTable secondTable = GetSecondTable(facility, originalData);
+            PdfPTable secondTable = GetSecondTable(facility);//TODO
             secondTable.SpacingBefore = 10f;
             secondTable.SpacingAfter = 10f;
 
             //-------------------------//--------------------------------------------------//
-            PdfPTable thirdTable = GetThirdTable(facility);
+            PdfPTable thirdTable = GetThirdTable(facility);//TODO
             thirdTable.SpacingBefore = 10f;
             thirdTable.SpacingAfter = 10f;
 
             //------------------------//--------------------------------------------------//
-            PdfPTable fourthTable = GetFourthTable(facility, originalData);
+            PdfPTable fourthTable = GetFourthTable(facility);
             fourthTable.SpacingBefore = 10f;
             fourthTable.SpacingAfter = 10f;
             //-----------------------//---------------------------------------------------//
@@ -79,7 +79,7 @@ namespace TheProject.ReportGenerator
         {
             Image image = Image.GetInstance(ConfigurationManager.AppSettings["LogoPath"]);
 
-            image.ScaleToFit(90f, 70f);
+            image.ScaleToFit(120f, 100f);
             image.Alignment = 50;
             PdfPTable table = new PdfPTable(4)
             {
@@ -104,7 +104,7 @@ namespace TheProject.ReportGenerator
                 BackgroundColor = BaseColor.LIGHT_GRAY,
                 BorderColor = BaseColor.BLACK
             };
-            invNumberCellData.AddElement(new Phrase(string.Format("User Department:\n Facilities Management and Real Estate"),
+            invNumberCellData.AddElement(new Phrase(string.Format("User Department:\n Zethu Consulting Services"),
                 FontFactory.GetFont(FontFactory.HELVETICA, 12, Font.BOLD, BaseColor.BLACK)));
             invNumberCellData.VerticalAlignment = Element.ALIGN_LEFT;
 
@@ -150,7 +150,7 @@ namespace TheProject.ReportGenerator
             return table;
         }
 
-        private PdfPTable GetSecondTable(Facility facility, OriginalData originalData)
+        private PdfPTable GetSecondTable(Facility facility)//, OriginalData originalData
         {
             //Second Table
             PdfPTable table = new PdfPTable(4)
@@ -227,7 +227,7 @@ namespace TheProject.ReportGenerator
 
             //Ward Label and Data2
             PdfPCell wardLabel = GetCell("Ward", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
-            PdfPCell wardData = GetCell(originalData.WARD_NO, BaseColor.BLACK, BaseColor.WHITE);
+            PdfPCell wardData = GetCell(facility.Location.Suburb, BaseColor.BLACK, BaseColor.WHITE);
 
             table.AddCell(wardLabel);
             table.AddCell(wardData);
@@ -395,9 +395,9 @@ namespace TheProject.ReportGenerator
 
         private bool CheckNegative(dynamic number)
         {
-            if (number.ToLower().Contains(",") == true)
+            if (number.ToLower().Contains(".") == true)
             {
-                number = number.Replace(',', '.');
+                number = number.Replace('.', ',');
             }
 
             number = Convert.ToDecimal(number);
@@ -422,7 +422,7 @@ namespace TheProject.ReportGenerator
             return images;
         }
 
-        private PdfPTable GetFourthTable(Facility updatedfacility, OriginalData originalData)
+        private PdfPTable GetFourthTable(Facility updatedfacility)//, OriginalData originalData
         {
             //Fourth Table
             PdfPTable table = new PdfPTable(4)
@@ -464,13 +464,15 @@ namespace TheProject.ReportGenerator
 
             //Usage Label and Data
             PdfPCell bUsageLabel = GetCell("Usage", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
-            PdfPCell bUsageData = GetCell(originalData.Usage_Descrip, BaseColor.BLACK, BaseColor.WHITE);
+            //TO PdfPCell bUsageData = GetCell(originalData.Usage_Descrip, BaseColor.BLACK, BaseColor.WHITE);
+            PdfPCell bUsageData = GetCell("TODO", BaseColor.BLACK, BaseColor.WHITE);
 
             table.AddCell(bUsageLabel);
             table.AddCell(bUsageData);
 
             PdfPCell aUsageLabel = GetCell("Usage", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
-            PdfPCell aUsageData = GetCell(originalData.Usage_Descrip, BaseColor.BLACK, BaseColor.WHITE);
+            // TODO PdfPCell aUsageData = GetCell(originalData.Usage_Descrip, BaseColor.BLACK, BaseColor.WHITE);
+            PdfPCell aUsageData = GetCell("TODO", BaseColor.BLACK, BaseColor.WHITE);
 
             table.AddCell(aUsageLabel);
             table.AddCell(aUsageData);
@@ -585,37 +587,39 @@ namespace TheProject.ReportGenerator
 
             table.AddCell(baseInfoCell);
 
-            PdfPCell cell = new PdfPCell
-            {
-                VerticalAlignment = Element.ALIGN_MIDDLE,
-                BorderColor = BaseColor.WHITE,
-                BackgroundColor = BaseColor.WHITE,
-                MinimumHeight = 10
-            };
-            cell.AddElement(new Phrase(string.Empty, FontFactory.GetFont(FontFactory.HELVETICA, 10, BaseColor.WHITE)));
-            cell.Colspan = 7;
-
-            table.AddCell(cell);
-
-            PdfPCell b1 = GetCell("No ", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
-            PdfPCell b2 = GetCell("Id ", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
-            PdfPCell b3 = GetCell("Name ", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
-            PdfPCell b4 = GetCell("Size(m2) ", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
-            PdfPCell b5 = GetCell("Photo ", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
-            PdfPCell b6 = GetCell("Sketch ", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
-            PdfPCell b7 = GetCell("Heritage", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
-
-            table.AddCell(b1);
-            table.AddCell(b2);
-            table.AddCell(b3);
-            table.AddCell(b4);
-            table.AddCell(b5);
-            table.AddCell(b6);
-            table.AddCell(b7);
-
             int i = 1;
             foreach (var building in updatedfacility.Buildings)
             {
+                var emptyCell = new PdfPCell
+                {
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                    HorizontalAlignment = Element.ALIGN_CENTER,
+                    BackgroundColor = BaseColor.WHITE,
+                    BorderColor = BaseColor.DARK_GRAY,
+                    Colspan = 7,
+                    PaddingLeft = 170
+                };
+                emptyCell.AddElement(new Phrase(" ",
+               FontFactory.GetFont(FontFactory.HELVETICA, 12, Font.BOLD, BaseColor.BLACK)));
+                if (i != 1)
+                    table.AddCell(emptyCell);
+
+                PdfPCell b1 = GetCell("No ", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
+                PdfPCell b2 = GetCell("Id ", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
+                PdfPCell b3 = GetCell("Name ", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
+                PdfPCell b4 = GetCell("Size(m2) ", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
+                PdfPCell b5 = GetCell("Photo ", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
+                PdfPCell b6 = GetCell("Sketch ", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
+                PdfPCell b7 = GetCell("Heritage", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
+
+                table.AddCell(b1);
+                table.AddCell(b2);
+                table.AddCell(b3);
+                table.AddCell(b4);
+                table.AddCell(b5);
+                table.AddCell(b6);
+                table.AddCell(b7);               
+
                 PdfPCell bb1 = GetCell(i.ToString(), BaseColor.BLACK, BaseColor.WHITE, Font.NORMAL);
                 PdfPCell bb2 = GetCell(building.BuildingNumber.ToString(), BaseColor.BLACK, BaseColor.WHITE, Font.NORMAL);
                 PdfPCell bb3 = GetCell(building.BuildingName.ToString(), BaseColor.BLACK, BaseColor.WHITE, Font.NORMAL);
@@ -649,6 +653,45 @@ namespace TheProject.ReportGenerator
                 table.AddCell(bb5);
                 table.AddCell(bb6);
                 table.AddCell(bb7);
+
+                //Condition Assessment
+                PdfPCell conditionAssessmentCell = GetCell("Condition Assessment", BaseColor.BLACK, BaseColor.LIGHT_GRAY, Font.BOLD);
+                baseInfoCell.Colspan = 7;
+                baseInfoCell.MinimumHeight = 15;
+                //table.AddCell(conditionAssessmentCell);               
+
+                PdfPCell c1 = GetCell("Roof", BaseColor.BLACK, BaseColor.WHITE, Font.BOLD);
+                PdfPCell c2 = GetCell("Doors & Windows", BaseColor.BLACK, BaseColor.WHITE, Font.BOLD);
+                PdfPCell c3 = GetCell("Walls", BaseColor.BLACK, BaseColor.WHITE, Font.BOLD);
+                PdfPCell c4 = GetCell("Floors ", BaseColor.BLACK, BaseColor.WHITE, Font.BOLD);
+                PdfPCell c5 = GetCell("Civils ", BaseColor.BLACK, BaseColor.WHITE, Font.BOLD);
+                PdfPCell c6 = GetCell("Plumbing ", BaseColor.BLACK, BaseColor.WHITE, Font.BOLD);
+                PdfPCell c7 = GetCell("Electrical ", BaseColor.BLACK, BaseColor.WHITE, Font.BOLD);
+                
+                table.AddCell(c1);
+                table.AddCell(c2);
+                table.AddCell(c3);
+                table.AddCell(c4);
+                table.AddCell(c5);
+                table.AddCell(c6);
+                table.AddCell(c7);
+
+                PdfPCell cd1 = GetCell(building.ConditionAssessment.Roof, BaseColor.BLACK, BaseColor.WHITE, Font.NORMAL);
+                PdfPCell cd2 = GetCell(building.ConditionAssessment.DoorsWindows, BaseColor.BLACK, BaseColor.WHITE, Font.NORMAL);
+                PdfPCell cd3 = GetCell(building.ConditionAssessment.Walls, BaseColor.BLACK, BaseColor.WHITE, Font.NORMAL);                
+                PdfPCell cd4 = GetCell(building.ConditionAssessment.Floors, BaseColor.BLACK, BaseColor.WHITE, Font.NORMAL);
+                PdfPCell cd5 = GetCell(building.ConditionAssessment.Civils, BaseColor.BLACK, BaseColor.WHITE, Font.NORMAL);
+                PdfPCell cd6 = GetCell(building.ConditionAssessment.Plumbing, BaseColor.BLACK, BaseColor.WHITE, Font.NORMAL);
+                PdfPCell cd7 = GetCell(building.ConditionAssessment.Electrical, BaseColor.BLACK, BaseColor.WHITE, Font.NORMAL);
+
+                table.AddCell(cd1);
+                table.AddCell(cd2);
+                table.AddCell(cd3);
+                table.AddCell(cd4);
+                table.AddCell(cd5);
+                table.AddCell(cd6);
+                table.AddCell(cd7);
+
                 i++;
             }
 

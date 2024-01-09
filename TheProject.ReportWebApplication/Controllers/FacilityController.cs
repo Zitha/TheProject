@@ -52,11 +52,11 @@ namespace TheProject.ReportWebApplication.Controllers
             using (ApplicationUnit unit = new ApplicationUnit())
             {
                 var dbfacilities = unit.Facilities.GetAll()
-                                      .Include(b => b.Buildings)
-                                      .Include(d => d.DeedsInfo)
-                                      .Include(p => p.ResposiblePerson)
-                                      .Include("Location.GPSCoordinates")
-                                      .Include("Location.BoundryPolygon")
+                                      //.Include(b => b.Buildings)
+                                      //.Include(d => d.DeedsInfo)
+                                      //.Include(p => p.ResposiblePerson)
+                                      //.Include("Location.GPSCoordinates")
+                                      //.Include("Location.BoundryPolygon")
                                       .Where(ss => ss.Status == "Submitted")
                                       .ToList();
                 List<Facility> facilities = new List<Facility>();
@@ -94,12 +94,12 @@ namespace TheProject.ReportWebApplication.Controllers
                 return RedirectToAction("Index");
             }
 
-            Model.OriginalData dbOriginalData = unit.OriginalDatas.GetAll()
-                .Where(o => o.VENUS_CODE.Trim().ToLower()
-                == dbFacility.ClientCode.Trim().ToLower())
-                .FirstOrDefault();
+            //Model.OriginalData dbOriginalData = unit.OriginalDatas.GetAll()
+            //    .Where(o => o.VENUS_CODE.Trim().ToLower()
+            //    == dbFacility.ClientCode.Trim().ToLower())
+            //    .FirstOrDefault();
 
-            string filePath = facilityReport.GenerateFacilityReport(dbFacility, dbOriginalData);
+            string filePath = facilityReport.GenerateFacilityReport(dbFacility);
 
             using (var webClient = new WebClient())
             {
@@ -150,7 +150,7 @@ namespace TheProject.ReportWebApplication.Controllers
                         foreach (var item in dbFacilities)
                         {
                             Model.OriginalData dbOriginalData = unit.OriginalDatas.GetAll().Where(o => o.VENUS_CODE.Trim().ToLower() == item.ClientCode.Trim().ToLower()).FirstOrDefault();
-                            string filePath = facilityReport.GenerateFacilityReport(item, dbOriginalData);
+                            string filePath = facilityReport.GenerateFacilityReport(item);
                             ziparchive.CreateEntryFromFile(filePath, item.ClientCode + ".pdf");
                         }
                     }

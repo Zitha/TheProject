@@ -191,6 +191,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\BuildingController.cs" />
     <Compile Include="Controllers\ClientController.cs" />
+    <Compile Include="Controllers\ConditionAssessmentController.cs" />
     <Compile Include="Controllers\DeedsInfoController.cs" />
     <Compile Include="Controllers\FacilityController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
@@ -263,6 +264,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\ConditionAssessment\" />
     <Folder Include="Views\Person\" />
   </ItemGroup>
   <ItemGroup>
